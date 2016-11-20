@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var customer = require('./routes/customer');
 var branch = require('./routes/branch');
 
+var Transaction = require('./routes/Transaction')
 var app = express();
 
 // view engine setup
@@ -32,6 +33,8 @@ app.post('/getCustomerByName', customer.getCustomerByName);
 app.post('/getCustomerByLicense', customer.getCustomerByLicense);
 app.post('/getBranchById', branch.getBranchById);
 app.post('/getBranchByLocation', branch.getBranchByLocation);
+app.post('/getTransactionbyVehicleID', Transaction.getTransactionbyVehicle_ID);
+app.post('/getTransactionbyTransactionDate', Transaction.getTransactionbyDate);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
