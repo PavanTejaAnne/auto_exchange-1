@@ -7,8 +7,8 @@ var ejs=require('ejs');
 
 exports.getTransactionbyDate = function(req, res){
     Transaction_Date = req.param("Date");
-    var customer = "select * from Transaction where transaction_date = '"+Transaction_Date+"'";
-    mysql.fetchData(customer, function(err, results) {
+    var sql_query = "select * from Transaction where transaction_date = '"+Transaction_Date+"'";
+    mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
         } else {
@@ -31,8 +31,8 @@ exports.getTransactionbyDate = function(req, res){
 
 exports.getTransactionbyVehicle_ID = function(req, res){
     Vehicle_ID = req.param("Vehicle_ID");
-    var customer = "select * from Transaction where transaction_vehicle_id = '"+Vehicle_ID+"'";
-    mysql.fetchData(customer, function(err, results) {
+    var sql_query = "select * from Transaction where transaction_vehicle_id = '"+Vehicle_ID+"'";
+    mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
         } else {
