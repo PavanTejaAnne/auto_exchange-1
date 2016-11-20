@@ -15,7 +15,7 @@ unique(driving_license_number)
 
 
 create table Company_branch
-(branch_id CHAR not null,
+(branch_id CHAR(10) not null,
 number char(10) not null,
 address varchar(40) not null,
 email varchar(60) not null,
@@ -37,8 +37,10 @@ create table In_Stock_car(
 In_Stock_vehicle_id CHAR(10) not null,
 In_Stock_id CHAR(10) not null,
 In_Stock_price float not null,
-In_Stock_branch_id CHAR not null,
-
+In_Stock_branch_id CHAR(10) not null,
+primary key(In_Stock_vehicle_id, In_Stock_id),
+foreign key(In_Stock_branch_id) references Company_branch(branch_id) on delete cascade on update cascade,
+foreign key(In_Stock_vehicle_id) references Car(vehicle_id) on delete cascade on update cascade
 );
 
 create table Transaction
@@ -58,7 +60,7 @@ foreign key(transaction_vehicle_id) references Car(vehicle_id) on delete cascade
 create table Sells_to
 (
 sells_to_SSN char(9) not null,
-Sells_to_branch_id char not null,
+Sells_to_branch_id char(10) not null,
 primary key(sells_to_SSN, sells_to_branch_id),
 foreign key(sells_to_SSN) references customer(SSN) on delete cascade on update cascade,
 foreign key(Sells_to_branch_id) references Company_branch(branch_id) on delete cascade on update cascade
@@ -67,7 +69,7 @@ foreign key(Sells_to_branch_id) references Company_branch(branch_id) on delete c
 create table Buys_from
 (
 Buys_from_SSN char(9) not null,
-Buys_from_branch_id char not null,
+Buys_from_branch_id char(10) not null,
 primary key(Buys_from_SSN, Buys_from_branch_id),
 foreign key(Buys_from_SSN) references customer(SSN) on delete cascade on update cascade,
 foreign key(Buys_from_branch_id) references Company_branch(branch_id) on delete cascade on update cascade
@@ -76,7 +78,7 @@ foreign key(Buys_from_branch_id) references Company_branch(branch_id) on delete 
 create table Sells
 (
 Sells_SSN char(9) not null,
-Sells_vehicle_id char not null,
+Sells_vehicle_id char(10) not null,
 Selling_Date Date not null,
 primary key(Sells_SSN, Sells_vehicle_id),
 foreign key(Sells_SSN) references customer(SSN),
@@ -86,7 +88,7 @@ foreign key(Sells_vehicle_id) references Car(vehicle_id)
 create table Buys_
 (
 Buys_SSN char(9) not null,
-Buys_vehicle_id char not null,
+Buys_vehicle_id char(10) not null,
 Buying_Date Date not null,
 primary key(Buys_SSN, Buys_vehicle_id),
 foreign key(Buys_SSN) references customer(SSN) on delete cascade on update cascade,
