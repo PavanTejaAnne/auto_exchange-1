@@ -1,4 +1,11 @@
 1 customer year_purchase removed.
   license_no to driving_license_no
   name to firstname lastname
-2 
+2 company branch
+  contact changed to mobile and email
+  location changed to address
+	
+3 Car
+  manufactured year added
+
+ 
