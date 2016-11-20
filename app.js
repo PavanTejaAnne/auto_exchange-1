@@ -28,13 +28,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
-app.post('/getCustomerBySsn', customer.getCustomerBySsn);
-app.post('/getCustomerByName', customer.getCustomerByName);
-app.post('/getCustomerByLicense', customer.getCustomerByLicense);
-app.post('/getBranchById', branch.getBranchById);
-app.post('/getBranchByLocation', branch.getBranchByLocation);
-app.post('/getTransactionbyVehicleID', Transaction.getTransactionbyVehicle_ID);
-app.post('/getTransactionbyTransactionDate', Transaction.getTransactionbyDate);
+app.post('/api/getCustomerBySsn', customer.getCustomerBySsn);
+app.post('/api/getCustomerByName', customer.getCustomerByName);
+app.post('/api/getCustomerByLicense', customer.getCustomerByLicense);
+app.post('/api/getBranchById', branch.getBranchById);
+app.post('/api/getBranchByLocation', branch.getBranchByLocation);
+app.post('/api/getTransactionbyVehicleID', Transaction.getTransactionbyVehicle_ID);
+app.post('/api/getTransactionbyTransactionDate', Transaction.getTransactionbyDate);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

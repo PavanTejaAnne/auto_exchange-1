@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="b97f5da8-5959-409d-a465-4655bfce8d07" name="Default" comment="">
 <<<<<<< Updated upstream
       <change type="MOVED" beforePath="$PROJECT_DIR$/routes/dealer.js" afterPath="$PROJECT_DIR$/routes/branch.js" />
@@ -13,6 +14,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/create_table_sql.sql" afterPath="$PROJECT_DIR$/create_table_sql.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/customer.js" afterPath="$PROJECT_DIR$/routes/customer.js" />
     </list>
+=======
+    <list default="true" id="b97f5da8-5959-409d-a465-4655bfce8d07" name="Default" comment="" />
+>>>>>>> Stashed changes
     <ignored path="auto_exchange.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -36,6 +40,21 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+      <file leaf-file-name="mysql_db.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/mysql_db.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="154">
+              <caret line="9" column="16" lean-forward="true" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="65" />
+              <folding>
+                <element signature="e#0#40#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+>>>>>>> Stashed changes
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -108,7 +127,11 @@
         </entry>
       </file>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       <file leaf-file-name="branch.js" pinned="false" current-in-tab="true">
+=======
+      <file leaf-file-name="branch.js" pinned="false" current-in-tab="false">
+>>>>>>> Stashed changes
         <entry file="file://$PROJECT_DIR$/routes/branch.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-132">
@@ -318,15 +341,15 @@
       <option name="number" value="Default" />
       <updated>1479584261051</updated>
       <workItem from="1479584265945" duration="160000" />
-      <workItem from="1479601482605" duration="4810000" />
+      <workItem from="1479601482605" duration="5109000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4970000" />
+    <option name="totallyTimeSpent" value="5269000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.251981" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -524,6 +547,7 @@
       </provider>
     </entry>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <entry file="file://$PROJECT_DIR$/mysql_db.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="286">
@@ -542,6 +566,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> Stashed changes
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< Updated upstream
@@ -576,6 +602,16 @@
 >>>>>>> Stashed changes
           <folding>
             <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mysql_db.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="9" column="16" lean-forward="true" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#40#0" expanded="false" />
           </folding>
         </state>
       </provider>
