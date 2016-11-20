@@ -40,7 +40,7 @@ app.post('/api/getCarbyManufacturer', Car.getCarbyManufacturer);
 app.post('/api/getCarbyManufacturerd_year', Car.getCarbyManufactured_year);
 app.post('/api/getCarbyModel_No', Car.getCarbyModel_No);
 app.post('/api/getCarbyCar_Type', Car.getCarbyCar_Type);
-app.post('/api/getIn_Stock_CarbyPrice', Car.getIn_Stock_CarbyPrice);
+/*app.post('/api/getIn_Stock_CarbyPrice', Car.getIn_Stock_CarbyPrice);
 app.post('/api/getIn_Stock_CarbyBranch_ID', Car.getIn_Stock_CarbyBranch_ID);
 app.post('/api/getIn_Stock_CarbyCar_ID', Car.getIn_Stock_CarbyCar_ID);
 app.post('/api/getIn_Stock_CarbyManufacturer', Car.getIn_Stock_CarbyManufacturer);
