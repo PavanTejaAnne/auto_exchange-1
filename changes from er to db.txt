@@ -1,0 +1,4 @@
+1 customer year_purchase removed.
+  license_no to driving_license_no
+  name to firstname lastname
+2 
