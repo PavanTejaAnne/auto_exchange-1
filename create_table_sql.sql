@@ -19,6 +19,7 @@ create table Company_branch
 number char(10) not null,
 address varchar(40) not null,
 email varchar(60) not null,
+location varchar(10) not null,
 primary key(branch_id)
 );
 
