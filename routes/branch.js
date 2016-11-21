@@ -16,7 +16,7 @@ exports.getBranchById = function(req, res){
                 console.log(results);
                 res.send({
                     "status": 200,
-                    "message:": "login successful!",
+                    "message:": "branch search successful!",
                     "profile": results
                 });
             }
@@ -40,7 +40,7 @@ exports.getBranchByLocation = function(req, res){
                 console.log(results);
                 res.send({
                     "status": 200,
-                    "message:": "login successful!",
+                    "message:": "branch search successful!",
                     "profile": results
                 });
             }

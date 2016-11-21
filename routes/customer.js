@@ -16,7 +16,7 @@ exports.getCustomerBySsn = function(req, res){
                     console.log(results);
                     res.send({
                         "status": 200,
-                        "message:": "search successful!",
+                        "message:": "customer search successful!",
                         "profile": results
                     });
                 }
@@ -49,7 +49,7 @@ exports.getCustomerByName = function(req, res){
                 console.log(results);
                 res.send({
                     "status": 200,
-                    "message:": "search successful!",
+                    "message:": "customer search successful!",
                     "profile": results
                 });
             }
@@ -73,7 +73,7 @@ exports.getCustomerByLicense = function(req, res){
                 console.log(results);
                 res.send({
                     "status": 200,
-                    "message:": "search successful!",
+                    "message:": "customer search successful!",
                     "profile": results
                 });
             }
@@ -134,36 +134,6 @@ exports.getCustomerHistory = function(req, res){
                     "profile": results,
                     "discount": 15
                 });
-            }
-        }
-    });
-};
-
-exports.getCustomerDiscount = function(req, res){
-    ssn = req.param("ssn");
-    var history = "(select transaction_vehicle_id, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
-        "from Sells inner join Transaction on (transaction_date=Selling_Date and transaction_vehicle_id=Sells_vehicle_id)" +
-        "where Sells_SSN='"+ssn+"')" +
-        "union" +
-        "(select transaction_vehicle_id, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
-        "from Buys_ inner join Transaction on (transaction_date=Buying_Date and transaction_vehicle_id=Buys_vehicle_id)" +
-        "where Buys_SSN='"+ssn+"')";
-    mysql.fetchData(history, function(err, results) {
-        if (err) {
-            throw err;
-        } else {
-            if (results.length > 0) {
-                console.log(results);
-                res.send({
-                    "status": 200,
-                    "message:": "login successful!",
-                    "profile": results
-                });
-            }
-            // render or error
-            else {
-                res.end('An error occurred');
-                console.log(err);
             }
         }
     });
