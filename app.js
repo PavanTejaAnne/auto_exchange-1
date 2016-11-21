@@ -11,6 +11,7 @@ var users = require('./routes/users');
 var customer = require('./routes/customer');
 var branch = require('./routes/branch');
 var Car = require('./routes/Car');
+var In_Stock_Car = require('./routes/In_Stock_Car')
 var Transaction = require('./routes/Transaction')
 var app = express();
 
@@ -44,6 +45,7 @@ app.post('/api/getCarbyManufacturer', Car.getCarbyManufacturer);
 app.post('/api/getCarbyManufacturerd_year', Car.getCarbyManufactured_year);
 app.post('/api/getCarbyModel_No', Car.getCarbyModel_No);
 app.post('/api/getCarbyCar_Type', Car.getCarbyCar_Type);
+app.post('/api/getIn_Stock_Car', In_Stock_Car.getInStockCar);
 /*app.post('/api/getIn_Stock_CarbyPrice', Car.getIn_Stock_CarbyPrice);
 app.post('/api/getIn_Stock_CarbyBranch_ID', Car.getIn_Stock_CarbyBranch_ID);
 app.post('/api/getIn_Stock_CarbyCar_ID', Car.getIn_Stock_CarbyCar_ID);
