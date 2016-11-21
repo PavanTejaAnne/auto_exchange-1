@@ -35,6 +35,8 @@ app.post('/api/getCustomerByLicense', customer.getCustomerByLicense);
 app.post('/api/getBranchById', branch.getBranchById);
 app.post('/api/getBranchByLocation', branch.getBranchByLocation);
 app.post('/api/getCustomerHistory', customer.getCustomerHistory);
+app.post('/api/setTransactionSell', Transaction.setTransactionSell);
+app.post('/api/setTransactionBuy', Transaction.setTransactionBuy);
 app.post('/api/getTransactionbyVehicleID', Transaction.getTransactionbyVehicle_ID);
 app.post('/api/getTransactionbyTransactionDate', Transaction.getTransactionbyDate);
 app.post('/api/getCarbyCar_ID', Car.getCarbyCar_ID);
