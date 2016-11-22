@@ -138,3 +138,31 @@ exports.getCustomerHistory = function(req, res){
         }
     });
 };
+
+
+exports.getallCustomer = function(req, res){
+   // license = req.param("License");
+    var customer = "select * from Customer";
+    mysql.fetchData(customer, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            if (results.length > 0) {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "customer search successful!",
+                    "profile": results
+                });
+            }
+            // render or error
+            else {
+                res.send({
+                    "status": 10,
+                    "message:": "customer search successful with empty result set!",
+                    "profile": results
+                });
+            }
+        }
+    });
+};

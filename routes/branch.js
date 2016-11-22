@@ -52,3 +52,29 @@ exports.getBranchByLocation = function(req, res){
         }
     });
 };
+exports.getallBranchs = function(req, res){
+   // location = req.param("location");
+    var branch = "select * from Company_branch";
+    mysql.fetchData(branch, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            if (results.length > 0) {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "branch search successful!",
+                    "profile": results
+                });
+            }
+            // render or error
+            else {
+                res.send({
+                    "status": 10,
+                    "message:": "branch search successful with empty result set!",
+                    "profile": results
+                });
+            }
+        }
+    });
+};

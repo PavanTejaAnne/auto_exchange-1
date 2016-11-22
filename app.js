@@ -42,6 +42,12 @@ app.post('/api/getTransactionbyVehicleID', Transaction.getTransactionbyVehicle_I
 app.post('/api/getTransactionbyTransactionDate', Transaction.getTransactionbyDate);
 app.post('/api/getCar', Car.getCar);
 app.post('/api/getIn_Stock_Car', In_Stock_Car.getInStockCar);
+app.post('/api/getVehicleIDHistorybybranch', Car.getVehicleIDbyBranch);
+//app.post('/api/addnewCustomer', Car.getCarbyBranch);
+//app.post('/api/addnewBranch', Car.getCarbyBranch);
+app.post('/api/getallBranchs', branch.getallBranchs);
+app.post('/api/getallCustomer', customer.getallCustomer);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

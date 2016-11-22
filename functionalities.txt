@@ -1,5 +1,5 @@
 Functionality:
-1. All possible search on the data (car, transaction, customer, branches)
+1. All possible search on the data (car, transaction, customer(SSN, mobile), branches)
 2. History of cars sold/bought by branch
 3. History of customers dealt
 4. List of customer who will get discount based on history (example: more than 5 transaction in an year)
@@ -8,6 +8,11 @@ Functionality:
 7. In case a car is no more available for transaction update it
 8. Customer info update
 9. Updating branch info
+10. Show all Customers
+11. Show all branches.
+12. Add new Customers.
+13. Add new Branches.
+
 
 Tasks: (Using NodeJS, Angular and MySQL)
 1. Install mysql on EC2, create database and table on it, share the details (backend)

@@ -118,4 +118,35 @@ exports.getCar = function(req, res){
     });
 };
 
+exports.getVehicleIDbyBranch = function(req, res){
+    Branch_ID = req.param("Branch_ID");
+    var sql_query = "select * from Sells, Sells_to where sells_to_SSN = Sells_SSN and Sells_to_branch_id = '"+Branch_ID+"'";
+    mysql.fetchData(sql_query, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+                console.log(results);
+                var sql_query_1 = "select * from Sells, Sells_to where sells_to_SSN = Sells_SSN and Sells_to_branch_id = '"+Branch_ID+"'";
+                mysql.fetchData(sql_query_1, function(err, results_1) {
+                    if (err) {
+                        throw err;
+                    } else {
+                            console.log(results_1);
+                        res.send({
+                            "status": 200,
+                            "message:": "transaction_vehicle_id fetched by transaction successfully!",
+                            "profile": results,
+                            "profile_1": results_1
+                        });
+                    }
+                });
+
+
+            // render or error
+
+        }
+    });
+};
+
+
 
