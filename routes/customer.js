@@ -177,8 +177,6 @@ exports.addnewCustomer = function(req, res){
     driving_license_number   = req.param(driving_license_number);
     address   = req.param(address);
 
-
-
     // location = req.param("location");
     var sql_query = "insert into Customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
     mysql.fetchData(sql_query, function(err, results) {
@@ -195,4 +193,115 @@ exports.addnewCustomer = function(req, res){
 
         }
     });
+};
+
+exports.updatecustomerinfo = function(req, res){
+    SSN  = req.param(SSN);
+    Fname  = req.param(Fname);
+    Lname  = req.param(Lname);
+    age = req.param(age);
+    gender  = req.param(gender);
+    driving_license_number   = req.param(driving_license_number);
+    address   = req.param(address);
+
+    var bool_SSN  = false;
+    var bool_Fname  = false;
+    var bool_Lname  = false;
+    var bool_age = false;
+    var bool_gender  = false;
+    var bool_driving_license_number   = false;
+    var bool_address   = false;
+    var bool_check_comma = false;
+
+    if(Fname){
+        bool_Fname = true;
+    }
+    if(Lname){
+        bool_Lname = true;
+    }
+    if(age){
+        bool_age = true;
+    }
+    if(gender){
+        bool_gender = true;
+    }
+    if(driving_license_number){
+        bool_driving_license_number = true;
+    }
+    if(address){
+        bool_address = true;
+    }
+    var sql_query = "update Customer set ";
+    if(bool_Fname){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " Fname = '"+ Fname + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }
+    if(bool_Lname){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " Lname = '"+ Lname + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }if(bool_age){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " age = '"+ age + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }if(bool_gender){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " gender = '"+ gender + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }if(bool_driving_license_number){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " driving_license_number = '"+ driving_license_number + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }if(bool_address){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " address = '"+ address + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }
+    sql_query = sql_query + " where SSN = '"+ SSN +"'";
+
+
+
+    // location = req.param("location");
+    //var sql_query = "insert into Customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
+    if(Fname != "" || Lname != "" || age != "" || gender != "" || driving_license_number != "" || address != "" ) {
+        mysql.fetchData(sql_query, function (err, results) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "new branch added!",
+                    "profile": results
+                });
+                // render or error
+
+            }
+        });
+    }
 };

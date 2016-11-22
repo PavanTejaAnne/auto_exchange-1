@@ -102,3 +102,87 @@ exports.addnewBranch = function(req, res){
         }
     });
 };
+
+
+exports.updatebranchinfo = function(req, res){
+    number  = req.param(number);
+    location  = req.param(location);
+    email  = req.param(email);
+    address   = req.param(address);
+
+    var bool_number  = false;
+    var bool_location  = false;
+    var bool_email  = false;
+    var bool_address = false;
+    var bool_check_comma = false;
+
+    if(number){
+        bool_number = true;
+    }
+    if(location){
+        bool_location = true;
+    }
+    if(email){
+        bool_email = true;
+    }
+    if(address){
+        bool_address = true;
+    }
+    var sql_query = "update Customer set ";
+    if(bool_Fname){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " number = '"+ number + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }
+    if(bool_Lname){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " address = '"+ address + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }if(bool_age){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " email = '"+ email + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }if(bool_gender){
+        if(bool_check_comma){
+            sql_query = sql_query + ","
+        }
+        sql_query = sql_query + " location = '"+ location + "'";
+        if(bool_check_comma == false){
+            bool_check_comma = true;
+        }
+    }
+    sql_query = sql_query + " where SSN = '"+ SSN +"'";
+
+
+
+    // location = req.param("location");
+    //var sql_query = "insert into Customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
+    if(number != "" || address != "" || email != "" || location != "" ) {
+        mysql.fetchData(sql_query, function (err, results) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "new branch added!",
+                    "profile": results
+                });
+                // render or error
+
+            }
+        });
+    }
+};

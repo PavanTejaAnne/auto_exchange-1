@@ -47,6 +47,8 @@ app.post('/api/addnewCustomer',customer.addnewCustomer);
 app.post('/api/addnewBranch', branch.addnewBranch);
 app.post('/api/getallBranchs', branch.getallBranchs);
 app.post('/api/getallCustomer', customer.getallCustomer);
+app.post('/api/updatebranchinfo', branch.updatebranchinfo);
+app.post('/api/updatecustomerinfo', customer.updatecustomerinfo);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
