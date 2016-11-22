@@ -40,19 +40,8 @@ app.post('/api/setTransactionSell', Transaction.setTransactionSell);
 app.post('/api/setTransactionBuy', Transaction.setTransactionBuy);
 app.post('/api/getTransactionbyVehicleID', Transaction.getTransactionbyVehicle_ID);
 app.post('/api/getTransactionbyTransactionDate', Transaction.getTransactionbyDate);
-app.post('/api/getCarbyCar_ID', Car.getCarbyCar_ID);
-app.post('/api/getCarbyManufacturer', Car.getCarbyManufacturer);
-app.post('/api/getCarbyManufacturerd_year', Car.getCarbyManufactured_year);
-app.post('/api/getCarbyModel_No', Car.getCarbyModel_No);
-app.post('/api/getCarbyCar_Type', Car.getCarbyCar_Type);
+app.post('/api/getCar', Car.getCar);
 app.post('/api/getIn_Stock_Car', In_Stock_Car.getInStockCar);
-/*app.post('/api/getIn_Stock_CarbyPrice', Car.getIn_Stock_CarbyPrice);
-app.post('/api/getIn_Stock_CarbyBranch_ID', Car.getIn_Stock_CarbyBranch_ID);
-app.post('/api/getIn_Stock_CarbyCar_ID', Car.getIn_Stock_CarbyCar_ID);
-app.post('/api/getIn_Stock_CarbyManufacturer', Car.getIn_Stock_CarbyManufacturer);
-app.post('/api/getIn_Stock_CarbyManufacturerd_year', Car.getIn_Stock_CarbyManufacturer);
-app.post('/api/getIn_Stock_CarbyModel_No', Car.getIn_Stock_CarbyModel_No);
-app.post('/api/getIn_Stock_CarbyCar_Type', Car.getIn_Stock_CarbyCar_Type);*/
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

@@ -22,8 +22,11 @@ exports.getTransactionbyDate = function(req, res){
             }
             // render or error
             else {
-                res.end('An error occurred');
-                console.log(err);
+                res.send({
+                    "status": 10,
+                    "message:": "transaction fetched by successfully with empty line returned!",
+                    "profile": results
+                });
             }
         }
     });
@@ -46,8 +49,11 @@ exports.getTransactionbyVehicle_ID = function(req, res){
             }
             // render or error
             else {
-                res.end('An error occurred');
-                console.log(err);
+                res.send({
+                    "status": 10,
+                    "message:": "transaction fetched by successfully with empty line returned!",
+                    "profile": results
+                });
             }
         }
     });

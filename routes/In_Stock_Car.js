@@ -44,13 +44,13 @@ exports.getInStockCar = function(req, res){
     if(In_Stock_price_start != ""){
         bool_In_Stock_price_start = true;
     }
-    if(In_Stock_price != ""){
+    if(In_Stock_price_end != ""){
         bool_In_Stock_price_end = true;
     }
     if(In_Stock_branch_id != ""){
         bool_In_Stock_branch_id = true;
     }
-    var sql_query = "select * from Car where vehicle_id = In_Stock_vehicle_id";
+    var sql_query = "select * from Car, In_Stock_car where vehicle_id = In_Stock_vehicle_id";
     if(bool_Vehicle_ID){
         sql_query = sql_query + " and vehicle_id = '"+Vehicle_ID+"'";
     }
@@ -92,8 +92,11 @@ exports.getInStockCar = function(req, res){
             }
             // render or error
             else {
-                res.end('An error occurred');
-                console.log(err);
+                res.send({
+                    "status": 10,
+                    "message:": "transaction fetched by successfully with empty line returned!",
+                    "profile": results
+                });
             }
         }
     });
