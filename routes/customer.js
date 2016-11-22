@@ -166,3 +166,33 @@ exports.getallCustomer = function(req, res){
         }
     });
 };
+
+
+exports.addnewCustomer = function(req, res){
+    SSN  = req.param(SSN );
+    Fname  = req.param(Fname );
+    Lname  = req.param(Lname );
+    age = req.param(age);
+    gender  = req.param(gender);
+    driving_license_number   = req.param(driving_license_number);
+    address   = req.param(address);
+
+
+
+    // location = req.param("location");
+    var sql_query = "insert into Customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
+    mysql.fetchData(sql_query, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            console.log(results);
+            res.send({
+                "status": 200,
+                "message:": "new branch added!",
+                "profile": results
+            });
+            // render or error
+
+        }
+    });
+};

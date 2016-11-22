@@ -78,3 +78,27 @@ exports.getallBranchs = function(req, res){
         }
     });
 };
+
+exports.addnewBranch = function(req, res){
+    Branch_Mobile_number = req.param(Branch_Mobile_number);
+    Branch_address = req.param(Branch_address);
+    Branch_email = req.param(Branch_email);
+    Branch_location = req.param(Branch_location);
+
+    // location = req.param("location");
+    var sql_query = "insert into company_branch_1(number, address, email, location) values ('"+Branch_Mobile_number+"', '"+Branch_address+"', '"+ Branch_email +"', '"+ Branch_location +"')";
+    mysql.fetchData(sql_query, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+               console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "new branch added!",
+                    "profile": results
+                });
+            // render or error
+
+        }
+    });
+};

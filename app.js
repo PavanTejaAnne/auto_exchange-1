@@ -43,8 +43,8 @@ app.post('/api/getTransactionbyTransactionDate', Transaction.getTransactionbyDat
 app.post('/api/getCar', Car.getCar);
 app.post('/api/getIn_Stock_Car', In_Stock_Car.getInStockCar);
 app.post('/api/getVehicleIDHistorybybranch', Car.getVehicleIDbyBranch);
-//app.post('/api/addnewCustomer', Car.getCarbyBranch);
-//app.post('/api/addnewBranch', Car.getCarbyBranch);
+app.post('/api/addnewCustomer',customer.addnewCustomer);
+app.post('/api/addnewBranch', branch.addnewBranch);
 app.post('/api/getallBranchs', branch.getallBranchs);
 app.post('/api/getallCustomer', customer.getallCustomer);
 
