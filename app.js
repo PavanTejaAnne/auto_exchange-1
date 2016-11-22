@@ -49,6 +49,11 @@ app.post('/api/getallBranchs', branch.getallBranchs);
 app.post('/api/getallCustomer', customer.getallCustomer);
 app.post('/api/updatebranchinfo', branch.updatebranchinfo);
 app.post('/api/updatecustomerinfo', customer.updatecustomerinfo);
+app.post('/api/setCustomerPhoneNO', customer.setCustomerPhoneNO);
+app.post('/api/updatecustomerPhoneNO', customer.updatecustomerPhoneNO);
+app.post('/api/setcustomerEmail', customer.setcustomerEmail);
+app.post('/api/updatecustomerEmail', customer.updatecustomerEmail);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

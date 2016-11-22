@@ -296,7 +296,7 @@ exports.updatecustomerinfo = function(req, res){
                 console.log(results);
                 res.send({
                     "status": 200,
-                    "message:": "new branch added!",
+                    "message:": "Customer onfo updated",
                     "profile": results
                 });
                 // render or error
@@ -304,4 +304,77 @@ exports.updatecustomerinfo = function(req, res){
             }
         });
     }
+};
+
+exports.setCustomerPhoneNO = function(req, res){
+    SSN = req.param("SSN");
+    Mobile_No = req.param("Mobile_No");
+    var customer = "insert into cus_mobile values ('"+SSN +"', '"+Mobile_No+"')";
+    mysql.fetchData(customer, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            console.log(results);
+            res.send({
+                "status": 200,
+                "message:": "new phone added!",
+                "profile": results
+            });
+        }
+    });
+};
+
+exports.setcustomerEmail = function(req, res){
+    SSN = req.param("SSN");
+    Email = req.param("Email");
+    var customer = "insert into cus_email values ('"+SSN +"', '"+Email+"')";
+    mysql.fetchData(customer, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            console.log(results);
+            res.send({
+                "status": 200,
+                "message:": "new Email added!",
+                "profile": results
+            });
+        }
+    });
+};
+
+exports.updatecustomerPhoneNO = function(req, res){
+    SSN = req.param("SSN");
+    Mobile_No = req.param("Mobile_No");
+    var customer = "update cus_mobile set mobile_no = '"+ Mobile_No+"' where Cus_Mobile_SSN = '"+SSN+"'";
+    mysql.fetchData(customer, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            console.log(results);
+            res.send({
+                "status": 200,
+                "message:": "phone updated!",
+                "profile": results
+            });
+        }
+    });
+};
+
+
+exports.updatecustomerEmail = function(req, res){
+    SSN = req.param("SSN");
+    Email = req.param("Email");
+    var customer = "update cus_mobile set Email = '"+ Email +"' where Cus_Email_SSN = '"+SSN+"'";
+    mysql.fetchData(customer, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            console.log(results);
+            res.send({
+                "status": 200,
+                "message:": "email updated!",
+                "profile": results
+            });
+        }
+    });
 };
