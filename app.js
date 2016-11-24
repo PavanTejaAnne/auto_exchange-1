@@ -6,13 +6,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+var home = require('./routes/home');
 var customer = require('./routes/customer');
 var branch = require('./routes/branch');
-var Car = require('./routes/Car');
-var In_Stock_Car = require('./routes/In_Stock_Car')
-var Transaction = require('./routes/Transaction')
+var car = require('./routes/car');
+var in_stock_car = require('./routes/instockcar');
+var transaction = require('./routes/transaction');
 var app = express();
 
 // view engine setup
@@ -27,8 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/', home);
 
 app.post('/api/getCustomerBySsn', customer.getCustomerBySsn);
 app.post('/api/getCustomerByName', customer.getCustomerByName);
@@ -36,23 +34,23 @@ app.post('/api/getCustomerByLicense', customer.getCustomerByLicense);
 app.post('/api/getBranchById', branch.getBranchById);
 app.post('/api/getBranchByLocation', branch.getBranchByLocation);
 app.post('/api/getCustomerHistory', customer.getCustomerHistory);
-app.post('/api/setTransactionSell', Transaction.setTransactionSell);
-app.post('/api/setTransactionBuy', Transaction.setTransactionBuy);
-app.post('/api/getTransactionbyVehicleID', Transaction.getTransactionbyVehicle_ID);
-app.post('/api/getTransactionbyTransactionDate', Transaction.getTransactionbyDate);
-app.post('/api/getCar', Car.getCar);
-app.post('/api/getIn_Stock_Car', In_Stock_Car.getInStockCar);
-app.post('/api/getVehicleIDHistorybybranch', Car.getVehicleIDbyBranch);
-app.post('/api/addnewCustomer',customer.addnewCustomer);
-app.post('/api/addnewBranch', branch.addnewBranch);
-app.post('/api/getallBranchs', branch.getallBranchs);
-app.post('/api/getallCustomer', customer.getallCustomer);
-app.post('/api/updatebranchinfo', branch.updatebranchinfo);
-app.post('/api/updatecustomerinfo', customer.updatecustomerinfo);
-app.post('/api/setCustomerPhoneNO', customer.setCustomerPhoneNO);
-app.post('/api/updatecustomerPhoneNO', customer.updatecustomerPhoneNO);
-app.post('/api/setcustomerEmail', customer.setcustomerEmail);
-app.post('/api/updatecustomerEmail', customer.updatecustomerEmail);
+app.post('/api/setTransactionSell', transaction.setTransactionSell);
+app.post('/api/setTransactionBuy', transaction.setTransactionBuy);
+app.post('/api/getTransactionbyVehicleID', transaction.getTransactionByVehicleId);
+app.post('/api/getTransactionbyTransactionDate', transaction.getTransactionByDate);
+app.post('/api/getCar', car.getCar);
+app.post('/api/getIn_Stock_Car', in_stock_car.getInStockCar);
+app.post('/api/getVehicleIDHistorybybranch', car.getVehicleIdByBranch);
+app.post('/api/addNewCustomer',customer.addNewCustomer);
+app.post('/api/addNewBranch', branch.addNewBranch);
+app.post('/api/getAllBranches', branch.getAllBranches);
+app.post('/api/getAllCustomer', customer.getAllCustomer);
+app.post('/api/updateBranchInfo', branch.updateBranchInfo);
+app.post('/api/updateCustomerInfo', customer.updateCustomerInfo);
+app.post('/api/setCustomerPhoneNo', customer.setCustomerPhoneNo);
+app.post('/api/updateCustomerPhoneNo', customer.updateCustomerPhoneNo);
+app.post('/api/setCustomerEmail', customer.setCustomerEmail);
+app.post('/api/updateCustomerEmail', customer.updateCustomerEmail);
 
 
 // catch 404 and forward to error handler
