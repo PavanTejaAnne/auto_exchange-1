@@ -2,12 +2,12 @@
  * Created by dhira on 11/19/2016.
  */
 var express = require('express');
-var mysql = require('./mysql');
+var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
-exports.getTransactionbyDate = function(req, res){
+exports.getTransactionByDate = function(req, res){
     Transaction_Date = req.param("Date");
-    var sql_query = "select * from Transaction where transaction_date = '"+Transaction_Date+"'";
+    var sql_query = "select * from transaction where transaction_date = '"+Transaction_Date+"'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -32,9 +32,9 @@ exports.getTransactionbyDate = function(req, res){
     });
 };
 
-exports.getTransactionbyVehicle_ID = function(req, res){
+exports.getTransactionByVehicleId = function(req, res){
     Vehicle_ID = req.param("Vehicle_ID");
-    var sql_query = "select * from Transaction where transaction_vehicle_id = '"+Vehicle_ID+"'";
+    var sql_query = "select * from transaction where transaction_vehicle_id = '"+Vehicle_ID+"'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -70,18 +70,18 @@ exports.setTransactionSell = function(req, res){
     manufacture = req.param("manufacture");
     old_license =req.param("old_license");
     new_license = req.param("new_license");
-    var sql_query = "insert into Sells_to(sells_to_SSN, Sells_to_branch_id) values('"+ssn+"', '"+branch_id+"');" +
-        "insert into Sells(Sells_SSN, Sells_vehicle_id, Selling_Date) values('"+ssn+"', '"+vehicle_id+"', '"+date+"');" +
-        "insert into In_Stock_car(In_Stock_vehicle_id, In_Stock_price, In_Stock_branch_id) values('"+vehicle_id+"', '"+final_price+"', '"+branch_id+"');" +
-        "insert into Transaction(transaction_date, list_price, final_price, old_license_number, new_license_number, Operation) " +
-        "values('"+date+"', '"+list_price+"', '"+final_price+"', '"+old_license+"', '"+new_license+"', 'Sell');";
+    var sql_query = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ssn+"', '"+branch_id+"');" +
+        "insert into sells(sells_ssn, sells_vin, selling_date) values('"+ssn+"', '"+vehicle_id+"', '"+date+"');" +
+        "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('"+vehicle_id+"', '"+final_price+"', '"+branch_id+"');" +
+        "insert into transaction(transaction_date, list_price, final_price, old_license_plate, new_license_plate, operation) " +
+        "values('"+date+"', '"+list_price+"', '"+final_price+"', '"+old_license+"', '"+new_license+"', 'sell');";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
         } else {
             res.send({
                 "status": 200,
-                "message:": "Sell Transaction Inserted successfully!",
+                "message:": "Sell transaction Inserted successfully!",
                 "profile": results
             });
         }
@@ -99,10 +99,10 @@ exports.setTransactionBuy = function(req, res){
     manufacture = req.param("manufacture");
     old_license =req.param("old_license");
     new_license = req.param("new_license");
-    var sql_query = "insert into Buys_from(Buys_from_SSN, Buys_from_branch_id) values('"+ssn+"', '"+branch_id+"');" +
-        "insert into Buys_(Buys_SSN, Buys_vehicle_id, Buying_Date) values('"+ssn+"', '"+vehicle_id+"', '"+date+"');" +
-        "delete from In_Stock_car where In_Stock_vehicle_id='"+vehicle_id+"';" +
-        "insert into Transaction(transaction_vehicle_id, transaction_date, list_price, final_price, old_license_number, new_license_number, Operation) " +
+    var sql_query = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('"+ssn+"', '"+branch_id+"');" +
+        "insert into buys (buys_ssn, buys_vin, buying_date) values('"+ssn+"', '"+vehicle_id+"', '"+date+"');" +
+        "delete from in_stock_car where in_stock_vin='"+vehicle_id+"';" +
+        "insert into transaction(transaction_vehicle_id, transaction_date, list_price, final_price, old_license_plate, new_license_plate, operation) " +
         "values('"+vehicle_id+"', '"+date+"', '"+list_price+"', '"+final_price+"', '"+old_license+"', '"+new_license+"', 'Buy');";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
@@ -110,7 +110,7 @@ exports.setTransactionBuy = function(req, res){
         } else {
             res.send({
                 "status": 200,
-                "message:": "Buy Transaction Inserted successfully!",
+                "message:": "Buy transaction Inserted successfully!",
                 "profile": results
             });
         }

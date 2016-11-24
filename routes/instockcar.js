@@ -2,7 +2,7 @@
  * Created by dhira on 11/19/2016.
  */
 var express = require('express');
-var mysql = require('./mysql');
+var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getInStockCar = function(req, res){
@@ -50,9 +50,9 @@ exports.getInStockCar = function(req, res){
     if(In_Stock_branch_id != ""){
         bool_In_Stock_branch_id = true;
     }
-    var sql_query = "select * from Car, In_Stock_car where vehicle_id = In_Stock_vehicle_id";
+    var sql_query = "select * from car, in_stock_car where vin = in_stock_vin";
     if(bool_Vehicle_ID){
-        sql_query = sql_query + " and vehicle_id = '"+Vehicle_ID+"'";
+        sql_query = sql_query + " and vin = '"+Vehicle_ID+"'";
     }
     if(bool_Manufacturer){
         sql_query = sql_query + " and manufacture = '"+Manufacturer+"'";
@@ -67,13 +67,13 @@ exports.getInStockCar = function(req, res){
         sql_query = sql_query + " and car_type = '"+car_type+"'";
     }
     if(bool_In_Stock_branch_id){
-        sql_query = sql_query + " and In_Stock_branch_id = '"+In_Stock_branch_id+"'";
+        sql_query = sql_query + " and in_stock_branch_id = '"+In_Stock_branch_id+"'";
     }
     if(bool_In_Stock_price_start){
-        sql_query = sql_query + " and In_Stock_price >= '"+In_Stock_price_start+"'";
+        sql_query = sql_query + " and in_stock_price >= '"+In_Stock_price_start+"'";
     }
     if(bool_In_Stock_price_end){
-        sql_query = sql_query + " and In_Stock_price <= '"+In_Stock_price_end+"'";
+        sql_query = sql_query + " and in_stock_price <= '"+In_Stock_price_end+"'";
     }
 
 

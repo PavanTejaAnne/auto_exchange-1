@@ -2,12 +2,12 @@
  * Created by satyateja on 11/19/2016.
  */
 var express = require('express');
-var mysql = require('./mysql');
+var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getCustomerBySsn = function(req, res){
     ssn = req.param("ssn");
-    var customer = "select * from Customer where SSN = '"+ssn+"'";
+    var customer = "select * from customer where ssn = '"+ssn+"'";
     mysql.fetchData(customer, function(err, results) {
             if (err) {
                 throw err;
@@ -33,13 +33,13 @@ exports.getCustomerByName = function(req, res){
     Fname = req.param("Fname");
     Lname = req.param("Lname");
     if(Fname == null){
-        var customer = "select * from Customer where Lname = '"+Lname+"'";
+        var customer = "select * from customer where last_name = '"+Lname+"'";
     }
     else if(Lname == null){
-        var customer = "select * from Customer where Fname = '"+Fname+"'";
+        var customer = "select * from customer where first_name = '"+Fname+"'";
     }
     else{
-        var customer = "select * from Customer where Fname = '"+Fname+"' and Lname= '"+Lname+"'";
+        var customer = "select * from customer where first_name = '"+Fname+"' and last_name = '"+Lname+"'";
     }
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -64,7 +64,7 @@ exports.getCustomerByName = function(req, res){
 
 exports.getCustomerByLicense = function(req, res){
     license = req.param("License");
-    var customer = "select * from Customer where driving_license_number = '"+license+"'";
+    var customer = "select * from customer where driving_license_number = '"+license+"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -89,12 +89,12 @@ exports.getCustomerByLicense = function(req, res){
 exports.getCustomerHistory = function(req, res){
     ssn = req.param("ssn");
     var history = "(select transaction_vehicle_id, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
-        "from Sells inner join Transaction on (transaction_date=Selling_Date and transaction_vehicle_id=Sells_vehicle_id)" +
-        "where Sells_SSN='"+ssn+"')" +
+        "from sells inner join transaction on (transaction_date = selling_date and transaction_vehicle_id = sells_vehicle_id)" +
+        "where sells_ssn ='"+ssn+"')" +
         "union" +
         "(select transaction_vehicle_id, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
-        "from Buys_ inner join Transaction on (transaction_date=Buying_Date and transaction_vehicle_id=Buys_vehicle_id)" +
-        "where Buys_SSN='"+ssn+"')";
+        "from buys inner join transaction on (transaction_date = buying_date and transaction_vehicle_id = buys_vehicle_id)" +
+        "where buys_ssn ='" +ssn+"')";
     mysql.fetchData(history, function(err, results) {
         if (err) {
             throw err;
@@ -140,9 +140,9 @@ exports.getCustomerHistory = function(req, res){
 };
 
 
-exports.getallCustomer = function(req, res){
+exports.getAllCustomer = function(req, res){
    // license = req.param("License");
-    var customer = "select * from Customer";
+    var customer = "select * from customer";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -168,7 +168,7 @@ exports.getallCustomer = function(req, res){
 };
 
 
-exports.addnewCustomer = function(req, res){
+exports.addNewCustomer = function(req, res){
     SSN  = req.param(SSN );
     Fname  = req.param(Fname );
     Lname  = req.param(Lname );
@@ -178,7 +178,7 @@ exports.addnewCustomer = function(req, res){
     address   = req.param(address);
 
     // location = req.param("location");
-    var sql_query = "insert into Customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
+    var sql_query = "insert into customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -195,7 +195,7 @@ exports.addnewCustomer = function(req, res){
     });
 };
 
-exports.updatecustomerinfo = function(req, res){
+exports.updateCustomerInfo = function(req, res){
     SSN  = req.param(SSN);
     Fname  = req.param(Fname);
     Lname  = req.param(Lname);
@@ -231,12 +231,12 @@ exports.updatecustomerinfo = function(req, res){
     if(address){
         bool_address = true;
     }
-    var sql_query = "update Customer set ";
+    var sql_query = "update customer set ";
     if(bool_Fname){
         if(bool_check_comma){
             sql_query = sql_query + ","
         }
-        sql_query = sql_query + " Fname = '"+ Fname + "'";
+        sql_query = sql_query + " first_name = '"+ Fname + "'";
         if(bool_check_comma == false){
             bool_check_comma = true;
         }
@@ -245,7 +245,7 @@ exports.updatecustomerinfo = function(req, res){
         if(bool_check_comma){
             sql_query = sql_query + ","
         }
-        sql_query = sql_query + " Lname = '"+ Lname + "'";
+        sql_query = sql_query + " last_name = '"+ Lname + "'";
         if(bool_check_comma == false){
             bool_check_comma = true;
         }
@@ -282,7 +282,7 @@ exports.updatecustomerinfo = function(req, res){
             bool_check_comma = true;
         }
     }
-    sql_query = sql_query + " where SSN = '"+ SSN +"'";
+    sql_query = sql_query + " where ssn = '"+ SSN +"'";
 
 
 
@@ -306,7 +306,7 @@ exports.updatecustomerinfo = function(req, res){
     }
 };
 
-exports.setCustomerPhoneNO = function(req, res){
+exports.setCustomerPhoneNo = function(req, res){
     SSN = req.param("SSN");
     Mobile_No = req.param("Mobile_No");
     var customer = "insert into cus_mobile values ('"+SSN +"', '"+Mobile_No+"')";
@@ -324,7 +324,7 @@ exports.setCustomerPhoneNO = function(req, res){
     });
 };
 
-exports.setcustomerEmail = function(req, res){
+exports.setCustomerEmail = function(req, res){
     SSN = req.param("SSN");
     Email = req.param("Email");
     var customer = "insert into cus_email values ('"+SSN +"', '"+Email+"')";
@@ -342,10 +342,10 @@ exports.setcustomerEmail = function(req, res){
     });
 };
 
-exports.updatecustomerPhoneNO = function(req, res){
+exports.updateCustomerPhoneNo = function(req, res){
     SSN = req.param("SSN");
     Mobile_No = req.param("Mobile_No");
-    var customer = "update cus_mobile set mobile_no = '"+ Mobile_No+"' where Cus_Mobile_SSN = '"+SSN+"'";
+    var customer = "update cus_mobile set mobile_no = '"+ Mobile_No+"' where cus_mobile_ssn = '"+SSN+"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -361,10 +361,10 @@ exports.updatecustomerPhoneNO = function(req, res){
 };
 
 
-exports.updatecustomerEmail = function(req, res){
+exports.updateCustomerEmail = function(req, res){
     SSN = req.param("SSN");
     Email = req.param("Email");
-    var customer = "update cus_mobile set Email = '"+ Email +"' where Cus_Email_SSN = '"+SSN+"'";
+    var customer = "update cus_mobile set Email = '"+ Email +"' where cus_email_ssn = '"+SSN+"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;

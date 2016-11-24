@@ -2,12 +2,12 @@
  * Created by satyateja on 11/19/2016.
  */
 var express = require('express');
-var mysql = require('./mysql');
+var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getBranchById = function(req, res){
     id = req.param("branch_id");
-    var branch = "select * from Company_branch where branch_id = '"+id+"'";
+    var branch = "select * from company_branch where branch_id = '"+id+"'";
     mysql.fetchData(branch, function(err, results) {
         if (err) {
             throw err;
@@ -31,7 +31,7 @@ exports.getBranchById = function(req, res){
 
 exports.getBranchByLocation = function(req, res){
     location = req.param("location");
-    var branch = "select * from Company_branch where location = '"+location+"'";
+    var branch = "select * from company_branch where location = '"+location+"'";
     mysql.fetchData(branch, function(err, results) {
         if (err) {
             throw err;
@@ -52,9 +52,9 @@ exports.getBranchByLocation = function(req, res){
         }
     });
 };
-exports.getallBranchs = function(req, res){
+exports.getAllBranches = function(req, res){
    // location = req.param("location");
-    var branch = "select * from Company_branch";
+    var branch = "select * from company_branch";
     mysql.fetchData(branch, function(err, results) {
         if (err) {
             throw err;
@@ -79,14 +79,14 @@ exports.getallBranchs = function(req, res){
     });
 };
 
-exports.addnewBranch = function(req, res){
+exports.addNewBranch = function(req, res){
     Branch_Mobile_number = req.param(Branch_Mobile_number);
     Branch_address = req.param(Branch_address);
     Branch_email = req.param(Branch_email);
     Branch_location = req.param(Branch_location);
 
     // location = req.param("location");
-    var sql_query = "insert into company_branch_1(number, address, email, location) values ('"+Branch_Mobile_number+"', '"+Branch_address+"', '"+ Branch_email +"', '"+ Branch_location +"')";
+    var sql_query = "insert into company_branch(number, address, email, location) values ('"+Branch_Mobile_number+"', '"+Branch_address+"', '"+ Branch_email +"', '"+ Branch_location +"')";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -104,7 +104,7 @@ exports.addnewBranch = function(req, res){
 };
 
 
-exports.updatebranchinfo = function(req, res){
+exports.updateBranchInfo = function(req, res){
     number  = req.param(number);
     location  = req.param(location);
     email  = req.param(email);
@@ -128,7 +128,7 @@ exports.updatebranchinfo = function(req, res){
     if(address){
         bool_address = true;
     }
-    var sql_query = "update Customer set ";
+    var sql_query = "update customer set ";
     if(bool_Fname){
         if(bool_check_comma){
             sql_query = sql_query + ","

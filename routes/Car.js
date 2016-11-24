@@ -2,7 +2,7 @@
  * Created by dhira on 11/19/2016.
  */
 var express = require('express');
-var mysql = require('./mysql');
+var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getCar = function(req, res){
@@ -34,7 +34,7 @@ exports.getCar = function(req, res){
     if(car_type != ""){
         bool_car_type = true;
     }
-    var sql_query = "select * from Car ";
+    var sql_query = "select * from car ";
     if(bool_Vehicle_ID){
         if(bool_end_check){
             sql_query = sql_query + "and ";
@@ -118,15 +118,15 @@ exports.getCar = function(req, res){
     });
 };
 
-exports.getVehicleIDbyBranch = function(req, res){
+exports.getVehicleIdByBranch = function(req, res){
     Branch_ID = req.param("Branch_ID");
-    var sql_query = "select * from Sells, Sells_to where sells_to_SSN = Sells_SSN and Sells_to_branch_id = '"+Branch_ID+"'";
+    var sql_query = "select * from sells, sells_to where sells_to_ssn = sells_ssn and sells_to_branch_id = '"+Branch_ID+"'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
         } else {
                 console.log(results);
-                var sql_query_1 = "select * from Sells, Sells_to where sells_to_SSN = Sells_SSN and Sells_to_branch_id = '"+Branch_ID+"'";
+                var sql_query_1 = "select * from sells, sells_to where sells_to_ssn = sells_ssn and sells_to_branch_id = '"+Branch_ID+"'";
                 mysql.fetchData(sql_query_1, function(err, results_1) {
                     if (err) {
                         throw err;
