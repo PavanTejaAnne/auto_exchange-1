@@ -1,0 +1,18 @@
+1 customer year_purchase removed.
+  license_no to driving_license_no
+  name to firstname lastname
+2 company branch
+  contact changed to mobile and email
+  location changed to address
+	
+3 Car
+  manufactured year added
+4 Transaction
+  added operation column
+5 Sells and Bought
+  Added Selling date and buying date
+6 major change in car
+  identifung relation from car dependent entity Instock_car
+  removed instock attribute
+  removed relation from branch and car
+  added relation from branch and instock_car
