@@ -1,0 +1,107 @@
+<div ng-include="'partials/navigation_menu.html'"></div>
+<div class="container padding-body">
+    <div class="row" style="margin-top: 70px; margin-left: 20px;">
+        <div class="col-md-9">
+            <form class="form-horizontal form-item-details">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Customer detail</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-lg-5">
+                                <input type="text" name="" placeholder="Customer SSN" class="form-control"
+                                       ng-model="" value="" required>
+                            </div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary">Check</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-5">
+                                <input type="text" name="" placeholder="First name" class="form-control"
+                                       ng-model="" value="" required>
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" name="" placeholder="Last name" class="form-control"
+                                       ng-model="" value="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-5">
+                                <input type="text" name="" placeholder="Driving license" class="form-control"
+                                       ng-model="" value="" required>
+                            </div>
+                            <div class="col-lg-2">
+                                <input type="text" name="" placeholder="Age" class="form-control"
+                                       ng-model="" value="" required>
+                            </div>
+                            <div class="col-lg-2">
+                                <select class="form-control" required>
+                                    <option >Male</option>
+                                    <option >Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-8">
+                                <input type="text" name="" placeholder="Address" class="form-control"
+                                       ng-model="" value="" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Transaction details</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-lg-10">
+                                <input type="number" name="" placeholder="Vehicle identification number (VIN)" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4">
+                                <input type="number" name="" placeholder="Old license plate" class="form-control" required>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="number" name="" placeholder="New license plate" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4">
+                                <input type="number" name="" placeholder="List price" class="form-control" required>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="number" name="" placeholder="Final price" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4">
+                                <select class="form-control" required>
+                                    <option disabled selected>Manufacturer</option>
+                                    <option >Honda</option>
+                                    <option >Mercedes</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <select class="form-control" required>
+                                    <option disabled selected>Model</option>
+                                    <option >CLS</option>
+                                    <option >XLS</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <select class="form-control" required>
+                                    <option disabled selected>Make year</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-3 col-lg-offset-9">
+                        <button type="submit" class="form-control btn btn-primary" ng-click="">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
