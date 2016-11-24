@@ -7,11 +7,6 @@ var auto_exchange = angular.module('auto_exchange', ['ngRoute']);
 auto_exchange.config(function ($routeProvider) {
     console.log("Inside config");
     $routeProvider
-        .when('/sell',
-            {
-                templateUrl: '/partials/sell.html',
-                controller: 'Sell'
-            })
         .when('/',
             {
                 templateUrl: '/partials/add_transaction.html',
