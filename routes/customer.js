@@ -6,7 +6,7 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getCustomerBySsn = function(req, res){
-    ssn = req.param("ssn");
+    var ssn = req.param("ssn");
     var customer = "select * from customer where ssn = '"+ssn+"'";
     mysql.fetchData(customer, function(err, results) {
             if (err) {
@@ -30,8 +30,8 @@ exports.getCustomerBySsn = function(req, res){
 };
 
 exports.getCustomerByName = function(req, res){
-    Fname = req.param("Fname");
-    Lname = req.param("Lname");
+    var Fname = req.param("Fname");
+    var Lname = req.param("Lname");
     if(Fname == null){
         var customer = "select * from customer where last_name = '"+Lname+"'";
     }
@@ -63,7 +63,7 @@ exports.getCustomerByName = function(req, res){
 };
 
 exports.getCustomerByLicense = function(req, res){
-    license = req.param("License");
+    var license = req.param("License");
     var customer = "select * from customer where driving_license_number = '"+license+"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -87,7 +87,7 @@ exports.getCustomerByLicense = function(req, res){
 };
 
 exports.getCustomerHistory = function(req, res){
-    ssn = req.param("ssn");
+    var ssn = req.param("ssn");
     var history = "(select transaction_vehicle_id, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
         "from sells inner join transaction on (transaction_date = selling_date and transaction_vehicle_id = sells_vehicle_id)" +
         "where sells_ssn ='"+ssn+"')" +
@@ -169,13 +169,13 @@ exports.getAllCustomer = function(req, res){
 
 
 exports.addNewCustomer = function(req, res){
-    SSN  = req.param(SSN );
-    Fname  = req.param(Fname );
-    Lname  = req.param(Lname );
-    age = req.param(age);
-    gender  = req.param(gender);
-    driving_license_number   = req.param(driving_license_number);
-    address   = req.param(address);
+    var SSN  = req.param(SSN );
+    var Fname  = req.param(Fname );
+    var Lname  = req.param(Lname );
+    var age = req.param(age);
+    var gender  = req.param(gender);
+    var driving_license_number   = req.param(driving_license_number);
+    var address   = req.param(address);
 
     // location = req.param("location");
     var sql_query = "insert into customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
@@ -196,13 +196,13 @@ exports.addNewCustomer = function(req, res){
 };
 
 exports.updateCustomerInfo = function(req, res){
-    SSN  = req.param(SSN);
-    Fname  = req.param(Fname);
-    Lname  = req.param(Lname);
-    age = req.param(age);
-    gender  = req.param(gender);
-    driving_license_number   = req.param(driving_license_number);
-    address   = req.param(address);
+    var SSN  = req.param(SSN);
+    var Fname  = req.param(Fname);
+    var Lname  = req.param(Lname);
+    var age = req.param(age);
+    var gender  = req.param(gender);
+    var driving_license_number   = req.param(driving_license_number);
+    var address   = req.param(address);
 
     var bool_SSN  = false;
     var bool_Fname  = false;
@@ -307,8 +307,8 @@ exports.updateCustomerInfo = function(req, res){
 };
 
 exports.setCustomerPhoneNo = function(req, res){
-    SSN = req.param("SSN");
-    Mobile_No = req.param("Mobile_No");
+    var SSN = req.param("SSN");
+    var Mobile_No = req.param("Mobile_No");
     var customer = "insert into cus_mobile values ('"+SSN +"', '"+Mobile_No+"')";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -325,8 +325,8 @@ exports.setCustomerPhoneNo = function(req, res){
 };
 
 exports.setCustomerEmail = function(req, res){
-    SSN = req.param("SSN");
-    Email = req.param("Email");
+    var SSN = req.param("SSN");
+    var Email = req.param("Email");
     var customer = "insert into cus_email values ('"+SSN +"', '"+Email+"')";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -343,8 +343,8 @@ exports.setCustomerEmail = function(req, res){
 };
 
 exports.updateCustomerPhoneNo = function(req, res){
-    SSN = req.param("SSN");
-    Mobile_No = req.param("Mobile_No");
+    var SSN = req.param("SSN");
+    var Mobile_No = req.param("Mobile_No");
     var customer = "update cus_mobile set mobile_no = '"+ Mobile_No+"' where cus_mobile_ssn = '"+SSN+"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -362,8 +362,8 @@ exports.updateCustomerPhoneNo = function(req, res){
 
 
 exports.updateCustomerEmail = function(req, res){
-    SSN = req.param("SSN");
-    Email = req.param("Email");
+    var SSN = req.param("SSN");
+    var Email = req.param("Email");
     var customer = "update cus_mobile set Email = '"+ Email +"' where cus_email_ssn = '"+SSN+"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {

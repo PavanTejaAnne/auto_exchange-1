@@ -6,7 +6,7 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getBranchById = function(req, res){
-    id = req.param("branch_id");
+    var id = req.param("branch_id");
     var branch = "select * from company_branch where branch_id = '"+id+"'";
     mysql.fetchData(branch, function(err, results) {
         if (err) {
@@ -30,7 +30,7 @@ exports.getBranchById = function(req, res){
 };
 
 exports.getBranchByLocation = function(req, res){
-    location = req.param("location");
+    var location = req.param("location");
     var branch = "select * from company_branch where location = '"+location+"'";
     mysql.fetchData(branch, function(err, results) {
         if (err) {
@@ -80,10 +80,10 @@ exports.getAllBranches = function(req, res){
 };
 
 exports.addNewBranch = function(req, res){
-    Branch_Mobile_number = req.param(Branch_Mobile_number);
-    Branch_address = req.param(Branch_address);
-    Branch_email = req.param(Branch_email);
-    Branch_location = req.param(Branch_location);
+    var Branch_Mobile_number = req.param(Branch_Mobile_number);
+    var Branch_address = req.param(Branch_address);
+    var Branch_email = req.param(Branch_email);
+    var Branch_location = req.param(Branch_location);
 
     // location = req.param("location");
     var sql_query = "insert into company_branch(number, address, email, location) values ('"+Branch_Mobile_number+"', '"+Branch_address+"', '"+ Branch_email +"', '"+ Branch_location +"')";
@@ -105,10 +105,10 @@ exports.addNewBranch = function(req, res){
 
 
 exports.updateBranchInfo = function(req, res){
-    number  = req.param(number);
-    location  = req.param(location);
-    email  = req.param(email);
-    address   = req.param(address);
+    var number  = req.param(number);
+    var location  = req.param(location);
+    var email  = req.param(email);
+    var address   = req.param(address);
 
     var bool_number  = false;
     var bool_location  = false;
