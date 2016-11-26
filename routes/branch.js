@@ -6,7 +6,7 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getBranchById = function(req, res){
-    var id = req.query.branch_id;
+    var id = req.param("branch_id");
     var branch = "select * from company_branch where branch_id = '"+id+"'";
     mysql.fetchData(branch, function(err, results) {
         if (err) {
@@ -52,8 +52,8 @@ exports.getBranchByLocation = function(req, res){
         }
     });
 };
+
 exports.getAllBranches = function(req, res){
-   // location = req.param("location");
     var branch = "select * from company_branch";
     mysql.fetchData(branch, function(err, results) {
         if (err) {

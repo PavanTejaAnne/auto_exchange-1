@@ -23,16 +23,17 @@ exports.getCustomerBySsn = function(req, res){
 };
 
 exports.getCustomerByName = function(req, res){
-    Fname = req.param("Fname");
-    Lname = req.param("Lname");
+    var Fname = req.param("Fname");
+    var Lname = req.param("Lname");
+    var customer = "";
     if(Fname == null){
-        var customer = "select * from customer where last_name = '"+Lname+"'";
+        customer = "select * from customer where last_name = '"+Lname+"'";
     }
     else if(Lname == null){
-        var customer = "select * from customer where first_name = '"+Fname+"'";
+        customer = "select * from customer where first_name = '"+Fname+"'";
     }
     else{
-        var customer = "select * from customer where first_name = '"+Fname+"' and last_name = '"+Lname+"'";
+        customer = "select * from customer where first_name = '"+Fname+"' and last_name = '"+Lname+"'";
     }
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -56,7 +57,7 @@ exports.getCustomerByName = function(req, res){
 };
 
 exports.getCustomerByLicense = function(req, res){
-    license = req.param("License");
+    var license = req.query.License;
     var customer = "select * from customer where driving_license_number = '"+license+"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -79,14 +80,64 @@ exports.getCustomerByLicense = function(req, res){
     });
 };
 
+exports.getCustomerByEmail = function(req, res){
+    var email = req.query.email;
+    var customer = "select * from customer where ssn in " +
+        "(select distinct cus_email_ssn where email = '"+email+"')";
+    mysql.fetchData(customer, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            if (results.length > 0) {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "customer search successful!",
+                    "profile": results
+                });
+            }
+            // render or error
+            else {
+                res.end('An error occurred');
+                console.log(err);
+            }
+        }
+    });
+};
+
+exports.getCustomerByPhone = function(req, res){
+    var phone = req.query.phone;
+    var customer = "select * from customer where ssn in " +
+        "(select distinct cus_mobile_ssn where mobile_no = '"+phone+"')";
+    mysql.fetchData(customer, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            if (results.length > 0) {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "customer search successful!",
+                    "profile": results
+                });
+            }
+            // render or error
+            else {
+                res.end('An error occurred');
+                console.log(err);
+            }
+        }
+    });
+};
+
 exports.getCustomerHistory = function(req, res){
-    ssn = req.param("ssn");
-    var history = "(select transaction_vehicle_id, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
-        "from sells inner join transaction on (transaction_date = selling_date and transaction_vehicle_id = sells_vehicle_id)" +
+    var ssn = req.query.ssn;
+    var history = "(select transaction_vin, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
+        "from sells inner join transaction on (transaction_date = selling_date and transaction_vin = sells_vin)" +
         "where sells_ssn ='"+ssn+"')" +
         "union" +
-        "(select transaction_vehicle_id, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
-        "from buys inner join transaction on (transaction_date = buying_date and transaction_vehicle_id = buys_vehicle_id)" +
+        "(select transaction_vin, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
+        "from buys inner join transaction on (transaction_date = buying_date and transaction_vin = buys_vin)" +
         "where buys_ssn ='" +ssn+"')";
     mysql.fetchData(history, function(err, results) {
         if (err) {

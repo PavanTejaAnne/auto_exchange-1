@@ -38,6 +38,8 @@ app.use('/', home);
 app.post('/api/getCustomerBySsn', customer.getCustomerBySsn);
 app.post('/api/getCustomerByName', customer.getCustomerByName);
 app.post('/api/getCustomerByLicense', customer.getCustomerByLicense);
+app.post('/api/getCustomerByEmail', customer.getCustomerByEmail);
+app.post('/api/getCustomerByPhone', customer.getCustomerByPhone);
 app.post('/api/getBranchById', branch.getBranchById);
 app.post('/api/getBranchByLocation', branch.getBranchByLocation);
 app.post('/api/getCustomerHistory', customer.getCustomerHistory);
