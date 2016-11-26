@@ -78,6 +78,7 @@ auto_exchange.controller('check_customer', function ($scope, $http, $window, $ro
             if (data.status == 200) {
                 console.log(JSON.stringify(data.profile));
                 $rootScope.customer = data.profile[0];
+                $rootScope.new_customer = false;
                 $window.location.href = "#/add";
             }else {
                 $scope.error_msg = "Error fetching customer info";
@@ -88,6 +89,11 @@ auto_exchange.controller('check_customer', function ($scope, $http, $window, $ro
             $scope.error_msg = error;
             $scope.error = true;
         });
+    };
+
+    $scope.newCustomer = function () {
+        $rootScope.new_customer = true;
+        $window.location.href = "#/add";
     };
 
 });
@@ -104,19 +110,23 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
     $scope.error = false;
     $scope.success = false;
     $scope.info = false;
-
-    if(!$scope.customer){
+    console.log("Customer - "+ JSON.stringify($scope.customer));
+    if($rootScope.new_customer){
         $scope.info = true;
-        $scope.info_msg = "No match found. Please add customer details for transaction";
+        $scope.info_msg = "Please add customer details for transaction";
     }else {
-        $scope.success = true;
-        $scope.success_msg = "Matching customer found";
-        $scope.isDisabled = true;
+        if(!$scope.customer){
+
+        }else {
+            $scope.success = true;
+            $scope.success_msg = "Matching customer found";
+            $scope.isDisabled = true;
+        }
     }
+    
     $scope.addTransaction = function () {
         $scope.vehicle.ssn = $scope.customer.ssn;
         if($scope.vehicle.type == 'buy'){
-            console.log("Buying it "+ JSON.stringify($scope.vehicle));
             $http({
                 method : "POST",
                 url : '/api/setTransactionBuy',
@@ -136,7 +146,6 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
                 $scope.error = true;
             });
         }else {
-            console.log("Selling it "+ JSON.stringify($scope.vehicle));
             $http({
                 method : "POST",
                 url : '/api/setTransactionSell',
