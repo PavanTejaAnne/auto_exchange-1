@@ -12,7 +12,7 @@ var customer = require('./routes/customer');
 var branch = require('./routes/branch');
 var car = require('./routes/car');
 var in_stock_car = require('./routes/instockcar');
-var transaction = require('./routes/transaction');
+var transaction = require('./routes/transactions');
 var app = express();
 
 // all environments
