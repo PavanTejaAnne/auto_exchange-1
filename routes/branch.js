@@ -86,7 +86,7 @@ exports.addNewBranch = function(req, res){
     var Branch_location = req.param(Branch_location);
 
     // location = req.param("location");
-    var sql_query = "insert into company_branch(number, address, email, location) values ('"+Branch_Mobile_number+"', '"+Branch_address+"', '"+ Branch_email +"', '"+ Branch_location +"')";
+    var sql_query = "insert into company_branch(phone_number, address, email, location) values ('"+Branch_Mobile_number+"', '"+Branch_address+"', '"+ Branch_email +"', '"+ Branch_location +"')";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;

@@ -17,7 +17,7 @@ CREATE TABLE customer(
 
 CREATE TABLE company_branch(
     branch_id int not null auto_increment,
-    number char(10) not null,
+    phone_number char(10) not null,
     address varchar(40) not null,
     email varchar(60) not null,
     location varchar(10) not null,
@@ -50,7 +50,7 @@ CREATE TABLE transaction(
     final_price float not null,
     old_license_plate varchar(15) not null,
     new_license_plate varchar(15) not null,
-    operation varchar(6) not null,
+    is_sale boolean not null,
     primary key(transaction_vin, transaction_date),
     constraint fk_transaction_vin foreign key(transaction_vin) references car(vin) on delete cascade on update cascade
 );

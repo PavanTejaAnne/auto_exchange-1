@@ -76,7 +76,7 @@ exports.setTransactionSell = function(req, res){
     var sql_query = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ ssn +"', '"+ branch_id +"');" +
         "insert into sells(sells_ssn, sells_vin, selling_date) values('"+ ssn +"', '"+ vin +"', '"+ date +"');" +
         "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('"+ vin +"', "+ final_price +", '"+ branch_id +"');" +
-        "insert into transaction(transaction_date, list_price, final_price, old_license_plate, new_license_plate, operation) " +
+        "insert into transaction(transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
         "values('"+ date +"', "+ list_price +","+ final_price +",'"+ old_license +"', '"+ new_license +"',"+ true +");";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
@@ -107,7 +107,7 @@ exports.setTransactionBuy = function(req, res){
     var sql_query = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('"+ ssn +"', '"+ branch_id +"');" +
         "insert into buys (buys_ssn, buys_vin, buying_date) values('"+ ssn +"', '"+ vin +"', '"+ date +"');" +
         "delete from in_stock_car where in_stock_vin='"+ vin +"';" +
-        "insert into transaction(transaction_vehicle_id, transaction_date, list_price, final_price, old_license_plate, new_license_plate, operation) " +
+        "insert into transaction(transaction_vehicle_id, transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
         "values('"+ vin +"', '"+ date +"', "+ list_price +", "+ final_price +", '"+ old_license +"', '"+ new_license +"',"+ false +");";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
