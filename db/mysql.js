@@ -6,7 +6,7 @@ var mysql = require('mysql');
 var pool = null;
 function getConnection(){
     // var connection = mysql.createConnection({
-    //     host : 'ec2-54-212-201-93.us-west-2.compute.amazonaws.com',
+    //     host : 'ec2-54-149-150-222.us-west-2.compute.amazonaws.com',
     //     user : 'cmpe_user',
     //     password : 'cmpe_user',
     //     database : 'auto_exchange',
