@@ -6,25 +6,18 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getCustomerBySsn = function(req, res){
-    ssn = req.param("ssn");
-    var customer = "select * from customer where ssn = '"+ssn+"'";
+    var ssn = req.query.ssn;
+    var customer = "select * from customer where ssn = '" + ssn + "'";
     mysql.fetchData(customer, function(err, results) {
             if (err) {
                 throw err;
             } else {
-                if (results.length > 0) {
-                    console.log(results);
-                    res.send({
-                        "status": 200,
-                        "message:": "customer search successful!",
-                        "profile": results
-                    });
-                }
-                // render or error
-                else {
-                    res.end('An error occurred');
-                    console.log(err);
-                }
+                console.log(results);
+                res.send({
+                    status: 200,
+                    message: "Customer search successful!",
+                    profile: results
+                });
             }
     });
 };

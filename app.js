@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('client-sessions');
 
 var home = require('./routes/home');
 var customer = require('./routes/customer');
@@ -13,6 +14,12 @@ var car = require('./routes/car');
 var in_stock_car = require('./routes/instockcar');
 var transaction = require('./routes/transaction');
 var app = express();
+
+// all environments
+//configure the sessions with our application
+app.use(session({cookieName: 'session', secret: 'auto_exchange_session',
+  duration: 30 * 60 * 1000,    //setting the time for active session
+  activeDuration: 5 * 60 * 1000,  })); // setting time for the session to be active when the window is open // 5 minutes set currently
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

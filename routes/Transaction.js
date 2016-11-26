@@ -4,6 +4,7 @@
 var express = require('express');
 var mysql = require('./../db/mysql');
 var ejs=require('ejs');
+var timeUtil = require('../helper/timeutil');
 
 exports.getTransactionByDate = function(req, res){
     Transaction_Date = req.param("Date");
@@ -60,21 +61,23 @@ exports.getTransactionByVehicleId = function(req, res){
 };
 
 exports.setTransactionSell = function(req, res){
-    ssn = req.param("ssn");
-    branch_id = req.param("branch_id");
-    date = req.param("date");
-    vehicle_id = req.param("vehicle_id");
-    list_price = req.param("customer_price");
-    final_price = req.param("dealer_price");
-    model_no = req.param("model_no");
-    manufacture = req.param("manufacture");
-    old_license =req.param("old_license");
-    new_license = req.param("new_license");
-    var sql_query = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ssn+"', '"+branch_id+"');" +
-        "insert into sells(sells_ssn, sells_vin, selling_date) values('"+ssn+"', '"+vehicle_id+"', '"+date+"');" +
-        "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('"+vehicle_id+"', '"+final_price+"', '"+branch_id+"');" +
+    var ssn = req.query.ssn;
+    var vin = req.query.vin;
+    var list_price = req.query.list_price;
+    var final_price = req.query.final_price;
+    var model_no = req.query.model;
+    var manufacturer = req.query.manufacturer;
+    var old_license =req.query.old_license_plate;
+    var new_license = req.query.new_license_plate;
+
+    var branch_id = req.session.branch_id;
+    var date = timeUtil.getCurrentDateTime();
+
+    var sql_query = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ ssn +"', '"+ branch_id +"');" +
+        "insert into sells(sells_ssn, sells_vin, selling_date) values('"+ ssn +"', '"+ vin +"', '"+ date +"');" +
+        "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('"+ vin +"', "+ final_price +", '"+ branch_id +"');" +
         "insert into transaction(transaction_date, list_price, final_price, old_license_plate, new_license_plate, operation) " +
-        "values('"+date+"', '"+list_price+"', '"+final_price+"', '"+old_license+"', '"+new_license+"', 'sell');";
+        "values('"+ date +"', "+ list_price +","+ final_price +",'"+ old_license +"', '"+ new_license +"',"+ true +");";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -86,24 +89,26 @@ exports.setTransactionSell = function(req, res){
             });
         }
     });
-}
+};
 
 exports.setTransactionBuy = function(req, res){
-    ssn = req.param("ssn");
-    branch_id = req.param("branch_id");
-    date = req.param("date");
-    vehicle_id = req.param("vehicle_id");
-    list_price = req.param("customer_price");
-    final_price = req.param("dealer_price");
-    model_no = req.param("model_no");
-    manufacture = req.param("manufacture");
-    old_license =req.param("old_license");
-    new_license = req.param("new_license");
-    var sql_query = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('"+ssn+"', '"+branch_id+"');" +
-        "insert into buys (buys_ssn, buys_vin, buying_date) values('"+ssn+"', '"+vehicle_id+"', '"+date+"');" +
-        "delete from in_stock_car where in_stock_vin='"+vehicle_id+"';" +
+    var ssn = req.query.ssn;
+    var vin = req.query.vin;
+    var list_price = req.query.list_price;
+    var final_price = req.query.final_price;
+    var model_no = req.query.model;
+    var manufacturer = req.query.manufacturer;
+    var old_license =req.query.old_license_plate;
+    var new_license = req.query.new_license_plate;
+
+    var branch_id = req.session.branch_id;
+    var date = timeUtil.getCurrentDateTime();
+
+    var sql_query = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('"+ ssn +"', '"+ branch_id +"');" +
+        "insert into buys (buys_ssn, buys_vin, buying_date) values('"+ ssn +"', '"+ vin +"', '"+ date +"');" +
+        "delete from in_stock_car where in_stock_vin='"+ vin +"';" +
         "insert into transaction(transaction_vehicle_id, transaction_date, list_price, final_price, old_license_plate, new_license_plate, operation) " +
-        "values('"+vehicle_id+"', '"+date+"', '"+list_price+"', '"+final_price+"', '"+old_license+"', '"+new_license+"', 'Buy');";
+        "values('"+ vin +"', '"+ date +"', "+ list_price +", "+ final_price +", '"+ old_license +"', '"+ new_license +"',"+ false +");";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -115,4 +120,4 @@ exports.setTransactionBuy = function(req, res){
             });
         }
     });
-}
+};
