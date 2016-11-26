@@ -1,15 +1,6 @@
 <div ng-include="'partials/navigation_menu.html'"></div>
 <div class="container padding-body">
-    <div ng-show="found" class="alert alert-success alert-dismissible col-md-5 col-md-offset-1" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-        <strong>Matching customer found</strong>
-    </div>
-    <div ng-show="error" class="alert alert-danger alert-dismissible col-md-5 col-md-offset-1" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-        <strong>Customer not found, please fill in details to add new</strong>
-    </div>
+    <div ng-include="'partials/popups.html'"></div>
     <div class="row" style="margin-top: 70px; margin-left: 20px;">
         <div class="col-md-9">
             <form class="form-horizontal form-item-details">

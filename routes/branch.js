@@ -6,7 +6,7 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getBranchById = function(req, res){
-    var id = req.param("branch_id");
+    var id = req.query.branch_id;
     var branch = "select * from company_branch where branch_id = '"+id+"'";
     mysql.fetchData(branch, function(err, results) {
         if (err) {
@@ -80,13 +80,13 @@ exports.getAllBranches = function(req, res){
 };
 
 exports.addNewBranch = function(req, res){
-    var Branch_Mobile_number = req.param(Branch_Mobile_number);
-    var Branch_address = req.param(Branch_address);
-    var Branch_email = req.param(Branch_email);
-    var Branch_location = req.param(Branch_location);
+    var branchMobileNumber = req.query.phone_number;
+    var branchAddress = req.query.address;
+    var branchEmail = req.query.email;
+    var branchLocation = req.query.location;
 
     // location = req.param("location");
-    var sql_query = "insert into company_branch(phone_number, address, email, location) values ('"+Branch_Mobile_number+"', '"+Branch_address+"', '"+ Branch_email +"', '"+ Branch_location +"')";
+    var sql_query = "insert into company_branch(phone_number, address, email, location) values ('"+branchMobileNumber+"', '"+branchAddress+"', '"+ branchEmail +"', '"+ branchLocation +"')";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -105,10 +105,11 @@ exports.addNewBranch = function(req, res){
 
 
 exports.updateBranchInfo = function(req, res){
-    var number  = req.param(number);
-    var location  = req.param(location);
-    var email  = req.param(email);
-    var address   = req.param(address);
+    var branch_id = req.query.branch_id;
+    var number  = req.query.phone_number;
+    var location  = req.query.location;
+    var email  = req.query.email;
+    var address   = req.query.address;
 
     var bool_number  = false;
     var bool_location  = false;
@@ -133,7 +134,7 @@ exports.updateBranchInfo = function(req, res){
         if(bool_check_comma){
             sql_query = sql_query + ","
         }
-        sql_query = sql_query + " number = '"+ number + "'";
+        sql_query = sql_query + " phone_number = '"+ number + "'";
         if(bool_check_comma == false){
             bool_check_comma = true;
         }
@@ -163,7 +164,7 @@ exports.updateBranchInfo = function(req, res){
             bool_check_comma = true;
         }
     }
-    sql_query = sql_query + " where SSN = '"+ SSN +"'";
+    sql_query = sql_query + " where branch_id = '"+ branch_id +"'";
 
 
 

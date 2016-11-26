@@ -18,9 +18,9 @@ CREATE TABLE customer(
 CREATE TABLE company_branch(
     branch_id int not null auto_increment,
     phone_number char(10) not null,
-    address varchar(40) not null,
+    address varchar(60) not null,
     email varchar(60) not null,
-    location varchar(10) not null,
+    location varchar(30) not null,
     primary key(branch_id)
 );
 

@@ -1,0 +1,36 @@
+<div ng-include="'partials/navigation_menu.html'"></div>
+<div class="container padding-body" ng-init="getAllBranches()">
+    <div ng-include="'partials/popups.html'"></div>
+    <div class="row" style="margin-top: 70px; margin-left: 20px;">
+        <div class="col-md-9">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Company branches</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-2 col-sm-offset-7">
+                            <button class="btn btn-primary" ng-click="branchInfo()">Add branch</button>
+                        </div>
+                        <div class="col-xs-2">
+                            <button class="btn btn-primary" ng-click="branchInfo()" ng-disabled="actionDisabled">Update branch</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive" style="margin-top: 15px">
+                        <table class="table table-bordered">
+                            <tr class="table-heading">
+                                <td>Branch number</td>
+                                <td>Phone number</td>
+                                <td>Location</td>
+                            </tr>
+                            <tr class="clickable-row {{selected}}" ng-repeat="branch in branches" ng-click="setSelected(branch.branch_id)" >
+                                <td>{{ branch.branch_id }}</td>
+                                <td>{{ branch.phone_number }}</td>
+                                <td>{{ branch.location }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
