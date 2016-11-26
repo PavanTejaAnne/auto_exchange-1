@@ -1,0 +1,76 @@
+<div ng-include="'partials/navigation_menu.html'"></div>
+<div class="container padding-body" ng-init="getAllBranches()">
+    <div ng-include="'partials/popups.html'"></div>
+    <div class="row" style="margin-top: 70px; margin-left: 20px;">
+        <div class="col-md-11">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Company branches</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <select class="form-control" ng-change="onOptionChange(searchBy)" ng-model="searchBy" required>
+                                    <option disabled value="">Select</option>
+                                    <option ng-repeat="option in searchOptions" ng-value="option.value">{{ option.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-5" ng-show="isVin">
+                                <input type="text" name="search" placeholder="Search..." class="form-control"
+                                       ng-model="searchText" value="" required>
+                            </div>
+                            <div class="col-lg-5" ng-show="!isVin">
+                                <div class="input-group date form_date" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                    <input class="form-control" size="16" type="text" value="" readonly ng-model="searchText">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                                <input type="hidden" id="dtp_input2" value="" /><br/>
+                            </div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary" ng-click="searchTransaction()">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive" style="margin-top: 15px">
+                        <table class="table table-bordered">
+                            <tr class="table-heading">
+                                <td>Vehicle Identification Number (VIN)</td>
+                                <td>Date</td>
+                                <td>List price</td>
+                                <td>Final price</td>
+                                <td>Old license plate</td>
+                                <td>New license plate</td>
+                                <td>Transaction type</td>
+                            </tr>
+                            <tr class="clickable-row" ng-repeat="transaction in transactions">
+                                <td>{{ transaction.vin }}</td>
+                                <td>{{ transaction.date }}</td>
+                                <td>{{ transaction.list_price }}</td>
+                                <td>{{ transaction.final_price }}</td>
+                                <td>{{ transaction.old_license_plate }}</td>
+                                <td>{{ transaction.new_license_plate }}</td>
+                                <td ng-show="transaction.isSale">Sale</td>
+                                <td ng-show="!transaction.isSale">Buy</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../javascripts/datapicker/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>

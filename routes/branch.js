@@ -187,3 +187,9 @@ exports.updateBranchInfo = function(req, res){
         });
     }
 };
+
+exports.updateSession = function (req, res) {
+    req.session.branch_id = req.query.branch_id;
+    req.session.location = req.query.location;
+    res.send({status: 200, message: "Updated", profile:{}});
+};

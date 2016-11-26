@@ -60,6 +60,7 @@ app.post('/api/setCustomerPhoneNo', customer.setCustomerPhoneNo);
 app.post('/api/updateCustomerPhoneNo', customer.updateCustomerPhoneNo);
 app.post('/api/setCustomerEmail', customer.setCustomerEmail);
 app.post('/api/updateCustomerEmail', customer.updateCustomerEmail);
+app.post('/api/updateSession', branch.updateSession);
 
 
 // catch 404 and forward to error handler

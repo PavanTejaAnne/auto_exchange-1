@@ -16,7 +16,7 @@ exports.getExpiryDateTime = function(duration){
     return dateFormat(expiryDate, "yyyy-mm-dd h:MM:ss");
 };
 
-exports.formatDOB = function(dob) {
+exports.formatDate = function(dob) {
     var now = new Date(dob);
     return dateFormat(now, "mm-dd-yyyy");
 };

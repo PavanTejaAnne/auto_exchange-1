@@ -7,8 +7,9 @@ var ejs=require('ejs');
 var timeUtil = require('../helper/timeutil');
 
 exports.getTransactionByDate = function(req, res){
-    var Transaction_Date = req.param("Date");
-    var sql_query = "select * from transaction where transaction_date = '"+Transaction_Date+"'";
+    var transactionDate = req.query.date;
+    transactionDate = timeUtil.formatDate(transactionDate);
+    var sql_query = "select * from transaction where transaction_date = '"+ transactionDate+ "'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -34,8 +35,8 @@ exports.getTransactionByDate = function(req, res){
 };
 
 exports.getTransactionByVehicleId = function(req, res){
-    var Vehicle_ID = req.param("Vehicle_ID");
-    var sql_query = "select * from transaction where transaction_vehicle_id = '"+Vehicle_ID+"'";
+    var vehicleID = req.query.vin;
+    var sql_query = "select * from transaction where transaction_vin = '"+vehicleID+"'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -71,7 +72,8 @@ exports.setTransactionSell = function(req, res){
     var new_license = req.query.new_license_plate;
     var year = req.query.manufactured_year;
     var type = req.query.car_type;
-    var branch_id = req.query.branch_id;
+
+    var branch_id = req.session.branch_id;
     var date = timeUtil.getCurrentDateTime();
 
     var flag;
