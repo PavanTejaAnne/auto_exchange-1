@@ -119,7 +119,7 @@ exports.getCar = function(req, res){
 };
 
 exports.getVehicleIdByBranch = function(req, res){
-    Branch_ID = req.param("Branch_ID");
+    var Branch_ID = req.param("Branch_ID");
     var sql_query = "select * from sells, sells_to where sells_to_ssn = sells_ssn and sells_to_branch_id = '"+Branch_ID+"'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
