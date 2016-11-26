@@ -123,7 +123,7 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             $scope.isDisabled = true;
         }
     }
-    
+
     $scope.addTransaction = function () {
         $scope.vehicle.ssn = $scope.customer.ssn;
         if($scope.vehicle.type == 'buy'){
