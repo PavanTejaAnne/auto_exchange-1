@@ -9,7 +9,7 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <div class="col-lg-5">
-                                <input type="text" name="ssn" placeholder="Customer SSN" class="form-control"
+                                <input type="text" name="ssn" maxlength="9" pattern="\d{9}" placeholder="Customer SSN" class="form-control"
                                        string-to-number ng-model="customer.ssn" value="customer.ssn" required>
                             </div>
                         </div>
@@ -25,11 +25,11 @@
                         </div>
                         <div class="form-group">
                             <div class="col-lg-5">
-                                <input type="text" name="" placeholder="Driving license" class="form-control"
+                                <input type="text" name="license" maxlength="9" placeholder="Driving license" class="form-control"
                                        ng-model="customer.driving_license_number" value="customer.driving_license_number" required ng-disabled="isDisabled">
                             </div>
                             <div class="col-lg-2">
-                                <input type="text" name="" placeholder="Age" class="form-control"
+                                <input type="text" name="age" placeholder="Age" maxlength="2" pattern="\d{2}" class="form-control"
                                        ng-model="customer.age" value="customer.age" required ng-disabled="isDisabled">
                             </div>
                             <div class="col-lg-2">
@@ -41,7 +41,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-lg-8">
-                                <input type="text" name="" placeholder="Address" class="form-control"
+                                <input type="text" pattern="\w+ \w+.*" maxlength="40" name="" placeholder="Address" class="form-control"
                                        ng-model="customer.address" value="customer.address" ng-disabled="isDisabled" required>
                             </div>
                         </div>
@@ -72,17 +72,17 @@
 
                         <div class="form-group">
                             <div class="col-lg-10">
-                                <input type="number" name="vin" placeholder="Vehicle identification number (VIN)" class="form-control"
+                                <input type="text" name="vin" maxlength="17" placeholder="Vehicle identification number (VIN)" class="form-control"
                                        ng-model="vehicle.vin" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-4">
-                                <input type="number" name="old_license_plate" placeholder="Old license plate" class="form-control"
+                                <input type="text" maxlength="15" name="old_license_plate" placeholder="Old license plate" class="form-control"
                                        ng-model="vehicle.old_license_plate" required>
                             </div>
                             <div class="col-lg-4">
-                                <input type="number" name="new_license_plate" placeholder="New license plate" class="form-control"
+                                <input type="text" maxlength="15" name="new_license_plate" placeholder="New license plate" class="form-control"
                                        ng-model="vehicle.new_license_plate" required>
                             </div>
                         </div>
