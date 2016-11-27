@@ -349,8 +349,6 @@ exports.updateCustomerInfo = function(req, res){
     }
     sql_query = sql_query + " where ssn = '"+ SSN +"'";
 
-
-
     // location = req.param("location");
     //var sql_query = "insert into Customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
     if(Fname != "" || Lname != "" || age != "" || gender != "" || driving_license_number != "" || address != "" ) {
@@ -429,7 +427,7 @@ exports.updateCustomerPhoneNo = function(req, res){
 exports.updateCustomerEmail = function(req, res){
     SSN = req.query.SSN;
     Email = req.query.Email;
-    var customer = "update cus_email set Email = '"+ Email +"' where cus_email_ssn = '"+SSN+"'";
+    var customer = "update cus_email set email = '"+ Email +"' where cus_email_ssn = '"+SSN+"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -465,7 +463,7 @@ exports.deleteCustomerEmail = function(req, res){
 exports.deleteCustomerPhoneNo = function(req, res){
     SSN = req.query.SSN;
     mobile_no = req.query.mobile_no;
-    var customer = "delete cus_moblie where cus_email_ssn = '"+SSN+"' and mobile_no = '"+ mobile_no +"'";
+    var customer = "delete cus_mobile where cus_email_ssn = '"+SSN+"' and mobile_no = '"+ mobile_no +"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;

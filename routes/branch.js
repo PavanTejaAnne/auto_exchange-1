@@ -193,8 +193,6 @@ exports.updateBranchInfo = function(req, res){
     }
     sql_query = sql_query + " where branch_id = '"+ branch_id +"'";
 
-
-
     // location = req.param("location");
     //var sql_query = "insert into Customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
     if(number != "" || address != "" || email != "" || location != "" ) {
