@@ -9,6 +9,7 @@ var ejs=require('ejs');
 exports.getBranchById = function(req, res){
     var id = req.query.branch_id;
     var branch = "select * from company_branch where branch_id = '"+id+"'";
+    logger.trace("Fetching branch by Id "+ branch);
     mysql.fetchData(branch, function(err, results) {
         if (err) {
             throw err;
@@ -36,6 +37,7 @@ exports.getBranchById = function(req, res){
 exports.deletebranch = function(req, res){
     var id = req.query.branch_id;
     var sql_query = "delete from company_branch where branch_id = '"+id+"'";
+    logger.trace("Deleting branch by Id "+ sql_query);
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -55,6 +57,7 @@ exports.deletebranch = function(req, res){
 exports.getBranchByLocation = function(req, res){
     var location = req.query.location;
     var branch = "select * from company_branch where location = '"+location+"'";
+    logger.trace("Fetching branch by Location "+ branch);
     mysql.fetchData(branch, function(err, results) {
         if (err) {
             throw err;
@@ -81,6 +84,7 @@ exports.getBranchByLocation = function(req, res){
 
 exports.getAllBranches = function(req, res){
     var branch = "select * from company_branch";
+    logger.trace("Fetching all branches "+ branch);
     mysql.fetchData(branch, function(err, results) {
         if (err) {
             throw err;

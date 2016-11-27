@@ -47,6 +47,7 @@ exports.getCustomerByName = function(req, res){
     else{
         customer = "select * from customer where first_name = '"+first_name+"' and last_name = '"+last_name+"'";
     }
+    logger.trace("Fetching customer by Name "+ customer);
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -74,6 +75,7 @@ exports.getCustomerByName = function(req, res){
 exports.getCustomerByLicense = function(req, res){
     var license = req.query.license;
     var customer = "select * from customer where driving_license_number = '"+license+"'";
+    logger.trace("Fetching customer by License "+ customer);
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -102,6 +104,7 @@ exports.getCustomerByEmail = function(req, res){
     var email = req.query.email;
     var customer = "select * from customer where ssn in " +
         "(select distinct cus_email_ssn from cus_email where email = '"+email+"')";
+    logger.trace("Fetching customer by Email "+ customer);
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -130,6 +133,7 @@ exports.getCustomerByPhone = function(req, res){
     var phone = req.query.phone;
     var customer = "select * from customer where ssn in " +
         "(select distinct cus_mobile_ssn from cus_mobile where mobile_no = '"+phone+"')";
+    logger.trace("Fetching customer by Phone "+ customer);
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -163,6 +167,7 @@ exports.getCustomerHistory = function(req, res){
         "(select transaction_vin, transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale " +
         "from buys inner join transaction on (transaction_date = buying_date and transaction_vin = buys_vin)" +
         "where buys_ssn ='" +ssn+"')";
+    logger.trace("Fetching customer history "+ history);
     mysql.fetchData(history, function(err, results) {
         if (err) {
             throw err;
@@ -210,6 +215,7 @@ exports.getCustomerHistory = function(req, res){
 
 exports.getAllCustomers = function(req, res){
     var customer = "select * from customer";
+    logger.trace("Fetching all customers "+ customer);
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
