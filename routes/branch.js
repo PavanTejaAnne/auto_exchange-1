@@ -4,7 +4,7 @@
 var express = require('express');
 var mysql = require('./../db/mysql');
 var ejs=require('ejs');
-
+var logger = require('../helper/logger').getLogger();
 
 exports.getBranchById = function(req, res){
     var id = req.query.branch_id;

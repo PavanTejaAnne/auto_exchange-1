@@ -5,6 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('./../db/mysql');
+var logger = require('../helper/logger').getLogger();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

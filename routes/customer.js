@@ -378,9 +378,9 @@ exports.updateCustomerInfo = function(req, res){
 };
 
 exports.setCustomerPhoneNo = function(req, res){
-    SSN = req.query.SSN;
-    Mobile_No = req.query.Mobile_No;
-    var customer = "insert into cus_mobile values ('"+SSN +"', '"+Mobile_No+"')";
+    var ssn = req.query.ssn;
+    var mobileNo = req.query.mobile;
+    var customer = "insert into cus_mobile values ('"+ ssn +"', '"+ mobileNo +"')";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -396,9 +396,9 @@ exports.setCustomerPhoneNo = function(req, res){
 };
 
 exports.setCustomerEmail = function(req, res){
-    SSN = req.query.SSN;
-    Email = req.query.Email;
-    var customer = "insert into cus_email values ('"+SSN +"', '"+Email+"')";
+    var ssn = req.query.ssn;
+    var email = req.query.email;
+    var customer = "insert into cus_email values ('"+ ssn +"', '"+ email +"')";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;

@@ -10,7 +10,7 @@ CREATE TABLE customer(
     age int not null,
     gender char not null,
     driving_license_number char(10) not null,
-    address varchar(40) not null,
+    address varchar(60) not null,
     primary key(ssn),
     unique(driving_license_number)
 );
@@ -26,8 +26,8 @@ CREATE TABLE company_branch(
 
 CREATE TABLE car(
     vin char(17) not null,
-    manufacturer varchar(15) not null,
-    model_no varchar(10) not null,
+    manufacturer varchar(25) not null,
+    model_no varchar(25) not null,
     manufactured_year year not null,
     car_type varchar(15) not null,
     primary key(vin)
@@ -74,7 +74,7 @@ CREATE TABLE buys_from(
 
 CREATE TABLE sells(
     sells_ssn char(9) not null,
-    sells_vin char(10) not null,
+    sells_vin char(17) not null,
     selling_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     primary key(sells_ssn, sells_vin),
     constraint fk_sells_ssn foreign key(sells_ssn) references customer(ssn) on delete cascade on update cascade,
@@ -100,7 +100,7 @@ CREATE TABLE cus_mobile (
 
 CREATE TABLE cus_email(
     cus_email_ssn char(9) not null,
-    email char(20) not null,
+    email char(60) not null,
     primary key(cus_email_ssn),
     constraint fk_cus_email_ssn foreign key(cus_email_ssn) references customer(ssn) on delete cascade on update cascade
 );

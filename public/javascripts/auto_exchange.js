@@ -108,6 +108,10 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
     $scope.gender = [{value: 'M', name: 'M'}, {value: 'F', name: 'F'}];
     $scope.cars = getCars();
     $scope.years = getYears();
+    $scope.car_types = [{value: 'Hatchback', name: 'Hatchback'}, {value: 'Sedan', name: 'Sedan'},
+        {value: 'Wagon', name: 'Wagon'}, {value: 'Coupe', name: 'Coupe'},
+        {value: 'Convertible', name: 'Convertible'}, {value: 'Sports car', name: 'Sports car'},
+        {value: 'Truck', name: 'Truck'}];
 
     $scope.error = false;
     $scope.success = false;
@@ -166,6 +170,8 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             if (data.status == 200 && data.profile.length != 0) {
                 console.log(JSON.stringify(data.profile));
                 $scope.addVehicle();
+                $scope.addMobile();
+                $scope.addEmail();
             }else {
                 $scope.error_msg = data.message;
                 $scope.error = true;
@@ -218,6 +224,46 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
                 $scope.error = true;
             });
         }
+    };
+
+    $scope.addMobile = function () {
+        $http({
+            method : "POST",
+            url : '/api/setCustomerPhoneNo',
+            params: {ssn: $scope.customer.ssn, mobile: $scope.customer.primary_mobile},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+    $scope.addEmail = function () {
+        $http({
+            method : "POST",
+            url : '/api/setCustomerEmail',
+            params: {ssn: $scope.customer.ssn, email: $scope.customer.primary_email},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
     };
 
     $scope.getModels = function (carId) {
