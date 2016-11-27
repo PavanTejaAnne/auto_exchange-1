@@ -36,7 +36,7 @@ exports.getTransactionByDate = function(req, res){
 
 exports.getTransactionByVehicleId = function(req, res){
     var vehicleID = req.query.vin;
-    var sql_query = "select * from transaction where transaction_vin = '"+vehicleID+"'";
+    var sql_query = "select *, DATE_FORMAT(transaction_date,'%Y-%m-%d') as date  from transaction where transaction_vin = '"+vehicleID+"'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;
@@ -70,9 +70,10 @@ exports.setTransactionSell = function(req, res){
     var manufacturer = req.query.manufacturer;
     var old_license =req.query.old_license_plate;
     var new_license = req.query.new_license_plate;
-    var year = req.query.manufactured_year;
+    var year = req.query.year;
     var type = req.query.car_type;
-    var branch_id = req.query.branch_id;
+
+    var branch_id = req.session.branch_id;
 
     var query_1 = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ ssn +"', '"+ branch_id +"');";
     mysql.fetchData(query_1, function(err,results){
@@ -164,7 +165,8 @@ exports.setTransactionBuy = function(req, res){
     var manufacturer = req.query.manufacturer;
     var old_license =req.query.old_license_plate;
     var new_license = req.query.new_license_plate;
-    var branch_id = req.query.branch_id;
+
+    var branch_id = req.session.branch_id;
 
     var query_1 = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('"+ ssn +"', '"+ branch_id +"');";
     mysql.fetchData(query_1, function(err,results){

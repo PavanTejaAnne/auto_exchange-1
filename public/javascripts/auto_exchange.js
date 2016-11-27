@@ -125,6 +125,35 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
     }
 
     $scope.addTransaction = function () {
+        if($rootScope.new_customer){
+            $scope.addCustomer();
+        }else {
+            $scope.addVehicle();
+        }
+    };
+
+    $scope.addCustomer = function () {
+        $http({
+            method : "POST",
+            url : '/api/addNewCustomer',
+            params: $scope.customer,
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+                $scope.addVehicle();
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+    $scope.addVehicle = function () {
         $scope.vehicle.ssn = $scope.customer.ssn;
         if($scope.vehicle.type == 'buy'){
             $http({
@@ -135,7 +164,9 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             }).success(function(data) {
                 if (data.status == 200 && data.profile.length != 0) {
                     console.log(JSON.stringify(data.profile));
-
+                    $scope.success = true;
+                    $scope.success_msg = "Transaction added successfully";
+                    $window.location.href = "#/add";
                 }else {
                     $scope.error_msg = data.message;
                     $scope.error = true;
@@ -154,7 +185,9 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             }).success(function(data) {
                 if (data.status == 200 && data.profile.length != 0) {
                     console.log(JSON.stringify(data.profile));
-
+                    $scope.success = true;
+                    $scope.success_msg = "Transaction added successfully";
+                    $window.location.href = "#/add";
                 }else {
                     $scope.error_msg = data.message;
                     $scope.error = true;
@@ -165,7 +198,6 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
                 $scope.error = true;
             });
         }
-
     };
 
     $scope.getModels = function (carId) {
@@ -330,7 +362,7 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
 auto_exchange.controller('transactions', function ($scope, $http, $window, $rootScope) {
     $scope.searchOptions = [{value: 'vin', name: 'Search by VIN'}, {value: 'date', name: 'Search by date'}];
     $scope.transactions = {};
-    $scope.searchBy = '';
+    $scope.searchBy = 'vin';
     $scope.searchText = '';
     $scope.isVin = true;
 
@@ -346,7 +378,7 @@ auto_exchange.controller('transactions', function ($scope, $http, $window, $root
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
                         console.log(JSON.stringify(data.profile));
-
+                        $scope.transactions = data.profile;
                     } else {
                         $scope.error_msg = "Transaction with VIN not found";
                         $scope.error = true;

@@ -5,21 +5,21 @@ var ejs= require('ejs');
 var mysql = require('mysql');
 var pool = null;
 function getConnection(){
-    var connection = mysql.createConnection({
-        host : 'ec2-54-149-150-222.us-west-2.compute.amazonaws.com',
-        user : 'cmpe_user',
-        password : 'cmpe_user',
-        database : 'auto_exchange',
-        port : 3306
-    });
-
     // var connection = mysql.createConnection({
-    //     host : 'localhost',
-    //     user : 'root',
-    //     password : 'password',
+    //     host : 'ec2-54-149-150-222.us-west-2.compute.amazonaws.com',
+    //     user : 'cmpe_user',
+    //     password : 'cmpe_user',
     //     database : 'auto_exchange',
     //     port : 3306
     // });
+
+    var connection = mysql.createConnection({
+        host : 'localhost',
+        user : 'root',
+        password : 'password',
+        database : 'auto_exchange',
+        port : 3306
+    });
     return connection;
 }
 

@@ -234,16 +234,16 @@ exports.getAllCustomers = function(req, res){
 
 
 exports.addNewCustomer = function(req, res){
-    SSN  = req.query.SSN;
-    Fname  = req.query.Fname;
-    Lname  = req.query.Lname;
-    age = req.query.age;
-    gender  = req.query.gender;
-    driving_license_number   = req.query.driving_license_number;
-    address   = req.query.address;
+    var ssn  = req.query.ssn;
+    var first_name  = req.query.first_name;
+    var last_name  = req.query.last_name;
+    var age = req.query.age;
+    var gender  = req.query.gender;
+    var driving_license_number   = req.query.driving_license_number;
+    var address   = req.query.address;
 
     // location = req.param("location");
-    var sql_query = "insert into customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
+    var sql_query = "insert into customer values ('"+ssn+"', '"+first_name+"', '"+ last_name +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;

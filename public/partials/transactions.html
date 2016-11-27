@@ -8,13 +8,17 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-lg-3">
-                                <select class="form-control" ng-change="onOptionChange(searchBy)" ng-model="searchBy" required>
-                                    <option disabled value="">Select</option>
-                                    <option ng-repeat="option in searchOptions" ng-value="option.value">{{ option.name }}</option>
-                                </select>
+                            <!--<div class="col-lg-3">-->
+                                <!--<select class="form-control" ng-change="onOptionChange(searchBy)" ng-model="searchBy" required>-->
+                                    <!--<option disabled value="">Select</option>-->
+                                    <!--<option ng-repeat="option in searchOptions" ng-value="option.value">{{ option.name }}</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                            <div class="col-lg-4">
+                                <label>Enter Vehicle Identification number (VIN) </label>
                             </div>
                             <div class="col-lg-5" ng-show="isVin">
+
                                 <input type="text" name="search" placeholder="Search..." class="form-control"
                                        ng-model="searchText" value="" required>
                             </div>
@@ -43,14 +47,14 @@
                                 <td>Transaction type</td>
                             </tr>
                             <tr class="clickable-row" ng-repeat="transaction in transactions">
-                                <td>{{ transaction.vin }}</td>
+                                <td>{{ transaction.transaction_vin }}</td>
                                 <td>{{ transaction.date }}</td>
                                 <td>{{ transaction.list_price }}</td>
                                 <td>{{ transaction.final_price }}</td>
                                 <td>{{ transaction.old_license_plate }}</td>
                                 <td>{{ transaction.new_license_plate }}</td>
-                                <td ng-show="transaction.isSale">Sale</td>
-                                <td ng-show="!transaction.isSale">Buy</td>
+                                <td ng-show="transaction.is_sale">Sale</td>
+                                <td ng-show="!transaction.is_sale">Buy</td>
                             </tr>
                         </table>
                     </div>

@@ -20,6 +20,8 @@ router.get('/branch-data', function (req, res, next) {
             } else {
                 if (results.length > 0) {
                     console.log(results);
+                    req.session.branch_id = results[0].branch_id;
+                    req.session.location = results[0].location;
                     res.send({
                         "status": 200,
                         "message:": "transaction fetched by Date successfully!",
