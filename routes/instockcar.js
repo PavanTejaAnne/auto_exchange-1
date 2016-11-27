@@ -6,15 +6,15 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getInStockCar = function(req, res){
-    var Vehicle_ID = req.param("Vehicle_ID");
-    var Manufacturer = req.param("Manufacturer");
-    var manufactured_year = req.param("manufactured_year");
-    var model_no = req.param("model_no");
-    var car_type = req.param("car_type");
-    var In_Stock_price_start = req.param("In_Stock_price_start");
-    var In_Stock_price_end = req.param("In_Stock_price_end");
+    var Vehicle_ID = req.query.Vehicle_ID;
+    var Manufacturer = req.query.Manufacturer;
+    var manufactured_year = req.query.manufactured_year;
+    var model_no = req.query.model_no;
+    var car_type = req.query.car_type;
+    var In_Stock_price_start = req.query.In_Stock_price_start;
+    var In_Stock_price_end = req.query.In_Stock_price_end;
 
-    var In_Stock_branch_id = req.param("In_Stock_branch_id");
+    var In_Stock_branch_id = req.query.In_Stock_branch_id;
 
     var bool_Vehicle_ID = false;
     var bool_Manufacturer = false;

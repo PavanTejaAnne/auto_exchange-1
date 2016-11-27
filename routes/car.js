@@ -6,11 +6,11 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getCar = function(req, res){
-    var Vehicle_ID = req.param("Vehicle_ID");
-    var Manufacturer = req.param("Manufacturer");
-    var manufactured_year = req.param("manufactured_year");
-    var model_no = req.param("model_no");
-    var car_type = req.param("car_type");
+    var Vehicle_ID = req.query.Vehicle_ID;
+    var Manufacturer = req.query.Manufacturer;
+    var manufactured_year = req.query.manufactured_year;
+    var model_no = req.query.model_no;
+    var car_type = req.query.car_type;
 
     var bool_Vehicle_ID = false;
     var bool_Manufacturer = false;
@@ -119,7 +119,7 @@ exports.getCar = function(req, res){
 };
 
 exports.getVehicleIdByBranch = function(req, res){
-    var Branch_ID = req.param("Branch_ID");
+    var Branch_ID = req.query.Branch_ID;
     var sql_query = "select * from sells, sells_to where sells_to_ssn = sells_ssn and sells_to_branch_id = '"+Branch_ID+"'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {

@@ -6,7 +6,7 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
 exports.getBranchById = function(req, res){
-    var id = req.param("branch_id");
+    var id = req.query.branch_id;
     var branch = "select * from company_branch where branch_id = '"+id+"'";
     mysql.fetchData(branch, function(err, results) {
         if (err) {
@@ -22,15 +22,38 @@ exports.getBranchById = function(req, res){
             }
             // render or error
             else {
-                res.end('An error occurred');
-                console.log(err);
-            }
+                res.send({
+                    "status": 10,
+                    "message:": "NO branch found!",
+                    "profile": results
+                });}
         }
     });
 };
 
+exports.deletebranch = function(req, res){
+    var id = req.query.branch_id;
+    var sql_query = "delete from company_branch where branch_id = '"+id+"'";
+    mysql.fetchData(sql_query, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "branch deleted successful!",
+                    "profile": results
+                });
+            // render or error
+
+        }
+    });
+
+};
+
+
 exports.getBranchByLocation = function(req, res){
-    var location = req.param("location");
+    var location = req.query.location;
     var branch = "select * from company_branch where location = '"+location+"'";
     mysql.fetchData(branch, function(err, results) {
         if (err) {

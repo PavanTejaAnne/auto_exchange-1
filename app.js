@@ -61,8 +61,9 @@ app.post('/api/updateCustomerPhoneNo', customer.updateCustomerPhoneNo);
 app.post('/api/setCustomerEmail', customer.setCustomerEmail);
 app.post('/api/updateCustomerEmail', customer.updateCustomerEmail);
 app.post('/api/updateSession', branch.updateSession);
-
-
+app.post('/api/deletebranch', branch.deletebranch);
+app.post('/api/deleteCustomerEmail', customer.deleteCustomerEmail);
+app.post('/api/deleteCustomerPhoneNo', customer.deleteCustomerPhoneNo);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
