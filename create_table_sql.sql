@@ -27,7 +27,7 @@ CREATE TABLE company_branch(
 CREATE TABLE car(
     vin char(17) not null,
     manufacturer varchar(15) not null,
-    model_no int not null,
+    model_no varchar(10) not null,
     manufactured_year year not null,
     car_type varchar(15) not null,
     primary key(vin)
@@ -45,7 +45,7 @@ CREATE TABLE in_stock_car(
 
 CREATE TABLE transaction(
     transaction_vin char(17) not null,
-    transaction_date date not null,
+    transaction_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     list_price float not null,
     final_price float not null,
     old_license_plate varchar(15) not null,
@@ -75,32 +75,32 @@ CREATE TABLE buys_from(
 CREATE TABLE sells(
     sells_ssn char(9) not null,
     sells_vin char(10) not null,
-    selling_date Date not null,
+    selling_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     primary key(sells_ssn, sells_vin),
-    constraint fk_sells_ssn foreign key(sells_ssn) references customer(ssn),
-    constraint fk_sells_vin foreign key(sells_vin) references car(vin)
+    constraint fk_sells_ssn foreign key(sells_ssn) references customer(ssn) on delete cascade on update cascade,
+    constraint fk_sells_vin foreign key(sells_vin) references car(vin) on delete cascade on update cascade
 );
 
 CREATE TABLE buys(
     buys_ssn char(9) not null,
     buys_vin char(17) not null,
-    buying_date Date not null,
+    buying_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     primary key(buys_ssn, buys_vin),
     constraint fk_buys_ssn foreign key(buys_ssn) references customer(ssn) on delete cascade on update cascade,
     constraint fk_buys_vin foreign key(buys_vin) references car(vin) on delete cascade on update cascade
 );
 
-CREATE TABLE cus_moblie (
-    cus_moblie_ssn char(9) not null,
+CREATE TABLE cus_mobile (
+    cus_mobile_ssn char(9) not null,
     mobile_no char(10) not null,
-    primary key(cus_moblie_ssn),
-    constraint fk_cus_mobile_ssn foreign key(cus_moblie_ssn) references customer(ssn) on delete cascade on update cascade
+    primary key(cus_mobile_ssn),
+    constraint fk_cus_mobile_ssn foreign key(cus_mobile_ssn) references customer(ssn) on delete cascade on update cascade
 );
 
 
 CREATE TABLE cus_email(
     cus_email_ssn char(9) not null,
-    email char(10) not null,
+    email char(20) not null,
     primary key(cus_email_ssn),
     constraint fk_cus_email_ssn foreign key(cus_email_ssn) references customer(ssn) on delete cascade on update cascade
 );

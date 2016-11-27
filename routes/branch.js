@@ -26,7 +26,8 @@ exports.getBranchById = function(req, res){
                     "status": 10,
                     "message:": "NO branch found!",
                     "profile": results
-                });}
+                });
+            }
         }
     });
 };
@@ -69,8 +70,11 @@ exports.getBranchByLocation = function(req, res){
             }
             // render or error
             else {
-                res.end('An error occurred');
-                console.log(err);
+                res.send({
+                    "status": 10,
+                    "message:": "search returned with empty records!",
+                    "profile": results
+                });
             }
         }
     });
@@ -94,7 +98,7 @@ exports.getAllBranches = function(req, res){
             else {
                 res.send({
                     "status": 10,
-                    "message:": "branch search successful with empty result set!",
+                    "message:": "search returned with empty records!",
                     "profile": results
                 });
             }

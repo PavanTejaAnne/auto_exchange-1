@@ -35,11 +35,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', home);
 
+app.post('/api/getAllCustomers', customer.getAllCustomers);
 app.post('/api/getCustomerBySsn', customer.getCustomerBySsn);
 app.post('/api/getCustomerByName', customer.getCustomerByName);
 app.post('/api/getCustomerByLicense', customer.getCustomerByLicense);
 app.post('/api/getCustomerByEmail', customer.getCustomerByEmail);
 app.post('/api/getCustomerByPhone', customer.getCustomerByPhone);
+app.post('/api/getAllBranches', branch.getAllBranches);
 app.post('/api/getBranchById', branch.getBranchById);
 app.post('/api/getBranchByLocation', branch.getBranchByLocation);
 app.post('/api/getCustomerHistory', customer.getCustomerHistory);
@@ -52,8 +54,6 @@ app.post('/api/getIn_Stock_Car', in_stock_car.getInStockCar);
 app.post('/api/getVehicleIDHistorybybranch', car.getVehicleIdByBranch);
 app.post('/api/addNewCustomer',customer.addNewCustomer);
 app.post('/api/addNewBranch', branch.addNewBranch);
-app.post('/api/getAllBranches', branch.getAllBranches);
-app.post('/api/getAllCustomer', customer.getAllCustomer);
 app.post('/api/updateBranchInfo', branch.updateBranchInfo);
 app.post('/api/updateCustomerInfo', customer.updateCustomerInfo);
 app.post('/api/setCustomerPhoneNo', customer.setCustomerPhoneNo);

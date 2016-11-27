@@ -66,59 +66,93 @@ exports.setTransactionSell = function(req, res){
     var vin = req.query.vin;
     var list_price = req.query.list_price;
     var final_price = req.query.final_price;
-    var model_no = req.query.model;
+    var model_no = req.query.model_no;
     var manufacturer = req.query.manufacturer;
     var old_license =req.query.old_license_plate;
     var new_license = req.query.new_license_plate;
     var year = req.query.manufactured_year;
     var type = req.query.car_type;
+    var branch_id = req.query.branch_id;
 
-    var branch_id = req.session.branch_id;
-    var date = timeUtil.getCurrentDateTime();
+    var query_1 = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ ssn +"', '"+ branch_id +"');";
+    mysql.fetchData(query_1, function(err,results){
+        if(err){
+            throw err;
+        }
+    });
 
-    var flag;
-    var check_query = "select * from car where vin = '"+vin+"'";
-    mysql.fetchData(check_query, function(err,results){
+    var query_check = "select * from car where vin = '"+vin+"'";
+    mysql.fetchData(query_check, function(err,results){
         if(err){
             throw err;
         }else{
             if(results.length > 0){
-                flag = false;
+                var query_2 = "insert into sells(sells_ssn, sells_vin) values('"+ ssn +"', '"+ vin +"');" ;
+                mysql.fetchData(query_2, function(err,results){
+                    if(err){
+                        throw err;
+                    }
+                });
+                var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
+                    "values('"+ vin +"', "+ list_price +","+ final_price +",'"+ old_license +"', '"+ new_license +"',"+ true +");" ;
+                mysql.fetchData(query_3, function(err,results){
+                    if(err){
+                        throw err;
+                    }
+                });
+
+                var query_4 = "insert into in_stock_car(in_stock_id, in_stock_vin, in_stock_price, in_stock_branch_id) values(1, '"+ vin +"', "+ final_price +", '"+ branch_id +"');" ;
+                mysql.fetchData(query_4, function(err,results){
+                    if(err){
+                        throw err;
+                    }else{
+                        res.send({
+                            "status": 200,
+                            "message:": "transaction inserted successfully",
+                            "profile": results
+                        });
+                    }
+                });
             }
             else{
-                flag = true;
+                var query_5 = "insert into car(vin, manufacturer, model_no, manufactured_year, car_type) values('"+vin+"', '"+manufacturer+"', '"+model_no+"', '"+year+"', '"+type+"')" ;
+                mysql.fetchData(query_5, function(err,results){
+                    if(err){
+                        throw err;
+                    }
+                    else{
+                        var query_2 = "insert into sells(sells_ssn, sells_vin) values('"+ ssn +"', '"+ vin +"');" ;
+                        mysql.fetchData(query_2, function(err,results){
+                            if(err){
+                                throw err;
+                            }
+                        });
+                        var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
+                            "values('"+ vin +"', "+ list_price +","+ final_price +",'"+ old_license +"', '"+ new_license +"',"+ true +");" ;
+                        mysql.fetchData(query_3, function(err,results){
+                            if(err){
+                                throw err;
+                            }
+                        });
+
+                        var query_4 = "insert into in_stock_car(in_stock_id, in_stock_vin, in_stock_price, in_stock_branch_id) values(1, '"+ vin +"', "+ final_price +", '"+ branch_id +"');" ;
+                        mysql.fetchData(query_4, function(err,results){
+                            if(err){
+                                throw err;
+                            }else{
+                                res.send({
+                                    "status": 200,
+                                    "message:": "Sell transaction inserted successfully",
+                                    "profile": results
+                                });
+                            }
+                        });
+                    }
+                });
             }
         }
     });
 
-    var sql_query="";
-    if(flag){
-        sql_query = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ ssn +"', '"+ branch_id +"');" +
-            "insert into sells(sells_ssn, sells_vin, selling_date) values('"+ ssn +"', '"+ vin +"', '"+ date +"');" +
-            "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('"+ vin +"', "+ final_price +", '"+ branch_id +"');" +
-            "insert into transaction(transaction_vin, transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
-            "values('"+ vin +"', '"+ date +"', "+ list_price +","+ final_price +",'"+ old_license +"', '"+ new_license +"',"+ true +");" +
-            "insert into car(vin, manufacturer, model_no, manufactured_year, car_type) values('"+vin+"', '"+manufacturer+"', '"+model_no+"', '"+year+"', '"+type+"')";
-    }
-    else{
-        sql_query = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ ssn +"', '"+ branch_id +"');" +
-            "insert into sells(sells_ssn, sells_vin, selling_date) values('"+ ssn +"', '"+ vin +"', '"+ date +"');" +
-            "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('"+ vin +"', "+ final_price +", '"+ branch_id +"');" +
-            "insert into transaction(transaction_vin, transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
-            "values('"+ vin +"', '"+ date +"', "+ list_price +","+ final_price +",'"+ old_license +"', '"+ new_license +"',"+ true +");" ;
-    }
-
-    mysql.fetchData(sql_query, function(err, results) {
-        if (err) {
-            throw err;
-        } else {
-            res.send({
-                "status": 200,
-                "message:": "Sell transaction Inserted successfully!",
-                "profile": results
-            });
-        }
-    });
 };
 
 exports.setTransactionBuy = function(req, res){
@@ -126,23 +160,39 @@ exports.setTransactionBuy = function(req, res){
     var vin = req.query.vin;
     var list_price = req.query.list_price;
     var final_price = req.query.final_price;
-    var model_no = req.query.model;
+    var model_no = req.query.model_no;
     var manufacturer = req.query.manufacturer;
     var old_license =req.query.old_license_plate;
     var new_license = req.query.new_license_plate;
+    var branch_id = req.query.branch_id;
 
-    var branch_id = req.session.branch_id;
-    var date = timeUtil.getCurrentDateTime();
-
-    var sql_query = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('"+ ssn +"', '"+ branch_id +"');" +
-        "insert into buys (buys_ssn, buys_vin, buying_date) values('"+ ssn +"', '"+ vin +"', '"+ date +"');" +
-        "delete from in_stock_car where in_stock_vin='"+ vin +"';" +
-        "insert into transaction(transaction_vin, transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
-        "values('"+ vin +"', '"+ date +"', "+ list_price +", "+ final_price +", '"+ old_license +"', '"+ new_license +"',"+ false +");";
-    mysql.fetchData(sql_query, function(err, results) {
-        if (err) {
+    var query_1 = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('"+ ssn +"', '"+ branch_id +"');";
+    mysql.fetchData(query_1, function(err,results){
+        if(err){
             throw err;
-        } else {
+        }
+    });
+
+    var query_2 = "insert into buys (buys_ssn, buys_vin) values('"+ ssn +"', '"+ vin +"');";
+    mysql.fetchData(query_2, function(err,results){
+        if(err){
+            throw err;
+        }
+    });
+
+    var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
+        "values('"+ vin +"', "+ list_price +","+ final_price +",'"+ old_license +"', '"+ new_license +"',"+ false +");" ;
+    mysql.fetchData(query_3, function(err,results){
+        if(err){
+            throw err;
+        }
+    });
+
+    var query_4 = "delete from in_stock_car where in_stock_vin='"+ vin +"';";
+    mysql.fetchData(query_4, function(err,results){
+        if(err){
+            throw err;
+        }else{
             res.send({
                 "status": 200,
                 "message:": "Buy transaction Inserted successfully!",

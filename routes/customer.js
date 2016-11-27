@@ -12,28 +12,38 @@ exports.getCustomerBySsn = function(req, res){
             if (err) {
                 throw err;
             } else {
-                console.log(results);
-                res.send({
-                    status: 200,
-                    message: "Customer search successful!",
-                    profile: results
-                });
+                if (results.length > 0) {
+                    console.log(results);
+                    res.send({
+                        "status": 200,
+                        "message:": "customer search successful!",
+                        "profile": results
+                    });
+                }
+                // render or error
+                else {
+                    res.send({
+                        "status": 10,
+                        "message:": "search returned with empty records!",
+                        "profile": results
+                    });
+                }
             }
     });
 };
 
 exports.getCustomerByName = function(req, res){
-    var Fname = req.query.Fname;
-    var Lname = req.query.Lname;
+    var first_name = req.query.first_name;
+    var last_name = req.query.last_name;
     var customer = "";
-    if(Fname == null){
-        customer = "select * from customer where last_name = '"+Lname+"'";
+    if(first_name == null){
+        customer = "select * from customer where last_name = '"+last_name+"'";
     }
-    else if(Lname == null){
-        customer = "select * from customer where first_name = '"+Fname+"'";
+    else if(last_name == null){
+        customer = "select * from customer where first_name = '"+first_name+"'";
     }
     else{
-        customer = "select * from customer where first_name = '"+Fname+"' and last_name = '"+Lname+"'";
+        customer = "select * from customer where first_name = '"+first_name+"' and last_name = '"+last_name+"'";
     }
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -49,15 +59,18 @@ exports.getCustomerByName = function(req, res){
             }
             // render or error
             else {
-                res.end('An error occurred');
-                console.log(err);
+                res.send({
+                    "status": 10,
+                    "message:": "search returned with empty records!",
+                    "profile": results
+                });
             }
         }
     });
 };
 
 exports.getCustomerByLicense = function(req, res){
-    var license = req.query.License;
+    var license = req.query.license;
     var customer = "select * from customer where driving_license_number = '"+license+"'";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -73,8 +86,11 @@ exports.getCustomerByLicense = function(req, res){
             }
             // render or error
             else {
-                res.end('An error occurred');
-                console.log(err);
+                res.send({
+                    "status": 10,
+                    "message:": "search returned with empty records!",
+                    "profile": results
+                });
             }
         }
     });
@@ -83,7 +99,7 @@ exports.getCustomerByLicense = function(req, res){
 exports.getCustomerByEmail = function(req, res){
     var email = req.query.email;
     var customer = "select * from customer where ssn in " +
-        "(select distinct cus_email_ssn where email = '"+email+"')";
+        "(select distinct cus_email_ssn from cus_email where email = '"+email+"')";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -98,8 +114,11 @@ exports.getCustomerByEmail = function(req, res){
             }
             // render or error
             else {
-                res.end('An error occurred');
-                console.log(err);
+                res.send({
+                    "status": 10,
+                    "message:": "search returned with empty records!",
+                    "profile": results
+                });
             }
         }
     });
@@ -108,7 +127,7 @@ exports.getCustomerByEmail = function(req, res){
 exports.getCustomerByPhone = function(req, res){
     var phone = req.query.phone;
     var customer = "select * from customer where ssn in " +
-        "(select distinct cus_mobile_ssn where mobile_no = '"+phone+"')";
+        "(select distinct cus_mobile_ssn from cus_mobile where mobile_no = '"+phone+"')";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
             throw err;
@@ -123,8 +142,11 @@ exports.getCustomerByPhone = function(req, res){
             }
             // render or error
             else {
-                res.end('An error occurred');
-                console.log(err);
+                res.send({
+                    "status": 10,
+                    "message:": "search returned with empty records!",
+                    "profile": results
+                });
             }
         }
     });
@@ -132,11 +154,11 @@ exports.getCustomerByPhone = function(req, res){
 
 exports.getCustomerHistory = function(req, res){
     var ssn = req.query.ssn;
-    var history = "(select transaction_vin, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
+    var history = "(select transaction_vin, transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale " +
         "from sells inner join transaction on (transaction_date = selling_date and transaction_vin = sells_vin)" +
         "where sells_ssn ='"+ssn+"')" +
         "union" +
-        "(select transaction_vin, transaction_date, list_price, final_price, old_license_number, new_license_number, operation" +
+        "(select transaction_vin, transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale " +
         "from buys inner join transaction on (transaction_date = buying_date and transaction_vin = buys_vin)" +
         "where buys_ssn ='" +ssn+"')";
     mysql.fetchData(history, function(err, results) {
@@ -184,8 +206,7 @@ exports.getCustomerHistory = function(req, res){
 };
 
 
-exports.getAllCustomer = function(req, res){
-   // license = req.param("License");
+exports.getAllCustomers = function(req, res){
     var customer = "select * from customer";
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -203,7 +224,7 @@ exports.getAllCustomer = function(req, res){
             else {
                 res.send({
                     "status": 10,
-                    "message:": "customer search successful with empty result set!",
+                    "message:": "search returned with empty records!",
                     "profile": results
                 });
             }
