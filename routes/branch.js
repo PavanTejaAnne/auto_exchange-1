@@ -5,6 +5,7 @@ var express = require('express');
 var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 
+
 exports.getBranchById = function(req, res){
     var id = req.query.branch_id;
     var branch = "select * from company_branch where branch_id = '"+id+"'";
@@ -39,14 +40,12 @@ exports.deletebranch = function(req, res){
         if (err) {
             throw err;
         } else {
-                console.log(results);
-                res.send({
-                    "status": 200,
-                    "message:": "branch deleted successful!",
-                    "profile": results
-                });
-            // render or error
-
+            console.log(results);
+            res.send({
+                "status": 200,
+                "message:": "Branch deleted successfully",
+                "profile": results
+            });
         }
     });
 

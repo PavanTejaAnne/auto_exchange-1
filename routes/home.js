@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/branch-data', function (req, res, next) {
     if(!req.session.branch_id && !req.session.location){
-        var sql_query = "select * from company_branch where branch_id = 1";
+        var sql_query = "select * from company_branch order by rand() limit 1";
         mysql.fetchData(sql_query, function(err, results) {
             if (err) {
                 throw err;

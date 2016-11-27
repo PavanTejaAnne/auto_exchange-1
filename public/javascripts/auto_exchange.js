@@ -37,6 +37,11 @@ auto_exchange.config(function ($routeProvider) {
                 templateUrl: '/partials/transactions.html',
                 controller: 'transactions'
             })
+        .when('/thankyou',
+            {
+                templateUrl: '/partials/thankyou.html',
+                controller: 'thankyou'
+            })
         .otherwise({redirectTo: '/'});
 });
 
@@ -79,11 +84,8 @@ auto_exchange.controller('check_customer', function ($scope, $http, $window, $ro
                 console.log(JSON.stringify(data.profile));
                 $rootScope.customer = data.profile[0];
                 $rootScope.new_customer = false;
-                $window.location.href = "#/add";
-            }else {
-                $scope.error_msg = "Error fetching customer info";
-                $scope.error = true;
             }
+            $window.location.href = "#/add";
         }).error(function(error) {
             console.log("Error "+ error);
             $scope.error_msg = error;
@@ -110,19 +112,41 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
     $scope.error = false;
     $scope.success = false;
     $scope.info = false;
-    console.log("Customer - "+ JSON.stringify($scope.customer));
+
+    $scope.isDiscount = false;
+
     if($rootScope.new_customer){
         $scope.info = true;
-        $scope.info_msg = "Please add customer details for transaction";
+        $scope.info_msg = "Need to add customer details for transaction";
     }else {
-        if(!$scope.customer){
-
-        }else {
-            $scope.success = true;
-            $scope.success_msg = "Matching customer found";
-            $scope.isDisabled = true;
-        }
+        $scope.success = true;
+        $scope.success_msg = "Matching customer found";
+        $scope.isDisabled = true;
     }
+
+    $scope.checkForDiscount = function () {
+        $http({
+            method : "POST",
+            url : '/api/getCustomerHistory',
+            params: {ssn: $scope.customer.ssn},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200) {
+                console.log(JSON.stringify(data.discount));
+                if(data.discount != 0){
+                    $scope.isDiscount = true;
+                    $scope.customer.discount = data.discount;
+                }
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
 
     $scope.addTransaction = function () {
         if($rootScope.new_customer){
@@ -164,9 +188,7 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             }).success(function(data) {
                 if (data.status == 200 && data.profile.length != 0) {
                     console.log(JSON.stringify(data.profile));
-                    $scope.success = true;
-                    $scope.success_msg = "Transaction added successfully";
-                    $window.location.href = "#/add";
+                    $window.location.href = "#/thankyou";
                 }else {
                     $scope.error_msg = data.message;
                     $scope.error = true;
@@ -185,9 +207,7 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             }).success(function(data) {
                 if (data.status == 200 && data.profile.length != 0) {
                     console.log(JSON.stringify(data.profile));
-                    $scope.success = true;
-                    $scope.success_msg = "Transaction added successfully";
-                    $window.location.href = "#/add";
+                    $window.location.href = "#/thankyou";
                 }else {
                     $scope.error_msg = data.message;
                     $scope.error = true;
@@ -256,7 +276,7 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
 
     $scope.branchInfo = function () {
         $window.location.href = "#/branch-info";
-    }
+    };
 
     $scope.useBranch = function () {
         $http({
@@ -268,7 +288,7 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
             if (data.status == 200 && data.profile.length != 0) {
                 console.log(JSON.stringify(data.profile));
             }else {
-                $scope.error_msg = data.result;
+                $scope.error_msg = data.message;
                 $scope.error = true;
             }
         }).error(function(error) {
@@ -277,7 +297,29 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
             $scope.error = true;
         });
         $window.location.href = "#/";
-    }
+    };
+
+    $scope.deleteBranch = function () {
+        $http({
+            method : "POST",
+            url : '/api/deletebranch',
+            params: {branch_id: $rootScope.branch_id},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+                $scope.success = true;
+                $scope.success_msg = "Successfully deleted branch";
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
 });
 
 auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootScope) {
@@ -429,5 +471,13 @@ auto_exchange.controller('transactions', function ($scope, $http, $window, $root
         }else{
             $scope.isVin = false;
         }
+    };
+});
+
+auto_exchange.controller('thankyou', function ($scope, $http, $window, $rootScope) {
+    $scope.makeAnother = function () {
+        $rootScope.new_customer = true;
+        $rootScope.customer = {};
+        $window.location.href = "#/add";
     };
 });

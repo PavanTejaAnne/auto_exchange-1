@@ -1,5 +1,5 @@
 <div ng-include="'partials/navigation_menu.html'"></div>
-<div class="container padding-body">
+<div class="container padding-body" ng-init="checkForDiscount()">
     <div ng-include="'partials/popups.html'"></div>
     <div class="row" style="margin-top: 70px; margin-left: 20px;">
         <div class="col-md-9">
@@ -45,6 +45,12 @@
                                        ng-model="customer.address" value="customer.address" ng-disabled="isDisabled" required>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary" ng-show="isDiscount">
+                    <div class="panel-heading">Discount</div>
+                    <div class="panel-body">
+                        <label>Congratulations! you get {{ customer.discount }}% discount on this transaction</label>
                     </div>
                 </div>
                 <div class="panel panel-primary">

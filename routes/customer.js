@@ -4,10 +4,12 @@
 var express = require('express');
 var mysql = require('./../db/mysql');
 var ejs=require('ejs');
+var logger = require('../helper/logger').getLogger();
 
 exports.getCustomerBySsn = function(req, res){
     var ssn = req.query.ssn;
     var customer = "select * from customer where ssn = '" + ssn + "'";
+    logger.trace("Fetching customer by SSN "+ customer);
     mysql.fetchData(customer, function(err, results) {
             if (err) {
                 throw err;
