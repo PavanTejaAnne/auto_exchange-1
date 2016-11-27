@@ -8,7 +8,8 @@ var timeUtil = require('../helper/timeutil');
 
 exports.getTransactionByDate = function(req, res){
     var transactionDate = req.query.date;
-    transactionDate = timeUtil.formatDate(transactionDate);
+   // transactionDate = timeUtil.getCurrentDateTime(transactionDate);
+    console.log(transactionDate);
     var sql_query = "select * from transaction where transaction_date = '"+ transactionDate+ "'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
