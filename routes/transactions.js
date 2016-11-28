@@ -65,6 +65,37 @@ exports.getTransactionByVehicleId = function(req, res){
     });
 };
 
+exports.getTransactionAndCarDetailsbyVehicleID = function(req, res){
+    var vehicleID = req.query.vin;
+    var sql_query = "select *, DATE_FORMAT(transaction_date,'%Y-%m-%d') as date  from transaction where transaction_vin = '"+vehicleID+"'";
+    logger.trace("Fetching transaction by Vehicle Id "+ sql_query);
+    mysql.fetchData(sql_query, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            var sql_query_1 = "select * from car where vin  = '"+vehicleID+"'";
+            logger.trace("Fetching car by Vehicle Id "+ sql_query_1);
+            mysql.fetchData(sql_query_1, function(err, results_1) {
+                if (err) {
+                    throw err;
+                } else {
+                    console.log(results_1);
+                    res.send({
+                        "status": 200,
+                        "message:": "transaction_vehicle_id fetched by transaction successfully!",
+                        "profile": results,
+                        "profile_car_details": results_1
+                    });
+
+                }
+            });
+                console.log(results);
+
+        }
+    });
+};
+
+
 exports.setTransactionSell = function(req, res){
     var ssn = req.query.ssn;
     var vin = req.query.vin;

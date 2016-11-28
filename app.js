@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', home);
 
+app.post('/api/getTransactionAndCarDetailsbyVehicleID', transaction.getTransactionAndCarDetailsbyVehicleID);
 app.post('/api/getAllIn_Stock_Cars', in_stock_car.getAllIn_Stock_Cars);
 app.post('/api/getAllCustomers', customer.getAllCustomers);
 app.post('/api/getCustomerBySsn', customer.getCustomerBySsn);
