@@ -6,6 +6,7 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 var timeUtil = require('../helper/timeutil');
 var logger = require('../helper/logger').getLogger();
+var id = 1;
 
 exports.getTransactionByDate = function(req, res){
     var transactionDate = req.query.date;
@@ -107,7 +108,7 @@ exports.setTransactionSell = function(req, res){
     var new_license = req.query.new_license_plate;
     var year = req.query.year;
     var type = req.query.car_type;
-
+    id++;
     var branch_id = req.session.branch_id;
 
     var query_1 = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ ssn +"', '"+ branch_id +"');";
@@ -140,7 +141,7 @@ exports.setTransactionSell = function(req, res){
                     }
                 });
 
-                var query_4 = "insert into in_stock_car(in_stock_id, in_stock_vin, in_stock_price, in_stock_branch_id) values(1, '"+ vin +"', "+ final_price +", '"+ branch_id +"');" ;
+                var query_4 = "insert into in_stock_car(in_stock_id, in_stock_vin, in_stock_price, in_stock_branch_id) values('"+id+"', '"+ vin +"', "+ final_price +", '"+ branch_id +"');" ;
                 logger.trace("Inserting into in_stock_car with sql query: "+ query_4);
                 mysql.fetchData(query_4, function(err,results){
                     if(err){
@@ -178,7 +179,7 @@ exports.setTransactionSell = function(req, res){
                             }
                         });
 
-                        var query_4 = "insert into in_stock_car(in_stock_id, in_stock_vin, in_stock_price, in_stock_branch_id) values(1, '"+ vin +"', "+ final_price +", '"+ branch_id +"');" ;
+                        var query_4 = "insert into in_stock_car(in_stock_id, in_stock_vin, in_stock_price, in_stock_branch_id) values('"+id+"', '"+ vin +"', "+ final_price +", '"+ branch_id +"');" ;
                         logger.trace("Inserting into in_stock_car with sql query: "+ query_4);
                         mysql.fetchData(query_4, function(err,results){
                             if(err){
