@@ -47,6 +47,11 @@ auto_exchange.config(function ($routeProvider) {
                 templateUrl: '/partials/customers.html',
                 controller: 'customers'
             })
+        .when('/cars',
+            {
+                templateUrl: '/partials/cars.html',
+                controller: 'cars'
+            })
         .otherwise({redirectTo: '/'});
 });
 
@@ -730,3 +735,234 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
     };
 });
 /** Customers Functions  ends: Ishan **/
+
+auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
+    //console.log("cars controler");
+
+    $scope.showAllCars = false;
+
+
+    $scope.carSearchOptions = [{value: 'vehicleId', name: 'Search by VIN'}, {value: 'mfr', name: 'Search by Manufacturer'},
+        {value: 'mfr_year', name: 'Search by Mfr Year'}, {value: 'model_no', name: 'Search by Model Number'},
+        {value: 'type', name: 'Search by Type'} , {value: 'price_start', name: 'Search by starting price'},
+        {value: 'price_end', name: 'Search by ending price'}];
+
+    $scope.onOptionChange = function (searchBy) {
+        console.log("Car Option changed "+ searchBy);
+        $scope.searchBy = searchBy;
+        $scope.searchText = '';
+    };
+
+    $http.post('api/getAllIn_Stock_Cars').then(function (result) {
+        //  console.log(JSON.stringify(result.data.profile));
+        $scope.showAllCars = true;
+      //  $scope.showOtherSearches = true;
+        $scope.cars = result.data.profile;
+
+    });
+
+    $scope.getCarHistory =function (vehicleId) {
+        $scope.showAllCars = false;
+        $http({
+            method : "POST",
+            url : '/api/getTransactionAndCarDetailsbyVehicleID',
+            params: {vin: vehicleId},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+                $scope.carHistory = data.profile;
+            }else {
+                $scope.error_msg = data.result;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+
+
+    $scope.searchCar = function () {
+        $scope.showAllCars = true   ;
+        console.log("Searchby = "+ $scope.searchBy + "   searchtext "+ $scope.searchText);
+        if($scope.searchBy == 'vehicleId'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getIn_Stock_Car',
+                    params: {Vehicle_ID: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.cars = data.profile;
+
+                    } else {
+                        $scope.error_msg = "Car with VIN " +$scope.searchText+" not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "VIN cannot be blank";
+            }
+        }else if($scope.searchBy == 'mfr'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getIn_Stock_Car',
+                    params: {Manufacturer:$scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.cars = data.profile;
+
+                    } else {
+                        $scope.error_msg = "Car with Manufacturer not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "Name cannot be blank";
+            }
+        }  else if($scope.searchBy == 'mfr_year'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getIn_Stock_Car',
+                    params: {manufactured_year: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.cars = data.profile;
+
+                    } else {
+                        $scope.error_msg = "Car with manufactured year not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "Manufactured year cannot be blank";
+            }
+        }  else if($scope.searchBy == 'model_no'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getIn_Stock_Car',
+                    params: {model_no: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.cars = data.profile;
+
+                    } else {
+                        $scope.error_msg = "Car with model number not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "Car with model number cannot be blank";
+            }
+        } else if($scope.searchBy == 'type'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getIn_Stock_Car',
+                    params: {car_type: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.cars = data.profile;
+
+                    } else {
+                        $scope.error_msg = "Car with type not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "Type cannot be blank";
+            }
+        } else if($scope.searchBy == 'price_start'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getIn_Stock_Car',
+                    params: {In_Stock_price_start: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.cars = data.profile;
+
+                    } else {
+                        $scope.error_msg = "Car with price start not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "Price start cannot be blank";
+            }
+        }  else if($scope.searchBy == 'price_end'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getIn_Stock_Car',
+                    params: {In_Stock_price_end: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.cars = data.profile;
+
+                    } else {
+                        $scope.error_msg = "Car with price end not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "Price end cannot be blank";
+            }
+        }
+    };
+});

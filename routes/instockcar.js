@@ -56,28 +56,28 @@ exports.getInStockCar = function(req, res){
     var bool_In_Stock_price_end = false;
     var bool_In_Stock_branch_id = false;
 
-    if(Vehicle_ID != ""){
+    if(Vehicle_ID != "" && Vehicle_ID != undefined){
         bool_Vehicle_ID = true;
     }
-    if(Manufacturer != ""){
+    if(Manufacturer != "" && Manufacturer != undefined){
         bool_Manufacturer = true;
     }
-    if(manufactured_year != ""){
+    if(manufactured_year != "" && manufactured_year != undefined){
         bool_manufactured_year = true;
     }
-    if(model_no != ""){
+    if(model_no != "" && model_no != undefined){
         bool_model_no = true;
     }
-    if(car_type != ""){
+    if(car_type != "" && car_type != undefined){
         bool_car_type = true;
     }
-    if(In_Stock_price_start != ""){
+    if(In_Stock_price_start != "" || In_Stock_price_start != undefined){
         bool_In_Stock_price_start = true;
     }
-    if(In_Stock_price_end != ""){
+    if(In_Stock_price_end != "" && In_Stock_price_end != undefined){
         bool_In_Stock_price_end = true;
     }
-    if(In_Stock_branch_id != ""){
+    if(In_Stock_branch_id != "" && In_Stock_branch_id != undefined){
         bool_In_Stock_branch_id = true;
     }
     var sql_query = "select * from car, in_stock_car where vin = in_stock_vin";
@@ -85,7 +85,7 @@ exports.getInStockCar = function(req, res){
         sql_query = sql_query + " and vin = '"+Vehicle_ID+"'";
     }
     if(bool_Manufacturer){
-        sql_query = sql_query + " and manufacture = '"+Manufacturer+"'";
+        sql_query = sql_query + " and manufacturer = '"+Manufacturer+"'";
     }
     if(bool_manufactured_year){
         sql_query = sql_query + " and manufactured_year = '"+manufactured_year+"'";
@@ -107,7 +107,7 @@ exports.getInStockCar = function(req, res){
     }
 
 
-    console.log(sql_query);
+    console.log("bc :"+sql_query);
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;

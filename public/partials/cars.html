@@ -1,0 +1,110 @@
+<div ng-include="'partials/navigation_menu.html'"></div>
+<div class="container padding-body" ng-init="getAllBranches()">
+    <div ng-include="'partials/popups.html'"></div>
+    <div class="row" style="margin-top: 70px; margin-left: 20px;">
+        <div class="col-md-11">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Cars</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <select class="form-control" ng-change="onOptionChange(searchBy)" ng-model="searchBy"
+                                        required>
+                                    <option disabled value="">Select</option>
+                                    <option ng-repeat="option in carSearchOptions" ng-value="option.value">{{
+                                        option.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" name="search" placeholder="Search..." class="form-control"
+                                       ng-model="searchText" value="" required="required">
+                            </div>
+
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary" ng-click="searchCar()">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                               <h4>Enter Vehicle ID :</h4>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="text" name="search" placeholder="Search..." class="form-control"
+                                       ng-model="vehicleId" value="" required="required">
+                            </div>
+
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary" ng-click="getCarHistory(vehicleId)">Get History</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-11" ng-show="showAllCars">
+            <div class="panel panel-primary">
+                <div class="panel-heading">All Instock Cars</div>
+                <div class="panel-body">
+
+                    <div class="table-responsive" style="margin-top: 15px">
+                        <table class="table table-bordered">
+                            <tr class="table-heading">
+                                <td>VIN</td>
+                                <td>Price</td>
+                                <td>Branch ID</td>
+                            </tr>
+                            <tr class="clickable-row" ng-repeat="car in cars">
+                                <td>{{ car.in_stock_vin }}</td>
+                                <td>{{ car.in_stock_price }}</td>
+                                <td>{{ car.in_stock_branch_id }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-11" ng-hide="showAllCars">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Transaction History for VIN : {{carHistory[0].transaction_vin}}</div>
+                <div class="panel-body">
+
+                    <div class="table-responsive" style="margin-top: 15px">
+                        <table class="table table-bordered">
+                            <tr class="table-heading">
+                                <td>Transaction Date</td>
+                                <td>List Price</td>
+                                <td>Final Price</td>
+                                <td>Old License Plate Number</td>
+                                <td>New License Plate Number</td>
+                                <td>Action</td>
+                            </tr>
+                            <tr class="clickable-row" ng-repeat="car in carHistory">
+                                <td>{{ car.date }}</td>
+                                <td>{{ car.list_price }}</td>
+                                <td>{{ car.final_price }}</td>
+                                <td>{{ car.old_license_plate }}</td>
+                                <td>{{ car.new_license_plate }}</td>
+                                <td>
+                                    <span ng-if ="car.is_sale">Bought from customer </span>
+                                    <span ng-if ="!car.is_sale">Sold to customer </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
