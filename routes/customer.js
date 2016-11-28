@@ -14,22 +14,42 @@ exports.getCustomerBySsn = function(req, res){
             if (err) {
                 throw err;
             } else {
-                if (results.length > 0) {
-                    console.log(results);
-                    res.send({
-                        "status": 200,
-                        "message:": "customer search successful!",
-                        "profile": results
-                    });
-                }
+                var customer_1 = "select * from cus_mobile where cus_mobile_ssn = '" + ssn + "'";
+                logger.trace("Fetching customer mobile number by SSN "+ customer_1);
+                mysql.fetchData(customer_1, function(err, results_1) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        var customer_2 = "select * from cus_email where cus_email_ssn = '" + ssn + "'";
+                        logger.trace("Fetching customer email by SSN "+ customer_2);
+                        mysql.fetchData(customer_2, function(err, results_2) {
+                            if (err) {
+                                throw err;
+                            } else {
+                                console.log(results_2);
+                                res.send({
+                                    "status": 200,
+                                    "message:": "customer search successful!",
+                                    "profile": results,
+                                    "profile_mobile": results_1,
+                                    "profile_email": results_2
+                                });
+                                // render or error
+
+                            }
+                        });
+
+                        console.log(results_1);
+
+                        // render or error
+
+                    }
+                });
+
+                console.log(results);
+
                 // render or error
-                else {
-                    res.send({
-                        "status": 10,
-                        "message:": "search returned with empty records!",
-                        "profile": results
-                    });
-                }
+
             }
     });
 };

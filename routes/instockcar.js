@@ -6,6 +6,35 @@ var mysql = require('./../db/mysql');
 var ejs=require('ejs');
 var logger = require('../helper/logger').getLogger();
 
+exports.getAllIn_Stock_Cars = function(req, res){
+    //var license = req.query.license;
+    var customer = "select * from in_stock_car";
+    logger.trace("Fetching all in_stock_cars");
+    mysql.fetchData(customer, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            if (results.length > 0) {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "in_stock_cars search successful!",
+                    "profile": results
+                });
+            }
+            // render or error
+            else {
+                res.send({
+                    "status": 10,
+                    "message:": "search returned with empty records!",
+                    "profile": results
+                });
+            }
+        }
+    });
+};
+
+
 exports.getInStockCar = function(req, res){
     var Vehicle_ID = req.query.Vehicle_ID;
     var Manufacturer = req.query.Manufacturer;
