@@ -81,7 +81,7 @@ auto_exchange.controller('welcome', function ($scope, $http, $window, $rootScope
 });
 
 auto_exchange.controller('check_customer', function ($scope, $http, $window, $rootScope) {
-    $rootScope.customer = {};
+    $scope.customer = {};
     $scope.error = false;
     $scope.checkCustomer = function () {
         $http({
@@ -90,10 +90,13 @@ auto_exchange.controller('check_customer', function ($scope, $http, $window, $ro
             params: {ssn: $scope.customer.ssn},
             headers : {'Content-Type': 'application/json'}
         }).success(function(data) {
-            if (data.status == 200) {
-                console.log(JSON.stringify(data.profile));
+            if (data.status == 200 && data.profile.length > 0) {
+                console.log(JSON.stringify("Ouptupt" + data.profile));
                 $rootScope.customer = data.profile[0];
                 $rootScope.new_customer = false;
+            }else{
+                $rootScope.customer = {};
+                $rootScope.new_customer = true;
             }
             $window.location.href = "#/add";
         }).error(function(error) {
@@ -142,7 +145,7 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
         $http({
             method : "POST",
             url : '/api/getCustomerHistory',
-            params: {ssn: $scope.customer.ssn},
+            params: {ssn: $rootScope.customer.ssn},
             headers : {'Content-Type': 'application/json'}
         }).success(function(data) {
             if (data.status == 200) {
@@ -722,12 +725,16 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                 $scope.customer = data.profile[0];
                 $scope.primary_mobile = data.profile_mobile[0].mobile_no;
                 $scope.primary_email = data.profile_email[0].email;
+                $scope.old_pri_mobile = $scope.primary_mobile;
+                $scope.old_pri_email = $scope.primary_email;
 
                 if(data.profile_email.length > 0){
                     $scope.secondary_email = data.profile_email[1].email;
+                    $scope.old_sec_email = $scope.secondary_email;
                 }
                 if(data.profile_mobile.length > 0){
                     $scope.secondary_mobile = data.profile_mobile[1].mobile_no;
+                    $scope.old_sec_mobile = $scope.secondary_mobile;
                 }
 
             } else {
@@ -770,11 +777,14 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
     };
 
     $scope.updateCustomerEmail = function () {
+        console.log('New '+ $scope.primary_email + " old "+ $scope.old_pri_email);
+        console.log('New '+ $scope.secondary_email + " old "+ $scope.old_sec_email);
         $http({
             method: "POST",
             url: '/api/updateCustomerEmail',
             params: {ssn: $scope.customer.ssn, primary_email: $scope.primary_email,
-                secondary_email: $scope.secondary_email},
+                secondary_email: $scope.secondary_email, old_pri_email: $scope.old_pri_email,
+                old_sec_email: $scope.old_sec_email},
             headers: {'Content-Type': 'application/json'}
         }).success(function (data) {
             if (data.status == 200 && data.profile.length != 0) {
@@ -792,11 +802,14 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
     };
 
     $scope.updateCustomerMobile = function () {
+        console.log('New '+ $scope.primary_mobile + " old "+ $scope.old_pri_mobile);
+        console.log('New '+ $scope.secondary_mobile + " old "+ $scope.old_sec_mobile);
         $http({
             method: "POST",
             url: '/api/updateCustomerPhoneNo',
             params: {ssn: $scope.customer.ssn, primary_mobile: $scope.primary_mobile,
-                secondary_mobile: $scope.secondary_mobile},
+                secondary_mobile: $scope.secondary_mobile, old_pri_mobile: $scope.old_pri_mobile,
+                old_sec_mobile: $scope.old_sec_mobile},
             headers: {'Content-Type': 'application/json'}
         }).success(function (data) {
             if (data.status == 200 && data.profile.length != 0) {
