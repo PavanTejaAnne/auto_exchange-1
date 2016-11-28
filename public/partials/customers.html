@@ -99,7 +99,7 @@
 
     <div class="row" style="margin-top: 70px; margin-left: 20px;" ng-hide="showSearchPage">
         <div class="col-md-9">
-            <form class="form-horizontal form-item-details">
+            <form class="form-horizontal form-item-details" ng-submit="upadateCustomer()">
                 <div class="panel panel-primary">
                     <div class="panel-heading">Customer detail</div>
                     <div class="panel-body">
@@ -165,7 +165,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-lg-3 col-lg-offset-9">
-                        <button type="submit" class="form-control btn btn-primary" ng-click="upadateCustomer()">Updates</button>
+                        <input type="submit" class="form-control btn btn-primary" value="Update">
                     </div>
                 </div>
 

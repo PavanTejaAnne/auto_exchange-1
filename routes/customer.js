@@ -152,7 +152,7 @@ exports.getCustomerByEmail = function(req, res){
 exports.getCustomerByPhone = function(req, res){
     var phone = req.query.phone;
     var customer = "select * from customer where ssn in " +
-        "(select distinct cus_mobile_ssn from cus_mobile where mobile_no = '"+phone+"')";
+        "(select distinct cus_mobile_ssn from cus_mobile where mobile_no = '"+ phone +"')";
     logger.trace("Fetching customer by Phone "+ customer);
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -399,109 +399,149 @@ exports.updateCustomerInfo = function(req, res){
 
 exports.setCustomerPhoneNo = function(req, res){
     var ssn = req.query.ssn;
-    var mobileNo = req.query.mobile;
-    var customer = "insert into cus_mobile values ('"+ ssn +"', '"+ mobileNo +"')";
-    mysql.fetchData(customer, function(err, results) {
+    var primary_mobile = req.query.primary_mobile;
+    var secondary_mobile = req.query.secondary_mobile;
+    var primary_sql = "insert into cus_mobile values ('"+ ssn +"', '"+ primary_mobile +"')";
+    var sec_sql = "insert into cus_mobile values ('"+ ssn +"', '"+ secondary_mobile +"')";
+    mysql.fetchData(primary_sql, function(err, results) {
         if (err) {
             throw err;
         } else {
             console.log(results);
-            res.send({
-                "status": 200,
-                "message:": "new phone added!",
-                "profile": results
-            });
+            logger.trace("Primary mobile inserted "+ primary_sql);
         }
     });
+
+    if(secondary_mobile != undefined && secondary_mobile != ''){
+        mysql.fetchData(sec_sql, function(err, results) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(results);
+                logger.trace("Secondary mobile inserted "+ sec_sql);
+            }
+        });
+    }
 };
 
 exports.setCustomerEmail = function(req, res){
     var ssn = req.query.ssn;
-    var email = req.query.email;
-    var customer = "insert into cus_email values ('"+ ssn +"', '"+ email +"')";
-    mysql.fetchData(customer, function(err, results) {
+    var primary_email = req.query.primary_email;
+    var secondary_email = req.query.secondary_email;
+    var primary_sql = "insert into cus_email values ('"+ ssn +"', '"+ primary_email +"')";
+    var sec_sql = "insert into cus_email values ('"+ ssn +"', '"+ secondary_email +"')";
+
+    mysql.fetchData(primary_sql, function(err, results) {
         if (err) {
             throw err;
         } else {
             console.log(results);
-            res.send({
-                "status": 200,
-                "message:": "new Email added!",
-                "profile": results
-            });
+            logger.trace("Primary email inserted "+ primary_sql);
         }
     });
+
+    if(secondary_email != undefined && secondary_email != ''){
+        mysql.fetchData(sec_sql, function(err, results) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(results);
+                logger.trace("Secondary email inserted "+ sec_sql);
+            }
+        });
+    }
 };
 
 exports.updateCustomerPhoneNo = function(req, res){
-    SSN = req.query.SSN;
-    Mobile_No = req.query.Mobile_No;
-    var customer = "update cus_mobile set mobile_no = '"+ Mobile_No+"' where cus_mobile_ssn = '"+SSN+"'";
-    mysql.fetchData(customer, function(err, results) {
+    var ssn = req.query.ssn;
+    var primary_mobile = req.query.primary_mobile;
+    var secondary_mobile = req.query.secondary_mobile;
+    var primary_sql = "update cus_mobile set mobile_no = '"+ primary_mobile+"' where cus_mobile_ssn = '"+ssn+"'";
+    var sec_sql = "update cus_mobile set mobile_no = '"+ primary_mobile+"' where cus_mobile_ssn = '"+ssn+"'";
+    mysql.fetchData(primary_sql, function(err, results) {
         if (err) {
             throw err;
         } else {
             console.log(results);
-            res.send({
-                "status": 200,
-                "message:": "phone updated!",
-                "profile": results
-            });
+            logger.trace("Primary mobile updated "+ primary_sql);
         }
     });
+
+    if(secondary_mobile != undefined && secondary_mobile != ''){
+        mysql.fetchData(sec_sql, function(err, results) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(results);
+                logger.trace("Secondary mobile updated "+ sec_sql);
+            }
+        });
+    }
 };
 
 
 exports.updateCustomerEmail = function(req, res){
-    SSN = req.query.SSN;
-    Email = req.query.Email;
-    var customer = "update cus_email set email = '"+ Email +"' where cus_email_ssn = '"+SSN+"'";
-    mysql.fetchData(customer, function(err, results) {
+    var ssn = req.query.SSN;
+    var primary_email = req.query.primary_email;
+    var secondary_email = req.query.secondary_email;
+    var primary_sql = "update cus_email set email = '"+ primary_email +"' where cus_email_ssn = '"+ssn+"'";
+    var sec_sql = "update cus_email set email = '"+ secondary_email +"' where cus_email_ssn = '"+ssn+"'";
+
+    mysql.fetchData(primary_sql, function(err, results) {
         if (err) {
             throw err;
         } else {
             console.log(results);
-            res.send({
-                "status": 200,
-                "message:": "email updated!",
-                "profile": results
-            });
+            logger.trace("Primary email updated "+ primary_sql);
         }
     });
+
+    if(secondary_email != undefined && secondary_email != ''){
+        mysql.fetchData(sec_sql, function(err, results) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(results);
+                logger.trace("Secondary email updated "+ sec_sql);
+            }
+        });
+    }
 };
 
 exports.deleteCustomerEmail = function(req, res){
-    SSN = req.query.SSN;
-    Email = req.query.Email;
-    var customer = "delete cus_email where cus_email_ssn = '"+SSN+"' and email = '"+ Email +"'";
-    mysql.fetchData(customer, function(err, results) {
+    var ssn = req.query.ssn;
+    var email = req.query.email;
+    var customer = "delete cus_email where cus_email_ssn = '"+ssn+"' and email = '"+ email +"'";
+    mysql.fetchData(primary_sql, function(err, results) {
         if (err) {
             throw err;
         } else {
             console.log(results);
-            res.send({
-                "status": 200,
-                "message:": "email deleted!",
-                "profile": results
-            });
+            logger.trace("Email deleted "+ customer);
+        }
+    });
+
+    mysql.fetchData(sec_sql, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            console.log(results);
+            logger.trace("Secondary email inserted "+ sec_sql);
         }
     });
 };
 
 exports.deleteCustomerPhoneNo = function(req, res){
-    SSN = req.query.SSN;
-    mobile_no = req.query.mobile_no;
-    var customer = "delete cus_mobile where cus_email_ssn = '"+SSN+"' and mobile_no = '"+ mobile_no +"'";
-    mysql.fetchData(customer, function(err, results) {
+    var ssn = req.query.ssn;
+    var mobile = req.query.mobile;
+    var primary_sql = "delete cus_mobile where cus_email_ssn = '"+ssn+"' and mobile_no = '"+ mobile +"'";
+
+    mysql.fetchData(primary_sql, function(err, results) {
         if (err) {
             throw err;
         } else {
             console.log(results);
-            res.send({
-                "status": 200,
-                "message:": "email updated!",
-                "profile": results
-            });
+            logger.trace("Mobile number deleted "+ primary_sql);
         }
     });
 };

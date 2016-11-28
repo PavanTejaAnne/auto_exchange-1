@@ -93,7 +93,7 @@ CREATE TABLE buys(
 CREATE TABLE cus_mobile (
     cus_mobile_ssn char(9) not null,
     mobile_no char(10) not null,
-    primary key(cus_mobile_ssn),
+    primary key(cus_mobile_ssn, mobile_no),
     constraint fk_cus_mobile_ssn foreign key(cus_mobile_ssn) references customer(ssn) on delete cascade on update cascade
 );
 
@@ -101,7 +101,7 @@ CREATE TABLE cus_mobile (
 CREATE TABLE cus_email(
     cus_email_ssn char(9) not null,
     email char(60) not null,
-    primary key(cus_email_ssn),
+    primary key(cus_email_ssn, email),
     constraint fk_cus_email_ssn foreign key(cus_email_ssn) references customer(ssn) on delete cascade on update cascade
 );
 

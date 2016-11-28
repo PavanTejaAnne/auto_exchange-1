@@ -89,11 +89,8 @@ auto_exchange.controller('check_customer', function ($scope, $http, $window, $ro
                 console.log(JSON.stringify(data.profile));
                 $rootScope.customer = data.profile[0];
                 $rootScope.new_customer = false;
-                $window.location.href = "#/add";
-            }else {
-                $scope.error_msg = "Error fetching customer info";
-                $scope.error = true;
             }
+            $window.location.href = "#/add";
         }).error(function(error) {
             console.log("Error "+ error);
             $scope.error_msg = error;
@@ -116,25 +113,82 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
     $scope.gender = [{value: 'M', name: 'M'}, {value: 'F', name: 'F'}];
     $scope.cars = getCars();
     $scope.years = getYears();
+    $scope.car_types = [{value: 'Hatchback', name: 'Hatchback'}, {value: 'Sedan', name: 'Sedan'},
+        {value: 'Wagon', name: 'Wagon'}, {value: 'Coupe', name: 'Coupe'},
+        {value: 'Convertible', name: 'Convertible'}, {value: 'Sports car', name: 'Sports car'},
+        {value: 'Truck', name: 'Truck'}];
 
     $scope.error = false;
     $scope.success = false;
     $scope.info = false;
-    console.log("Customer - "+ JSON.stringify($scope.customer));
+
+    $scope.isDiscount = false;
+
     if($rootScope.new_customer){
         $scope.info = true;
-        $scope.info_msg = "Please add customer details for transaction";
+        $scope.info_msg = "Need to add customer details for transaction";
     }else {
-        if(!$scope.customer){
-
-        }else {
-            $scope.success = true;
-            $scope.success_msg = "Matching customer found";
-            $scope.isDisabled = true;
-        }
+        $scope.success = true;
+        $scope.success_msg = "Matching customer found";
+        $scope.isDisabled = true;
     }
 
+    $scope.checkForDiscount = function () {
+        $http({
+            method : "POST",
+            url : '/api/getCustomerHistory',
+            params: {ssn: $scope.customer.ssn},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200) {
+                console.log(JSON.stringify(data.discount));
+                if(data.discount != 0){
+                    $scope.isDiscount = true;
+                    $scope.customer.discount = data.discount;
+                }
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
     $scope.addTransaction = function () {
+        if($rootScope.new_customer){
+            $scope.addCustomer();
+        }else {
+            $scope.addVehicle();
+        }
+    };
+
+    $scope.addCustomer = function () {
+        $http({
+            method : "POST",
+            url : '/api/addNewCustomer',
+            params: $scope.customer,
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+                $scope.addVehicle();
+                $scope.addMobile();
+                $scope.addEmail();
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+    $scope.addVehicle = function () {
         $scope.vehicle.ssn = $scope.customer.ssn;
         if($scope.vehicle.type == 'buy'){
             $http({
@@ -145,7 +199,7 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             }).success(function(data) {
                 if (data.status == 200 && data.profile.length != 0) {
                     console.log(JSON.stringify(data.profile));
-
+                    $window.location.href = "#/thankyou";
                 }else {
                     $scope.error_msg = data.message;
                     $scope.error = true;
@@ -164,7 +218,7 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             }).success(function(data) {
                 if (data.status == 200 && data.profile.length != 0) {
                     console.log(JSON.stringify(data.profile));
-
+                    $window.location.href = "#/thankyou";
                 }else {
                     $scope.error_msg = data.message;
                     $scope.error = true;
@@ -175,7 +229,48 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
                 $scope.error = true;
             });
         }
+    };
 
+    $scope.addMobile = function () {
+        $http({
+            method : "POST",
+            url : '/api/setCustomerPhoneNo',
+            params: {ssn: $scope.customer.ssn, primary_mobile: $scope.customer.primary_mobile,
+                secondary_mobile: $scope.customer.secondary_mobile},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+    $scope.addEmail = function () {
+        $http({
+            method : "POST",
+            url : '/api/setCustomerEmail',
+            params: {ssn: $scope.customer.ssn, primary_email: $scope.customer.primary_email,
+                secondary_email: $scope.customer.secondary_email},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
     };
 
     $scope.getModels = function (carId) {
@@ -184,7 +279,6 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
         $scope.models = getCars().manufacturer[carId].models;
     }
 });
-
 
 auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope) {
     $scope.branches = {};
@@ -234,7 +328,7 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
 
     $scope.branchInfo = function () {
         $window.location.href = "#/branch-info";
-    }
+    };
 
     $scope.useBranch = function () {
         $http({
@@ -246,7 +340,7 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
             if (data.status == 200 && data.profile.length != 0) {
                 console.log(JSON.stringify(data.profile));
             }else {
-                $scope.error_msg = data.result;
+                $scope.error_msg = data.message;
                 $scope.error = true;
             }
         }).error(function(error) {
@@ -256,6 +350,28 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
         });
         $window.location.href = "#/";
     }
+
+    $scope.deleteBranch = function () {
+        $http({
+            method : "POST",
+            url : '/api/deletebranch',
+            params: {branch_id: $rootScope.branch_id},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+                $scope.success = true;
+                $scope.success_msg = "Successfully deleted branch";
+            }else {
+                $scope.error_msg = data.message;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
 });
 
 auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootScope) {
@@ -281,7 +397,7 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
                 console.log(JSON.stringify(data.profile));
                 $scope.branch = data.profile[0];
             } else {
-                $scope.error_msg = data.result;
+                $scope.error_msg = data.message;
                 $scope.error = true;
             }
         }).error(function (error) {
@@ -340,7 +456,7 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
 auto_exchange.controller('transactions', function ($scope, $http, $window, $rootScope) {
     $scope.searchOptions = [{value: 'vin', name: 'Search by VIN'}, {value: 'date', name: 'Search by date'}];
     $scope.transactions = {};
-    $scope.searchBy = '';
+    $scope.searchBy = 'vin';
     $scope.searchText = '';
     $scope.isVin = true;
 
@@ -356,7 +472,7 @@ auto_exchange.controller('transactions', function ($scope, $http, $window, $root
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
                         console.log(JSON.stringify(data.profile));
-
+                        $scope.transactions = data.profile;
                     } else {
                         $scope.error_msg = "Transaction with VIN not found";
                         $scope.error = true;
@@ -603,7 +719,7 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                 $scope.primary_email = data.profile_email[0].email;
 
             } else {
-                $scope.error_msg = "customer with license not found";
+                $scope.error_msg = "customer with ssn not found";
                 $scope.error = true;
             }
         }).error(function (error) {

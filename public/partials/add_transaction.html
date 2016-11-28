@@ -3,7 +3,7 @@
     <div ng-include="'partials/popups.html'"></div>
     <div class="row" style="margin-top: 70px; margin-left: 20px;">
         <div class="col-md-9">
-            <form class="form-horizontal form-item-details">
+            <form class="form-horizontal form-item-details" ng-submit="addTransaction()">
                 <div class="panel panel-primary">
                     <div class="panel-heading">Customer detail</div>
                     <div class="panel-body">
@@ -50,6 +50,16 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <div class="col-lg-5">
+                                <input type="text" name="sec_email" placeholder="Secondary Email" class="form-control"
+                                       ng-model="customer.secondary_email" value="customer.secondary_email" ng-disabled="isDisabled">
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" name="sec_mobile" maxlength="10" placeholder="Secondary Mobile" class="form-control"
+                                       ng-model="customer.secondary_mobile" value="customer.secondary_mobile" ng-disabled="isDisabled">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-lg-8">
                                 <input type="text" pattern="\w+ \w+.*" maxlength="40" name="" placeholder="Address" class="form-control"
                                        ng-model="customer.address" value="customer.address" ng-disabled="isDisabled" required>
@@ -72,7 +82,8 @@
                                     <span class="input-group-addon">
                                         <input type="radio" name="format" value="sale" ng-model="vehicle.type">
                                     </span>
-                                    <label class="control-label" style="margin-left: 5px">Sale</label>
+                                    <!--<label class="control-label" style="margin-left: 5px">Sale</label>-->
+                                    <label class="control-label" style="margin-left: 5px">Buying from customer</label>
                                 </div><!-- /input-group -->
                             </div>
 
@@ -81,7 +92,8 @@
                                     <span class="input-group-addon">
                                         <input type="radio" name="format" value="buy" ng-model="vehicle.type">
                                     </span>
-                                    <label class="control-label" style="margin-left: 5px">Buy</label>
+                                    <!--<label class="control-label" style="margin-left: 5px">Buy</label>-->
+                                    <label class="control-label" style="margin-left: 5px">Selling to customer</label>
                                 </div><!-- /input-group -->
                             </div>
                         </div>
@@ -142,7 +154,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-lg-3 col-lg-offset-9">
-                        <button type="submit" class="form-control btn btn-primary" ng-click="addTransaction()">Add</button>
+                        <input type="submit" class="form-control btn btn-primary" value="Add">
                     </div>
                 </div>
             </form>

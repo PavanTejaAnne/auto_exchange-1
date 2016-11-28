@@ -2,7 +2,7 @@
 <div class="container padding-body">
     <div class="row" style="margin-top: 70px; margin-left: 20px;">
         <div class="col-md-9">
-            <form class="form-horizontal form-item-details">
+            <form class="form-horizontal form-item-details" ng-submit="checkCustomer()">
                 <div class="panel panel-primary">
                     <div class="panel-heading">Check if customer exists</div>
                     <div class="panel-body">
@@ -12,7 +12,7 @@
                                        string-to-number ng-model="customer.ssn" value="customer.ssn" required>
                             </div>
                             <div class="col-lg-1">
-                                <button class="btn btn-primary" ng-click="checkCustomer()">Check</button>
+                                <input type="submit" class="btn btn-primary" value="Check">
                             </div>
                             <div class="col-lg-1" style="margin-left: 5px">
                                 <button class="btn btn-primary" ng-click="newCustomer()">New</button>
