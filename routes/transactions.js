@@ -210,8 +210,25 @@ exports.setTransactionBuy = function(req, res){
     var new_license = req.query.new_license_plate;
 
     var branch_id = req.session.branch_id;
+    var bool_ins = true;
 
-    var query_1 = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('"+ ssn +"', '"+ branch_id +"');";
+    var in_stock_check_query = "select * from in_stock_car where in_stock_vin = '" + vin + "'";
+    logger.trace("checking if the vehicle id is valide: "+ in_stock_check_query);
+    mysql.fetchData(in_stock_check_query, function(err,results_205){
+        if(err){
+            throw err;
+        } else {
+            if(results_205.length == 0){
+                console.log("bhai");
+                res.send({
+                    "status": 10,
+                    "message:": "Vehicle id incorrect!",
+                    "profile": results_205
+                });
+            } else {
+
+
+        var query_1 = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('"+ ssn +"', '"+ branch_id +"');";
     logger.trace("Inserting into buys_from with sql query: "+ query_1);
     mysql.fetchData(query_1, function(err,results){
         if(err){
@@ -248,5 +265,10 @@ exports.setTransactionBuy = function(req, res){
                 "profile": results
             });
         }
+    });
+
+            }
+        }
+
     });
 };
