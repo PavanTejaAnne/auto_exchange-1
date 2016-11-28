@@ -35,13 +35,13 @@ CREATE TABLE car(
 
 CREATE TABLE in_stock_car(
     in_stock_vin char(17) not null,
-    in_stock_id int not null,
+    in_stock_id int not null auto_increment,
     in_stock_price float not null,
     in_stock_branch_id int not null,
     primary key(in_stock_vin, in_stock_id),
     constraint fk_in_stock_branch_id foreign key(in_stock_branch_id) references company_branch(branch_id) on delete cascade on update cascade,
     constraint fk_in_stock_vin foreign key(in_stock_vin) references car(vin) on delete cascade on update cascade
-);
+)ENGINE=MyISAM;
 
 CREATE TABLE transaction(
     transaction_vin char(17) not null,
