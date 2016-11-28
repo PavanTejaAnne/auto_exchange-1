@@ -1,0 +1,178 @@
+<div ng-include="'partials/navigation_menu.html'"></div>
+<div class="container padding-body" ng-init="getAllBranches()">
+    <div ng-include="'partials/popups.html'"></div>
+    <div class="row" style="margin-top: 70px; margin-left: 20px;" ng-show="showSearchPage">
+        <div class="col-md-11">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Customers</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <select class="form-control" ng-change="onOptionChange(searchBy)" ng-model="searchBy" required>
+                                    <option disabled value="">Select</option>
+                                    <option ng-repeat="option in custSearchOptions" ng-value="option.value">{{ option.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" name="search" placeholder="Search..." class="form-control"
+                                       ng-model="searchText" value="" required>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary" ng-click="searchCustomer()">Search</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+            </div>
+
+        <div class="col-md-11" ng-show="showAllCust">
+            <div class="panel panel-primary">
+                <div class="panel-heading">All Customers</div>
+                <div class="panel-body">
+
+                     <div class="table-responsive" style="margin-top: 15px">
+                          <table class="table table-bordered">
+                              <tr class="table-heading">
+                                  <td>SSN</td>
+                                  <td>First Name</td>
+                                  <td>Last Name</td>
+                                  <td>License Number</td>
+                                  <td>Age</td>
+                                  <td>Gender</td>
+                                  <td>Address</td>
+                                  <td>Edit Details</td>
+
+                              </tr>
+                              <tr class="clickable-row" ng-repeat="customer in customers">
+                                  <td>{{ customer.ssn }}</td>
+                                  <td>{{ customer.first_name}}</td>
+                                  <td>{{ customer.last_name }}</td>
+                                  <td>{{ customer.driving_license_number }}</td>
+                                  <td>{{ customer.age }}</td>
+                                  <td>{{ customer.gender }}</td>
+                                  <td>{{ customer.address }}</td>
+                                  <td> <div class="col-lg-2 ">
+                                      <button class="btn btn-primary" ng-click="editCustomer(customer.ssn)">Edit</button>
+                                  </div>
+                                  </td>
+                              </tr>
+                          </table>
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11" ng-hide="showAllCust">
+            <div class="panel panel-primary">
+                <div class="panel-heading">All Customers</div>
+                <div class="panel-body">
+
+                    <div class="table-responsive" style="margin-top: 15px">
+                        <table class="table table-bordered">
+                            <tr class="table-heading">
+                                <td>SSN</td>
+                                <td>First Name</td>
+                                <td>Last Name</td>
+                                <td>License Number</td>
+                                <td>Age</td>
+                                <td>Gender</td>
+                                <td>Address</td>
+                            </tr>
+                            <tr class="clickable-row" ng-repeat="customer in customers">
+                                <td>{{ customer.ssn }}</td>
+                                <td>{{ customer.first_name}}</td>
+                                <td>{{ customer.last_name }}</td>
+                                <td>{{ customer.driving_license_number }}</td>
+                                <td>{{ customer.age }}</td>
+                                <td>{{ customer.gender }}</td>
+                                <td>{{ customer.address }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    <div class="row" style="margin-top: 70px; margin-left: 20px;" ng-hide="showSearchPage">
+        <div class="col-md-9">
+            <form class="form-horizontal form-item-details">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Customer detail</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-lg-5">
+                                <input type="text" name="ssn"  class="form-control"
+                                       string-to-number ng-model="customer.ssn" value="customer.ssn" requiredng-disabled="isDisabled" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-5">
+                                <input type="text" name="firstname" placeholder="First name" class="form-control"
+                                       ng-model="customer.first_name" value="customer.first_name" required ng-disabled="isDisabled">
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" name="lastname" placeholder="Last name" class="form-control"
+                                       ng-model="customer.last_name" value="customer.last_name" required ng-disabled="isDisabled">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-5">
+                                <input type="text" name="" placeholder="Driving license" class="form-control"
+                                       ng-model="customer.driving_license_number" value="customer.driving_license_number" required ng-disabled="isDisabled">
+                            </div>
+                            <div class="col-lg-2">
+                                <input type="text" name="" placeholder="Age" class="form-control"
+                                       ng-model="customer.age" value="customer.age" required ng-disabled="isDisabled">
+                            </div>
+                           <!-- <div class="col-lg-2">
+                                <select class="form-control" ng-model="customer.gender" ng-disabled="isDisabled" required>
+                                    <option disabled value="">Select</option>
+                                    <option ng-selected="customer.gender == val.name" ng-repeat="val in gender" value="val.value">{{ val.name }}</option>
+                                </select>
+                            </div>-->
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-5">
+                                <input type="text" name="pri_email" placeholder="Primary Email" class="form-control"
+                                       ng-model="primary_email" value="primary_email" required ng-disabled="isDisabled">
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" name="pri_mobile" maxlength="10" placeholder="Primary Mobile" class="form-control"
+                                       ng-model="primary_mobile" value="primary_mobile" required ng-disabled="isDisabled">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-5">
+                                <input type="text" name="sec_email" placeholder="Secondary Email" class="form-control"
+                                       ng-model="secondary_email" value="primary_email" required ng-disabled="isDisabled">
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" name="sec_mobile" maxlength="10" placeholder="Secondary Mobile" class="form-control"
+                                       ng-model="secondary_mobile" value="secondary_mobile" required ng-disabled="isDisabled">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-8">
+                                <input type="text" name="" placeholder="Address" class="form-control"
+                                       ng-model="customer.address" value="customer.address" ng-disabled="isDisabled" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-3 col-lg-offset-9">
+                        <button type="submit" class="form-control btn btn-primary" ng-click="upadateCustomer()">Updates</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+

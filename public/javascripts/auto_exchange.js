@@ -42,6 +42,11 @@ auto_exchange.config(function ($routeProvider) {
                 templateUrl: '/partials/thankyou.html',
                 controller: 'thankyou'
             })
+        .when('/customers',
+            {
+                templateUrl: '/partials/customers.html',
+                controller: 'customers'
+            })
         .otherwise({redirectTo: '/'});
 });
 
@@ -84,8 +89,11 @@ auto_exchange.controller('check_customer', function ($scope, $http, $window, $ro
                 console.log(JSON.stringify(data.profile));
                 $rootScope.customer = data.profile[0];
                 $rootScope.new_customer = false;
+                $window.location.href = "#/add";
+            }else {
+                $scope.error_msg = "Error fetching customer info";
+                $scope.error = true;
             }
-            $window.location.href = "#/add";
         }).error(function(error) {
             console.log("Error "+ error);
             $scope.error_msg = error;
@@ -108,82 +116,25 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
     $scope.gender = [{value: 'M', name: 'M'}, {value: 'F', name: 'F'}];
     $scope.cars = getCars();
     $scope.years = getYears();
-    $scope.car_types = [{value: 'Hatchback', name: 'Hatchback'}, {value: 'Sedan', name: 'Sedan'},
-        {value: 'Wagon', name: 'Wagon'}, {value: 'Coupe', name: 'Coupe'},
-        {value: 'Convertible', name: 'Convertible'}, {value: 'Sports car', name: 'Sports car'},
-        {value: 'Truck', name: 'Truck'}];
 
     $scope.error = false;
     $scope.success = false;
     $scope.info = false;
-
-    $scope.isDiscount = false;
-
+    console.log("Customer - "+ JSON.stringify($scope.customer));
     if($rootScope.new_customer){
         $scope.info = true;
-        $scope.info_msg = "Need to add customer details for transaction";
+        $scope.info_msg = "Please add customer details for transaction";
     }else {
-        $scope.success = true;
-        $scope.success_msg = "Matching customer found";
-        $scope.isDisabled = true;
+        if(!$scope.customer){
+
+        }else {
+            $scope.success = true;
+            $scope.success_msg = "Matching customer found";
+            $scope.isDisabled = true;
+        }
     }
 
-    $scope.checkForDiscount = function () {
-        $http({
-            method : "POST",
-            url : '/api/getCustomerHistory',
-            params: {ssn: $scope.customer.ssn},
-            headers : {'Content-Type': 'application/json'}
-        }).success(function(data) {
-            if (data.status == 200) {
-                console.log(JSON.stringify(data.discount));
-                if(data.discount != 0){
-                    $scope.isDiscount = true;
-                    $scope.customer.discount = data.discount;
-                }
-            }else {
-                $scope.error_msg = data.message;
-                $scope.error = true;
-            }
-        }).error(function(error) {
-            console.log("Error "+ error);
-            $scope.error_msg = error;
-            $scope.error = true;
-        });
-    };
-
     $scope.addTransaction = function () {
-        if($rootScope.new_customer){
-            $scope.addCustomer();
-        }else {
-            $scope.addVehicle();
-        }
-    };
-
-    $scope.addCustomer = function () {
-        $http({
-            method : "POST",
-            url : '/api/addNewCustomer',
-            params: $scope.customer,
-            headers : {'Content-Type': 'application/json'}
-        }).success(function(data) {
-            if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
-                $scope.addVehicle();
-                $scope.addMobile();
-                $scope.addEmail();
-            }else {
-                $scope.error_msg = data.message;
-                $scope.error = true;
-            }
-        }).error(function(error) {
-            console.log("Error "+ error);
-            $scope.error_msg = error;
-            $scope.error = true;
-        });
-    };
-
-    $scope.addVehicle = function () {
         $scope.vehicle.ssn = $scope.customer.ssn;
         if($scope.vehicle.type == 'buy'){
             $http({
@@ -194,7 +145,7 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             }).success(function(data) {
                 if (data.status == 200 && data.profile.length != 0) {
                     console.log(JSON.stringify(data.profile));
-                    $window.location.href = "#/thankyou";
+
                 }else {
                     $scope.error_msg = data.message;
                     $scope.error = true;
@@ -213,7 +164,7 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             }).success(function(data) {
                 if (data.status == 200 && data.profile.length != 0) {
                     console.log(JSON.stringify(data.profile));
-                    $window.location.href = "#/thankyou";
+
                 }else {
                     $scope.error_msg = data.message;
                     $scope.error = true;
@@ -224,46 +175,7 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
                 $scope.error = true;
             });
         }
-    };
 
-    $scope.addMobile = function () {
-        $http({
-            method : "POST",
-            url : '/api/setCustomerPhoneNo',
-            params: {ssn: $scope.customer.ssn, mobile: $scope.customer.primary_mobile},
-            headers : {'Content-Type': 'application/json'}
-        }).success(function(data) {
-            if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
-            }else {
-                $scope.error_msg = data.message;
-                $scope.error = true;
-            }
-        }).error(function(error) {
-            console.log("Error "+ error);
-            $scope.error_msg = error;
-            $scope.error = true;
-        });
-    };
-
-    $scope.addEmail = function () {
-        $http({
-            method : "POST",
-            url : '/api/setCustomerEmail',
-            params: {ssn: $scope.customer.ssn, email: $scope.customer.primary_email},
-            headers : {'Content-Type': 'application/json'}
-        }).success(function(data) {
-            if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
-            }else {
-                $scope.error_msg = data.message;
-                $scope.error = true;
-            }
-        }).error(function(error) {
-            console.log("Error "+ error);
-            $scope.error_msg = error;
-            $scope.error = true;
-        });
     };
 
     $scope.getModels = function (carId) {
@@ -322,7 +234,7 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
 
     $scope.branchInfo = function () {
         $window.location.href = "#/branch-info";
-    };
+    }
 
     $scope.useBranch = function () {
         $http({
@@ -334,7 +246,7 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
             if (data.status == 200 && data.profile.length != 0) {
                 console.log(JSON.stringify(data.profile));
             }else {
-                $scope.error_msg = data.message;
+                $scope.error_msg = data.result;
                 $scope.error = true;
             }
         }).error(function(error) {
@@ -343,29 +255,7 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
             $scope.error = true;
         });
         $window.location.href = "#/";
-    };
-
-    $scope.deleteBranch = function () {
-        $http({
-            method : "POST",
-            url : '/api/deletebranch',
-            params: {branch_id: $rootScope.branch_id},
-            headers : {'Content-Type': 'application/json'}
-        }).success(function(data) {
-            if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
-                $scope.success = true;
-                $scope.success_msg = "Successfully deleted branch";
-            }else {
-                $scope.error_msg = data.message;
-                $scope.error = true;
-            }
-        }).error(function(error) {
-            console.log("Error "+ error);
-            $scope.error_msg = error;
-            $scope.error = true;
-        });
-    };
+    }
 });
 
 auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootScope) {
@@ -450,7 +340,7 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
 auto_exchange.controller('transactions', function ($scope, $http, $window, $rootScope) {
     $scope.searchOptions = [{value: 'vin', name: 'Search by VIN'}, {value: 'date', name: 'Search by date'}];
     $scope.transactions = {};
-    $scope.searchBy = 'vin';
+    $scope.searchBy = '';
     $scope.searchText = '';
     $scope.isVin = true;
 
@@ -466,7 +356,7 @@ auto_exchange.controller('transactions', function ($scope, $http, $window, $root
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
                         console.log(JSON.stringify(data.profile));
-                        $scope.transactions = data.profile;
+
                     } else {
                         $scope.error_msg = "Transaction with VIN not found";
                         $scope.error = true;
@@ -527,3 +417,200 @@ auto_exchange.controller('thankyou', function ($scope, $http, $window, $rootScop
         $window.location.href = "#/add";
     };
 });
+
+/** Customers Functions  starts: Ishan **/
+auto_exchange.controller('customers', function ($scope, $http, $window, $rootScope) {
+    console.log("customer controller");
+    $scope.showAllCust = false;
+    $scope.showSearchPage = true;
+
+    $http.post('api/getAllCustomers').then(function (result) {
+        //  console.log(JSON.stringify(result.data.profile));
+        $scope.showAllCust = true;
+        $scope.showOtherSearches = true;
+        $scope.customers = result.data.profile;
+
+    });
+
+
+    $scope.custSearchOptions = [{value: 'ssn', name: 'Search by SSN'}, {value: 'name', name: 'Search by Name'},
+        {value: 'license', name: 'Search by Lincese Number'}, {value: 'email', name: 'Search by E-Mail'},
+        {value: 'phone', name: 'Search by Phone'}];
+
+
+    $scope.onOptionChange = function (searchBy) {
+        console.log("Option changed "+ searchBy);
+        $scope.searchBy = searchBy;
+        $scope.searchText = '';
+        if(searchBy == 'name'){
+            $scope.showOtherSearches = false;
+        }
+    };
+
+    $scope.addNewCustomer = function () {
+        $rootScope.new_customer = true;
+        $window.location.href = "#/add";
+    };
+
+    $scope.searchCustomer = function () {
+        $scope.showAllCust = false;
+        console.log("Searchby = "+ $scope.searchBy + "   searchtext "+ $scope.searchText);
+        if($scope.searchBy == 'ssn'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getCustomerBySsn',
+                    params: {ssn: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.customers = data.profile;
+
+                    } else {
+                        $scope.error_msg = "Customer with SSN " +$scope.searchText+" not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "SSN cannot be blank";
+            }
+        }else if($scope.searchBy == 'name'){
+            console.log("sdssds");
+            var full_name =$scope.searchText.split(" ");
+           // console.log("fn :"+full_name[0]);
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getCustomerByName',
+                    params: {first_name:full_name[0] , last_name:full_name[1] },
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.customers = data.profile;
+
+                    } else {
+                        $scope.error_msg = "Customer with name not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "Name cannot be blank";
+            }
+        }  else if($scope.searchBy == 'email'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getCustomerByEmail',
+                    params: {email: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.customers = data.profile;
+
+                    } else {
+                        $scope.error_msg = "customer with email not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "email cannot be blank";
+            }
+        }  else if($scope.searchBy == 'phone'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getCustomerByPhone',
+                    params: {phone: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.customers = data.profile;
+
+                    } else {
+                        $scope.error_msg = "customer with phone not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "phone cannot be blank";
+            }
+        } else if($scope.searchBy == 'license'){
+            if($scope.searchText != ''){
+                $http({
+                    method: "POST",
+                    url: '/api/getCustomerByLicense',
+                    params: {license: $scope.searchText},
+                    headers: {'Content-Type': 'application/json'}
+                }).success(function (data) {
+                    if (data.status == 200 && data.profile.length != 0) {
+                        console.log(JSON.stringify(data.profile));
+                        $scope.customers = data.profile;
+
+                    } else {
+                        $scope.error_msg = "customer with license not found";
+                        $scope.error = true;
+                    }
+                }).error(function (error) {
+                    console.log("Error " + error);
+                    $scope.error_msg = error;
+                    $scope.error = true;
+                });
+            }else {
+                $scope.error = true;
+                $scope.error_msg = "license cannot be blank";
+            }
+        }
+    };
+    $scope.editCustomer = function (ssn) {
+        console.log("ssn "+ ssn);
+        $scope.showSearchPage = false;
+    $scope.custSsn = ssn;
+        $http({
+            method: "POST",
+            url: '/api/getCustomerBySsn',
+            params: {ssn: $scope.custSsn},
+            headers: {'Content-Type': 'application/json'}
+        }).success(function (data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+                console.log(data.profile_email[0]);
+                $scope.customer = data.profile[0];
+                $scope.primary_mobile = data.profile_mobile[0].mobile_no;
+                $scope.primary_email = data.profile_email[0].email;
+
+            } else {
+                $scope.error_msg = "customer with license not found";
+                $scope.error = true;
+            }
+        }).error(function (error) {
+            console.log("Error " + error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+});
+/** Customers Functions  ends: Ishan **/
