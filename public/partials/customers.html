@@ -99,14 +99,14 @@
 
     <div class="row" style="margin-top: 70px; margin-left: 20px;" ng-hide="showSearchPage">
         <div class="col-md-9">
-            <form class="form-horizontal form-item-details" ng-submit="upadateCustomer()">
+            <form class="form-horizontal form-item-details" ng-submit="updateCustomerInfo()">
                 <div class="panel panel-primary">
                     <div class="panel-heading">Customer detail</div>
                     <div class="panel-body">
                         <div class="form-group">
                             <div class="col-lg-5">
                                 <input type="text" name="ssn"  class="form-control"
-                                       string-to-number ng-model="customer.ssn" value="customer.ssn" requiredng-disabled="isDisabled" readonly>
+                                       string-to-number ng-model="customer.ssn" value="customer.ssn" required ng-disabled="isDisabled" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -148,11 +148,11 @@
                         <div class="form-group">
                             <div class="col-lg-5">
                                 <input type="text" name="sec_email" placeholder="Secondary Email" class="form-control"
-                                       ng-model="secondary_email" value="primary_email" required ng-disabled="isDisabled">
+                                       ng-model="secondary_email" value="secondary_email" ng-disabled="isDisabled">
                             </div>
                             <div class="col-lg-5">
                                 <input type="text" name="sec_mobile" maxlength="10" placeholder="Secondary Mobile" class="form-control"
-                                       ng-model="secondary_mobile" value="secondary_mobile" required ng-disabled="isDisabled">
+                                       ng-model="secondary_mobile" value="secondary_mobile" ng-disabled="isDisabled">
                             </div>
                         </div>
                         <div class="form-group">

@@ -723,6 +723,85 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                 $scope.primary_mobile = data.profile_mobile[0].mobile_no;
                 $scope.primary_email = data.profile_email[0].email;
 
+                if(data.profile_email.length > 0){
+                    $scope.secondary_email = data.profile_email[1].email;
+                }
+                if(data.profile_mobile.length > 0){
+                    $scope.secondary_mobile = data.profile_mobile[1].mobile_no;
+                }
+
+            } else {
+                $scope.error_msg = "customer with ssn not found";
+                $scope.error = true;
+            }
+        }).error(function (error) {
+            console.log("Error " + error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+    $scope.updateCustomerInfo = function () {
+        console.log("Updating customer" + $scope.customer.ssn);
+        $scope.upadateCustomer();
+        $scope.updateCustomerEmail();
+        $scope.updateCustomerMobile();
+        //$window.location.reload();
+    };
+    $scope.upadateCustomer = function () {
+        $http({
+            method: "POST",
+            url: '/api/updateCustomerInfo',
+            params: $scope.customer,
+            headers: {'Content-Type': 'application/json'}
+        }).success(function (data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+
+            } else {
+                $scope.error_msg = "customer with ssn not found";
+                $scope.error = true;
+            }
+        }).error(function (error) {
+            console.log("Error " + error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+    $scope.updateCustomerEmail = function () {
+        $http({
+            method: "POST",
+            url: '/api/updateCustomerEmail',
+            params: {ssn: $scope.customer.ssn, primary_email: $scope.primary_email,
+                secondary_email: $scope.secondary_email},
+            headers: {'Content-Type': 'application/json'}
+        }).success(function (data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+
+            } else {
+                $scope.error_msg = "customer with ssn not found";
+                $scope.error = true;
+            }
+        }).error(function (error) {
+            console.log("Error " + error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+    $scope.updateCustomerMobile = function () {
+        $http({
+            method: "POST",
+            url: '/api/updateCustomerPhoneNo',
+            params: {ssn: $scope.customer.ssn, primary_mobile: $scope.primary_mobile,
+                secondary_mobile: $scope.secondary_mobile},
+            headers: {'Content-Type': 'application/json'}
+        }).success(function (data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+
             } else {
                 $scope.error_msg = "customer with ssn not found";
                 $scope.error = true;

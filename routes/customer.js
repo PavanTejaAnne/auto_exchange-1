@@ -456,8 +456,8 @@ exports.updateCustomerPhoneNo = function(req, res){
     var ssn = req.query.ssn;
     var primary_mobile = req.query.primary_mobile;
     var secondary_mobile = req.query.secondary_mobile;
-    var primary_sql = "update cus_mobile set mobile_no = '"+ primary_mobile+"' where cus_mobile_ssn = '"+ssn+"'";
-    var sec_sql = "update cus_mobile set mobile_no = '"+ primary_mobile+"' where cus_mobile_ssn = '"+ssn+"'";
+    var primary_sql = "update cus_mobile set mobile_no = '"+ primary_mobile+"' where cus_mobile_ssn = '"+ ssn +"' and mobile_no = '" + primary_mobile + "'";
+    var sec_sql = "update cus_mobile set mobile_no = '"+ primary_mobile+"' where cus_mobile_ssn = '"+ ssn +"' and mobile_no = '" + secondary_mobile + "'";
     mysql.fetchData(primary_sql, function(err, results) {
         if (err) {
             throw err;
@@ -481,11 +481,11 @@ exports.updateCustomerPhoneNo = function(req, res){
 
 
 exports.updateCustomerEmail = function(req, res){
-    var ssn = req.query.SSN;
+    var ssn = req.query.ssn;
     var primary_email = req.query.primary_email;
     var secondary_email = req.query.secondary_email;
-    var primary_sql = "update cus_email set email = '"+ primary_email +"' where cus_email_ssn = '"+ssn+"'";
-    var sec_sql = "update cus_email set email = '"+ secondary_email +"' where cus_email_ssn = '"+ssn+"'";
+    var primary_sql = "update cus_email set email = '"+ primary_email +"' where cus_email_ssn = '"+ ssn +"' and email='"+ primary_email + "'";
+    var sec_sql = "update cus_email set email = '"+ secondary_email +"' where cus_email_ssn = '"+ ssn  +"' and email='"+ secondary_email + "'";
 
     mysql.fetchData(primary_sql, function(err, results) {
         if (err) {
