@@ -485,7 +485,7 @@ exports.updateCustomerPhoneNo = function(req, res){
     }
 
     if((secondary_old_mobile == undefined || secondary_old_mobile == '') && secondary_mobile != undefined && secondary_mobile != ''){
-        sec_sql = "insert into cus_mobile values ('"+ssn+"','"+secondary_mobile+")"
+        sec_sql = "insert into cus_mobile values ('"+ssn+"','"+secondary_mobile+"')"
         mysql.fetchData(sec_sql, function(err, results) {
             if (err) {
                 throw err;
@@ -536,7 +536,7 @@ exports.updateCustomerEmail = function(req, res){
     }
 
     if((secondary_old_email == undefined || secondary_old_email == '') && secondary_email != undefined && secondary_email != ''){
-        sec_sql = "insert into cus_email values ('"+ssn+"','"+secondary_email+")"
+        sec_sql = "insert into cus_email values ('"+ssn+"','"+secondary_email+"')"
         console.log("33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333");
         mysql.fetchData(sec_sql, function(err, results) {
             if (err) {

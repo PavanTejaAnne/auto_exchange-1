@@ -728,11 +728,11 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                 $scope.old_pri_mobile = $scope.primary_mobile;
                 $scope.old_pri_email = $scope.primary_email;
 
-                if(data.profile_email.length > 0){
+                if(data.profile_email.length > 1){
                     $scope.secondary_email = data.profile_email[1].email;
                     $scope.old_sec_email = $scope.secondary_email;
                 }
-                if(data.profile_mobile.length > 0){
+                if(data.profile_mobile.length > 1){
                     $scope.secondary_mobile = data.profile_mobile[1].mobile_no;
                     $scope.old_sec_mobile = $scope.secondary_mobile;
                 }
