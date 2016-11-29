@@ -10,30 +10,30 @@
                         <div class="form-group">
                             <div class="col-lg-5">
                                 <input type="text" name="ssn" maxlength="9" pattern="\d{9}" placeholder="Customer SSN" class="form-control"
-                                       string-to-number ng-model="customer.ssn" value="customer.ssn" required>
+                                       string-to-number ng-model="customer.ssn" value="customer.ssn" required ng-disabled="isCustomerDisabled">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-5">
                                 <input type="text" name="firstname" placeholder="First name" class="form-control"
-                                       ng-model="customer.first_name" value="customer.first_name" required ng-disabled="isDisabled">
+                                       ng-model="customer.first_name" value="customer.first_name" required ng-disabled="isCustomerDisabled">
                             </div>
                             <div class="col-lg-5">
                                 <input type="text" name="lastname" placeholder="Last name" class="form-control"
-                                       ng-model="customer.last_name" value="customer.last_name" required ng-disabled="isDisabled">
+                                       ng-model="customer.last_name" value="customer.last_name" required ng-disabled="isCustomerDisabled">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-5">
                                 <input type="text" name="license" maxlength="9" placeholder="Driving license" class="form-control"
-                                       ng-model="customer.driving_license_number" value="customer.driving_license_number" required ng-disabled="isDisabled">
+                                       ng-model="customer.driving_license_number" value="customer.driving_license_number" required ng-disabled="isCustomerDisabled">
                             </div>
                             <div class="col-lg-2">
                                 <input type="text" name="age" placeholder="Age" maxlength="2" pattern="\d{2}" class="form-control"
-                                       ng-model="customer.age" value="customer.age" required ng-disabled="isDisabled">
+                                       ng-model="customer.age" value="customer.age" required ng-disabled="isCustomerDisabled">
                             </div>
                             <div class="col-lg-2">
-                                <select class="form-control" ng-model="customer.gender" ng-disabled="isDisabled" required>
+                                <select class="form-control" ng-model="customer.gender" ng-disabled="isCustomerDisabled" required>
                                     <option disabled value="">Select</option>
                                     <option ng-selected="customer.gender == val.name" ng-repeat="val in gender" ng-value="val.value">{{ val.name }}</option>
                                 </select>
@@ -42,27 +42,27 @@
                         <div class="form-group">
                             <div class="col-lg-5">
                                 <input type="text" name="pri_email" placeholder="Primary Email" class="form-control"
-                                       ng-model="customer.primary_email" value="customer.primary_email" required ng-disabled="isDisabled">
+                                       ng-model="customer.primary_email" value="customer.primary_email" required ng-disabled="isCustomerDisabled">
                             </div>
                             <div class="col-lg-5">
                                 <input type="text" name="pri_mobile" maxlength="10" placeholder="Primary Mobile" class="form-control"
-                                       ng-model="customer.primary_mobile" value="customer.primary_mobile" required ng-disabled="isDisabled">
+                                       ng-model="customer.primary_mobile" value="customer.primary_mobile" required ng-disabled="isCustomerDisabled">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-5">
                                 <input type="text" name="sec_email" placeholder="Secondary Email" class="form-control"
-                                       ng-model="customer.secondary_email" value="customer.secondary_email" ng-disabled="isDisabled">
+                                       ng-model="customer.secondary_email" value="customer.secondary_email" ng-disabled="isCustomerDisabled">
                             </div>
                             <div class="col-lg-5">
                                 <input type="text" name="sec_mobile" maxlength="10" placeholder="Secondary Mobile" class="form-control"
-                                       ng-model="customer.secondary_mobile" value="customer.secondary_mobile" ng-disabled="isDisabled">
+                                       ng-model="customer.secondary_mobile" value="customer.secondary_mobile" ng-disabled="isCustomerDisabled">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-8">
                                 <input type="text"  maxlength="40" name="" placeholder="Address" class="form-control"
-                                       ng-model="customer.address" value="customer.address" ng-disabled="isDisabled" required>
+                                       ng-model="customer.address" value="customer.address" ng-disabled="isCustomerDisabled" required>
                             </div>
                         </div>
                     </div>
@@ -73,6 +73,8 @@
                         <label>Congratulations! you get {{ customer.discount }}% discount on this transaction</label>
                     </div>
                 </div>
+
+
                 <div class="panel panel-primary">
                     <div class="panel-heading">Transaction details</div>
                     <div class="panel-body">
@@ -101,7 +103,7 @@
                         <div class="form-group">
                             <div class="col-lg-10">
                                 <input type="text" name="vin" maxlength="17" placeholder="Vehicle identification number (VIN)" class="form-control"
-                                       ng-model="vehicle.vin" required>
+                                       ng-model="vehicle.vin" required ng-disabled="isVehicleDisabled">
                             </div>
                         </div>
                         <div class="form-group">
@@ -125,29 +127,45 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-4">
-                                <select class="form-control" ng-change="getModels(carId)" ng-model="carId" required>
+                            <div class="col-lg-4" ng-show="!isVehicleDisabled">
+                                <select class="form-control" ng-change="getModels(carId)" ng-model="carId" >
                                     <option value="" disabled>Manufacturer</option>
                                     <option ng-repeat="manufacturer in cars.manufacturer" ng-value="manufacturer.id">{{ manufacturer.name }}</option>
                                 </select>
                             </div>
-                            <div class="col-lg-4">
-                                <select class="form-control" ng-model="vehicle.model" required>
+                            <div class="col-lg-4" ng-show="isVehicleDisabled">
+                                <input type="text" name="manufacturer" class="form-control"
+                                       ng-model="vehicle.manufacturer" disabled>
+                            </div>
+                            <div class="col-lg-4" ng-show="!isVehicleDisabled">
+                                <select class="form-control" ng-model="vehicle.model_no">
                                     <option value="" disabled>Model</option>
                                     <option ng-repeat="model in models" ng-value="model.value">{{ model.name }}</option>
                                 </select>
                             </div>
-                            <div class="col-lg-2">
-                                <select class="form-control" ng-model="vehicle.year" required>
+                            <div class="col-lg-4" ng-show="isVehicleDisabled">
+                                <input type="text" name="model_no" class="form-control"
+                                       ng-model="vehicle.model_no" disabled>
+                            </div>
+                            <div class="col-lg-2" ng-show="!isVehicleDisabled">
+                                <select class="form-control" ng-model="vehicle.manufactured_year">
                                     <option disabled value="">Make year</option>
-                                    <option ng-repeat="year in years" ng-value="year.value">{{ year.name }}</option>
+                                    <option ng-repeat="manufactured_year in manufactured_years" ng-value="manufactured_year.value">{{ manufactured_year.name }}</option>
                                 </select>
                             </div>
-                            <div class="col-lg-2">
-                                <select class="form-control" ng-model="vehicle.car_type" required>
+                            <div class="col-lg-4" ng-show="isVehicleDisabled">
+                                <input type="text" name="manufactured_year" class="form-control"
+                                       ng-model="vehicle.manufactured_year" disabled>
+                            </div>
+                            <div class="col-lg-2" ng-show="!isVehicleDisabled">
+                                <select class="form-control" ng-model="vehicle.car_type" >
                                     <option disabled value="">Type</option>
                                     <option ng-repeat="car_type in car_types" ng-value="car_type.value">{{ car_type.name }}</option>
                                 </select>
+                            </div>
+                            <div class="col-lg-4" ng-show="isVehicleDisabled">
+                                <input type="text" name="car_type" class="form-control"
+                                       ng-model="vehicle.car_type" disabled>
                             </div>
                         </div>
                     </div>

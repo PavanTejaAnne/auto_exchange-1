@@ -2,14 +2,22 @@
 <div class="container padding-body">
     <div class="row" style="margin-top: 70px; margin-left: 20px;">
         <div class="col-md-9">
-            <form class="form-horizontal form-item-details" ng-submit="checkCustomer()">
+            <form class="form-horizontal form-item-details" ng-submit="checkSsnAndVin()">
                 <div class="panel panel-primary">
-                    <div class="panel-heading">Check if customer exists</div>
+                    <div class="panel-heading">Check if SSN and VIN are available</div>
                     <div class="panel-body">
+                        <div class="form-group" style="margin-left: 30px">
+                            <label class="control-label">If data is found with SSN and VIN it will populated for you</label>
+                        </div>
                         <div class="form-group">
-                            <div class="col-lg-5">
+
+                            <div class="col-lg-3">
                                 <input type="text" name="ssn" placeholder="Customer SSN" class="form-control"
-                                       string-to-number ng-model="customer.ssn" value="customer.ssn" required>
+                                       string-to-number ng-model="customer.ssn" value="customer.ssn">
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text" name="ssn" placeholder="Vehicle Identification number" class="form-control"
+                                       string-to-number ng-model="vehicle.vin" value="vehicle.vin">
                             </div>
                             <div class="col-lg-1">
                                 <input type="submit" class="btn btn-primary" value="Check">

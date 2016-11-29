@@ -4,36 +4,23 @@
     <div class="row" style="margin-top: 70px; margin-left: 20px;">
         <div class="col-md-11">
             <div class="panel panel-primary">
-                <div class="panel-heading">Company branches</div>
+                <div class="panel-heading">History of customer transactions</div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-group">
-                            <!--<div class="col-lg-3">-->
-                                <!--<select class="form-control" ng-change="onOptionChange(searchBy)" ng-model="searchBy" required>-->
-                                    <!--<option disabled value="">Select</option>-->
-                                    <!--<option ng-repeat="option in searchOptions" ng-value="option.value">{{ option.name }}</option>-->
-                                <!--</select>-->
-                            <!--</div>-->
-                            <div class="col-lg-4">
-                                <label>Enter Vehicle Identification number (VIN) </label>
-                            </div>
-                            <div class="col-lg-5" ng-show="isVin">
-
-                                <input type="text" maxlength="17" name="search" placeholder="Search..." class="form-control"
-                                       ng-model="searchText" value="" required>
-                            </div>
-                            <div class="col-lg-5" ng-show="!isVin">
-                                <div class="input-group date form_date" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                    <input class="form-control" size="16" type="text" value="" readonly ng-model="searchText">
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        <form class="form-horizontal form-item-details" ng-submit="searchTransaction()">
+                            <div class="form-group">
+                                <div class="col-lg-2" style="margin-left: 15px">
+                                    <label class="control-label">Enter Customer SSN </label>
                                 </div>
-                                <input type="hidden" id="dtp_input2" value="" /><br/>
+                                <div class="col-lg-4">
+                                    <input type="text" maxlength="17" name="search" placeholder="Search..." class="form-control"
+                                           ng-model="searchText" value="" required>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="submit" class="btn btn-primary" value="Search">
+                                </div>
                             </div>
-                            <div class="col-lg-2">
-                                <button class="btn btn-primary" ng-click="searchTransaction()">Search</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="table-responsive" style="margin-top: 15px">
                         <table class="table table-bordered">
@@ -53,8 +40,8 @@
                                 <td>{{ transaction.final_price }}</td>
                                 <td>{{ transaction.old_license_plate }}</td>
                                 <td>{{ transaction.new_license_plate }}</td>
-                                <td ng-show="transaction.is_sale">Sale</td>
-                                <td ng-show="!transaction.is_sale">Buy</td>
+                                <td ng-show="transaction.is_sale">Bought from customer</td>
+                                <td ng-show="!transaction.is_sale">Sold to customer</td>
                             </tr>
                         </table>
                     </div>
@@ -64,17 +51,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript" src="../javascripts/datepicker/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
-<script type="text/javascript">
-    $('.form_date').datetimepicker({
-        language:  'fr',
-        weekStart: 1,
-        todayBtn:  1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-    });
-</script>

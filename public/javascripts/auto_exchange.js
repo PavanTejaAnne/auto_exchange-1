@@ -82,7 +82,18 @@ auto_exchange.controller('welcome', function ($scope, $http, $window, $rootScope
 
 auto_exchange.controller('check_customer', function ($scope, $http, $window, $rootScope) {
     $scope.customer = {};
+    $scope.vehicle = {};
     $scope.error = false;
+    $rootScope.new_customer = true;
+    $rootScope.new_vehicle = true;
+    $scope.checkSsnAndVin = function () {
+        if($scope.customer.ssn != undefined && $scope.customer.ssn != ''){
+            $scope.checkCustomer();
+        }else{
+            $scope.checkVehicle();
+        }
+    };
+
     $scope.checkCustomer = function () {
         $http({
             method : "POST",
@@ -97,6 +108,38 @@ auto_exchange.controller('check_customer', function ($scope, $http, $window, $ro
             }else{
                 $rootScope.customer = {};
                 $rootScope.new_customer = true;
+            }
+
+            if($scope.vehicle.vin != undefined && $scope.vehicle.vin != ''){
+                $scope.checkVehicle();
+            }else {
+                $window.location.href = "#/add";
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+    $scope.checkVehicle = function () {
+        $scope.info = false;
+        $scope.info_msg = '';
+        $scope.error = false;
+        $scope.error_msg = '';
+        $http({
+            method : "POST",
+            url : '/api/getCarById',
+            params: {vin: $scope.vehicle.vin},
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+                $rootScope.vehicle = data.profile[0];
+                $rootScope.new_vehicle = false;
+            }else {
+                $rootScope.vehicle = {};
+                $rootScope.new_vehicle = true;
             }
             $window.location.href = "#/add";
         }).error(function(error) {
@@ -115,12 +158,11 @@ auto_exchange.controller('check_customer', function ($scope, $http, $window, $ro
 
 auto_exchange.controller('add_transaction', function ($scope, $http, $window, $rootScope) {
 
-    $scope.customer = $rootScope.customer;
-    $scope.vehicle = {};
-    $scope.isDisabled = false;
+    $scope.isCustomerDisabled = false;
+    $scope.isVehicleDisabled = false;
     $scope.gender = [{value: 'M', name: 'M'}, {value: 'F', name: 'F'}];
     $scope.cars = getCars();
-    $scope.years = getYears();
+    $scope.manufactured_years = getYears();
     $scope.car_types = [{value: 'Hatchback', name: 'Hatchback'}, {value: 'Sedan', name: 'Sedan'},
         {value: 'Wagon', name: 'Wagon'}, {value: 'Coupe', name: 'Coupe'},
         {value: 'Convertible', name: 'Convertible'}, {value: 'Sports car', name: 'Sports car'},
@@ -131,21 +173,35 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
     $scope.info = false;
 
     $scope.isDiscount = false;
+    console.log("Scope value "+ $rootScope.new_customer + "   " + $rootScope.new_vehicle);
+    var message = '';
 
     if($rootScope.new_customer){
-        $scope.info = true;
-        $scope.info_msg = "Need to add customer details for transaction";
+        $scope.customer = {};
+        message = 'Customer match not found';
     }else {
-        $scope.success = true;
-        $scope.success_msg = "Matching customer found";
-        $scope.isDisabled = true;
+        $scope.customer = $rootScope.customer;
+        message = 'Customer match found';
+        $scope.isCustomerDisabled = true;
     }
 
+    if($rootScope.new_vehicle){
+        $scope.vehicle = {};
+        message = message + ' and car match not found';
+    }else {
+        $scope.vehicle = $rootScope.vehicle;
+        message = message + ' and car match found';
+        $scope.isVehicleDisabled = true;
+    }
+    $scope.info = true;
+    $scope.info_msg = message;
+
     $scope.checkForDiscount = function () {
+        console.log("Check disocunt "+ $rootScope.customer + " scope "+ $scope.customer);
         $http({
             method : "POST",
             url : '/api/getCustomerHistory',
-            params: {ssn: $rootScope.customer.ssn},
+            params: {ssn: $scope.customer.ssn},
             headers : {'Content-Type': 'application/json'}
         }).success(function(data) {
             if (data.status == 200) {
@@ -280,6 +336,8 @@ auto_exchange.controller('add_transaction', function ($scope, $http, $window, $r
             $scope.error = true;
         });
     };
+
+
 
     $scope.getModels = function (carId) {
         console.log("Select car id "+ carId);
@@ -462,74 +520,32 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
 });
 
 auto_exchange.controller('transactions', function ($scope, $http, $window, $rootScope) {
-    $scope.searchOptions = [{value: 'vin', name: 'Search by VIN'}, {value: 'date', name: 'Search by date'}];
     $scope.transactions = {};
-    $scope.searchBy = 'vin';
     $scope.searchText = '';
-    $scope.isVin = true;
 
     $scope.searchTransaction = function () {
-        console.log("Searchby = "+ $scope.searchBy + "   searchtext "+ $scope.searchText);
-        if($scope.searchBy == 'vin'){
-            if($scope.searchText != ''){
-                $http({
-                    method: "POST",
-                    url: '/api/getTransactionbyVehicleID',
-                    params: {vin: $scope.searchText},
-                    headers: {'Content-Type': 'application/json'}
-                }).success(function (data) {
-                    if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
-                        $scope.transactions = data.profile;
-                    } else {
-                        $scope.error_msg = "Transaction with VIN not found";
-                        $scope.error = true;
-                    }
-                }).error(function (error) {
-                    console.log("Error " + error);
-                    $scope.error_msg = error;
+        if($scope.searchText != ''){
+            $http({
+                method: "POST",
+                url: '/api/getCustomerHistory',
+                params: {ssn: $scope.searchText},
+                headers: {'Content-Type': 'application/json'}
+            }).success(function (data) {
+                if (data.status == 200 && data.profile.length != 0) {
+                    console.log(JSON.stringify(data.profile));
+                    $scope.transactions = data.profile;
+                } else {
+                    $scope.error_msg = "Transaction with SSN not found";
                     $scope.error = true;
-                });
-            }else {
+                }
+            }).error(function (error) {
+                console.log("Error " + error);
+                $scope.error_msg = error;
                 $scope.error = true;
-                $scope.error_msg = "Vehicle identification number cannot be blank";
-            }
-        }else if($scope.searchBy == 'date'){
-            if($scope.searchText != ''){
-                $http({
-                    method: "POST",
-                    url: '/api/getTransactionbyTransactionDate',
-                    params: {date: $scope.searchText},
-                    headers: {'Content-Type': 'application/json'}
-                }).success(function (data) {
-                    if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
-
-                    } else {
-                        $scope.error_msg = "Transaction with date not found";
-                        $scope.error = true;
-                    }
-                }).error(function (error) {
-                    console.log("Error " + error);
-                    $scope.error_msg = error;
-                    $scope.error = true;
-                });
-            }else {
-                $scope.error = true;
-                $scope.error_msg = "Date cannot be blank";
-            }
-        }
-    };
-
-    $scope.onOptionChange = function (searchBy) {
-        console.log("Option changed "+ searchBy);
-        $scope.searchBy = searchBy;
-        $scope.searchText = '';
-        if($scope.searchBy == 'vin'){
-            console.log("Option changed "+ $scope.searchBy);
-            $scope.isVin = true;
-        }else{
-            $scope.isVin = false;
+            });
+        }else {
+            $scope.error = true;
+            $scope.error_msg = "SSN cannot be blank";
         }
     };
 });
@@ -748,12 +764,37 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
         });
     };
 
+    $scope.getCurrentBranch = function () {
+        if($rootScope.current_branch == undefined){
+            $scope.current_branch = {};
+            $http({
+                method : "GET",
+                url : '/branch-data',
+                params: {},
+                headers : {'Content-Type': 'application/json'}
+            }).success(function(data) {
+                if (data.status == 200) {
+                    console.log(JSON.stringify(data.profile));
+                    $rootScope.current_branch = data.profile;
+                    $scope.current_branch = data.profile;
+                }else {
+                    $scope.error_msg = "Error fetching customer info";
+                    $scope.error = true;
+                }
+            }).error(function(error) {
+                console.log("Error "+ error);
+                $scope.error_msg = error;
+                $scope.error = true;
+            });
+        }
+    };
+
     $scope.updateCustomerInfo = function () {
         console.log("Updating customer" + $scope.customer.ssn);
         $scope.upadateCustomer();
         $scope.updateCustomerEmail();
         $scope.updateCustomerMobile();
-        //$window.location.reload();
+        $window.location.reload();
     };
     $scope.upadateCustomer = function () {
         $http({

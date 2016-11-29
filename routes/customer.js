@@ -181,11 +181,11 @@ exports.getCustomerByPhone = function(req, res){
 
 exports.getCustomerHistory = function(req, res){
     var ssn = req.query.ssn;
-    var history = "(select transaction_vin, transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale " +
+    var history = "(select transaction_vin, transaction_date, DATE_FORMAT(transaction_date,'%Y-%m-%d') as date, list_price, final_price, old_license_plate, new_license_plate, is_sale " +
         "from sells inner join transaction on (transaction_date = selling_date and transaction_vin = sells_vin)" +
         "where sells_ssn ='"+ssn+"')" +
         "union" +
-        "(select transaction_vin, transaction_date, list_price, final_price, old_license_plate, new_license_plate, is_sale " +
+        "(select transaction_vin, transaction_date, DATE_FORMAT(transaction_date,'%Y-%m-%d') as date, list_price, final_price, old_license_plate, new_license_plate, is_sale " +
         "from buys inner join transaction on (transaction_date = buying_date and transaction_vin = buys_vin)" +
         "where buys_ssn ='" +ssn+"')";
     logger.trace("Fetching customer history "+ history);
