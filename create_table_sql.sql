@@ -34,7 +34,7 @@ CREATE TABLE car(
 );
 
 CREATE TABLE in_stock_car(
-    in_stock_vin char(17) not null,
+    in_stock_vin char(17) unique not null,
     in_stock_id int not null auto_increment,
     in_stock_price float not null,
     in_stock_branch_id int not null,
@@ -76,7 +76,7 @@ CREATE TABLE sells(
     sells_ssn char(9) not null,
     sells_vin char(17) not null,
     selling_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    primary key(sells_ssn, sells_vin),
+    primary key(sells_ssn, sells_vin, selling_date),
     constraint fk_sells_ssn foreign key(sells_ssn) references customer(ssn) on delete cascade on update cascade,
     constraint fk_sells_vin foreign key(sells_vin) references car(vin) on delete cascade on update cascade
 );
@@ -85,7 +85,7 @@ CREATE TABLE buys(
     buys_ssn char(9) not null,
     buys_vin char(17) not null,
     buying_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    primary key(buys_ssn, buys_vin),
+    primary key(buys_ssn, buys_vin, buying_date),
     constraint fk_buys_ssn foreign key(buys_ssn) references customer(ssn) on delete cascade on update cascade,
     constraint fk_buys_vin foreign key(buys_vin) references car(vin) on delete cascade on update cascade
 );

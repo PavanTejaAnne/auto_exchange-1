@@ -109,13 +109,26 @@ exports.setTransactionSell = function(req, res){
     var type = req.query.car_type;
     var branch_id = req.session.branch_id;
 
-    var query_1 = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ ssn +"', '"+ branch_id +"');";
-    logger.trace("Inserting into sells_to with sql query: "+ query_1);
-    mysql.fetchData(query_1, function(err,results){
+    var query = "select * from sells_to where sells_to_ssn = '"+ssn+"' and sells_to_branch_id = '"+branch_id+"'";
+    logger.trace("Checking from sells_to with sql query: "+ query);
+    mysql.fetchData(query, function(err,results){
         if(err){
             throw err;
+        }else{
+            if(results.length>0){
+
+            }else{
+                var query_1 = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('"+ ssn +"', '"+ branch_id +"');";
+                logger.trace("Inserting into sells_to with sql query: "+ query_1);
+                mysql.fetchData(query_1, function(err,results){
+                    if(err){
+                        throw err;
+                    }
+                });
+            }
         }
     });
+
 
     var query_check = "select * from car where vin = '"+vin+"'";
     mysql.fetchData(query_check, function(err,results){
