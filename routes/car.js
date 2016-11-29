@@ -149,5 +149,33 @@ exports.getVehicleIdByBranch = function(req, res){
     });
 };
 
+exports.getCarById = function(req, res){
+    var vin = req.query.vin;
+    var car = "select * from car where vin = '"+vin+"'";
+    logger.trace("Fetching car by Id "+ car);
+    mysql.fetchData(car, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            if (results.length > 0) {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "car search successful!",
+                    "profile": results
+                });
+            }
+            // render or error
+            else {
+                res.send({
+                    "status": 10,
+                    "message:": "search returned with empty records!",
+                    "profile": results
+                });
+            }
+        }
+    });
+};
+
 
 

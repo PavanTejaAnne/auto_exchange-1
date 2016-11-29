@@ -50,6 +50,7 @@ app.post('/api/getBranchByLocation', branch.getBranchByLocation);
 app.post('/api/getCustomerHistory', customer.getCustomerHistory);
 app.post('/api/setTransactionSell', transaction.setTransactionSell);
 app.post('/api/setTransactionBuy', transaction.setTransactionBuy);
+app.post('/api/getCarById', car.getCarById);
 app.post('/api/getTransactionbyVehicleID', transaction.getTransactionByVehicleId);
 app.post('/api/getTransactionbyTransactionDate', transaction.getTransactionByDate);
 app.post('/api/getCar', car.getCar);
