@@ -12,11 +12,12 @@ function getConnection(){
         database : 'auto_exchange',
         port : 3306
     });
+
 /*
      var connection = mysql.createConnection({
          host : 'localhost',
          user : 'root',
-         password : 'satya@27',
+         password : 'password',
          database : 'auto_exchange',
          port : 3306
      });*/

@@ -106,3 +106,17 @@ CREATE TABLE cus_email(
 );
 
 SET foreign_key_checks = 1;
+
+
+INSERT INTO company_branch (phone_number, address, email, location) VALUES ('9999999991', 'Alum Rock', 'branch1@gmail.com', 'San Jose');
+INSERT INTO company_branch (phone_number, address, email, location) VALUES ('9999999992', 'El Camino', 'branch2@gmail.com', 'Santa Clara');
+INSERT INTO company_branch (phone_number, address, email, location) VALUES ('9999999993', 'James St', 'branch3@gmail.com', 'San Francisco');
+INSERT INTO company_branch (phone_number, address, email, location) VALUES ('9999999994', 'Jackson St', 'branch4@gmail.com', 'Cupertino');
+INSERT INTO customer  VALUES ('123456781', 'John', 'Doe', '23', 'M', 'Y1123981', 'San Jose');
+INSERT INTO customer  VALUES ('123456782', 'Ron', 'Cheg', '23', 'M', 'Y1123982', 'Santa Clara');
+INSERT INTO customer  VALUES ('123456783', 'James', 'Yo', '23', 'M', 'Y1123983', 'San Francisco');
+INSERT INTO customer  VALUES ('123456784', 'Phill', 'Mark', '23', 'M', 'Y1123984', 'Cupertino');
+INSERT INTO car VALUES ('1', 'BENTLEY', 'BENTLEY ARNAGE', 1998, 'Hatchback');
+INSERT INTO car VALUES ('2', 'AUDI', 'DB9 COUPE', 1999, 'Sedan');
+INSERT INTO car VALUES ('3', 'BMW', 'M3', 2000, 'Hatchback');
+INSERT INTO car VALUES ('4', 'FORD', 'GT 2WD', 2001, 'Sedan');
