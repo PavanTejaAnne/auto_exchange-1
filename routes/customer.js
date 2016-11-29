@@ -462,6 +462,7 @@ exports.updateCustomerPhoneNo = function(req, res){
 
     var primary_sql = "update cus_mobile set mobile_no = '"+ primary_mobile+"' where cus_mobile_ssn = '"+ ssn +"' and mobile_no = '" + primary_old_mobile + "'";
     var sec_sql = "update cus_mobile set mobile_no = '"+ primary_mobile+"' where cus_mobile_ssn = '"+ ssn +"' and mobile_no = '" + secondary_old_mobile + "'";
+    if(primary_mobile != undefined && primary_mobile != ''){
     mysql.fetchData(primary_sql, function(err, results) {
         if (err) {
             throw err;
@@ -470,14 +471,27 @@ exports.updateCustomerPhoneNo = function(req, res){
             logger.trace("Primary mobile updated "+ primary_sql);
         }
     });
+    }
 
-    if(secondary_mobile != undefined && secondary_mobile != ''){
+    if(secondary_mobile != undefined && secondary_mobile != '' && secondary_old_mobile != undefined && secondary_old_mobile != ''){
         mysql.fetchData(sec_sql, function(err, results) {
             if (err) {
                 throw err;
             } else {
                 console.log(results);
                 logger.trace("Secondary mobile updated "+ sec_sql);
+            }
+        });
+    }
+
+    if((secondary_old_mobile == undefined || secondary_old_mobile == '') && secondary_mobile != undefined && secondary_mobile != ''){
+        sec_sql = "insert into cus_mobile values ('"+ssn+"','"+secondary_mobile+")"
+        mysql.fetchData(sec_sql, function(err, results) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(results);
+                logger.trace("Secondary mobile added "+ sec_sql);
             }
         });
     }
@@ -493,23 +507,43 @@ exports.updateCustomerEmail = function(req, res){
 
     var primary_sql = "update cus_email set email = '"+ primary_email +"' where cus_email_ssn = '"+ssn+"' and email = '"+primary_old_email+"'";
     var sec_sql = "update cus_email set email = '"+ secondary_email +"' where cus_email_ssn = '"+ssn+"' and email = '"+secondary_old_email+"'";
+    console.log("000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    if(primary_email != undefined && primary_email != '') {
+        console.log("1111111111111111111111111111111111111111111111111111111111111111111111");
+        mysql.fetchData(primary_sql, function (err, results) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(results);
+                logger.trace("Primary email updated " + primary_sql);
+            }
+        });
+    }
 
-    mysql.fetchData(primary_sql, function(err, results) {
-        if (err) {
-            throw err;
-        } else {
-            console.log(results);
-            logger.trace("Primary email updated "+ primary_sql);
-        }
-    });
+    if(secondary_email != undefined && secondary_email != '' && secondary_old_email != undefined && secondary_old_email != ''){
 
-    if(secondary_email != undefined && secondary_email != ''){
+        console.log("22222222222222222222222222222222222222222222222222222222222222222222222222222222222");
         mysql.fetchData(sec_sql, function(err, results) {
+
+            console.log("1");
             if (err) {
                 throw err;
             } else {
                 console.log(results);
                 logger.trace("Secondary email updated "+ sec_sql);
+            }
+        });
+    }
+
+    if((secondary_old_email == undefined || secondary_old_email == '') && secondary_email != undefined && secondary_email != ''){
+        sec_sql = "insert into cus_email values ('"+ssn+"','"+secondary_email+")"
+        console.log("33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333");
+        mysql.fetchData(sec_sql, function(err, results) {
+            if (err) {
+                throw err;
+            } else {
+                console.log(results);
+                logger.trace("Secondary email added "+ sec_sql);
             }
         });
     }

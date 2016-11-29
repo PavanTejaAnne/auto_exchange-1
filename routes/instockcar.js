@@ -8,7 +8,7 @@ var logger = require('../helper/logger').getLogger();
 
 exports.getAllIn_Stock_Cars = function(req, res){
     //var license = req.query.license;
-    var customer = "select * from in_stock_car";
+    var customer = "select * from in_stock_car, car where in_stock_vin = vin";
     logger.trace("Fetching all in_stock_cars");
     mysql.fetchData(customer, function(err, results) {
         if (err) {
@@ -33,6 +33,36 @@ exports.getAllIn_Stock_Cars = function(req, res){
         }
     });
 };
+
+exports.getIn_Stock_CarsbyBranchId = function(req, res){
+    var branch_id = req.query.In_Stock_branch_id;
+    //var license = req.query.license;
+    var customer = "select * from in_stock_car, car where in_stock_vin = vin and in_stock_branch_id = '"+ branch_id +"'";
+    logger.trace("Fetching all in_stock_cars");
+    mysql.fetchData(customer, function(err, results) {
+        if (err) {
+            throw err;
+        } else {
+            if (results.length > 0) {
+                console.log(results);
+                res.send({
+                    "status": 200,
+                    "message:": "in_stock_cars search successful!",
+                    "profile": results
+                });
+            }
+            // render or error
+            else {
+                res.send({
+                    "status": 10,
+                    "message:": "search returned with empty records!",
+                    "profile": results
+                });
+            }
+        }
+    });
+};
+
 
 
 exports.getInStockCar = function(req, res){
