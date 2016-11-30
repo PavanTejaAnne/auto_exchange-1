@@ -451,8 +451,10 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
     $scope.message = "Add new branch information";
     $rootScope.branch_update = false;
     $rootScope.branch_add = false;
+    $scope.buttonText = "Add";
 
     if(branch_id && !$rootScope.new_branch) {
+        $scope.buttonText = "Update";
         $scope.message = "Update branch information for branch number "+ branch_id;
         $http({
             method: "POST",

@@ -119,6 +119,7 @@ exports.setTransactionSell = function (req, res) {
 
         var query = "select * from sells_to where sells_to_ssn = '" + ssn + "' and sells_to_branch_id = '" + branch_id + "'";
         logger.trace("Adding transaction for sale");
+        logger.trace("Executing query "+ query);
         connection.query(query, function (err, results) {
             if (err) {
                 logger.error("Error fetching data " + err);
@@ -130,6 +131,7 @@ exports.setTransactionSell = function (req, res) {
                     logger.trace("Transaction sale unsuccessful");
                 } else {
                     var query_1 = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('" + ssn + "', '" + branch_id + "');";
+                    logger.trace("Executing query "+ query_1);
                     connection.query(query_1, function (err, results) {
                         if (err) {
                             logger.error("Error fetching data " + err);
@@ -143,8 +145,9 @@ exports.setTransactionSell = function (req, res) {
                 }
             }
         });
-
         var query_check = "select * from car where vin = '" + vin + "'";
+        logger.trace("Executing query "+ query_check);
+
         connection.query(query_check, function (err, results) {
             if (err) {
                 logger.error("Error fetching data " + err);
@@ -154,6 +157,7 @@ exports.setTransactionSell = function (req, res) {
             } else {
                 if (results.length > 0) {
                     var query_2 = "insert into sells(sells_ssn, sells_vin) values('" + ssn + "', '" + vin + "');";
+                    logger.trace("Executing query "+ query_2);
                     connection.query(query_2, function (err, results) {
                         if (err) {
                             logger.error("Error fetching data " + err);
@@ -164,6 +168,7 @@ exports.setTransactionSell = function (req, res) {
                     });
                     var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
                         "values('" + vin + "', " + list_price + "," + final_price + ",'" + old_license + "', '" + new_license + "'," + true + ");";
+                    logger.trace("Executing query "+ query_3);
                     connection.query(query_3, function (err, results) {
                         if (err) {
                             logger.error("Error fetching data " + err);
@@ -174,6 +179,7 @@ exports.setTransactionSell = function (req, res) {
                     });
 
                     var query_4 = "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('" + vin + "', " + final_price + ", '" + branch_id + "');";
+                    logger.trace("Executing query "+ query_4);
                     connection.query(query_4, function (err, results) {
                         if (err) {
                             logger.error("Error fetching data " + err);
@@ -191,6 +197,7 @@ exports.setTransactionSell = function (req, res) {
                 }
                 else {
                     var query_5 = "insert into car(vin, manufacturer, model_no, manufactured_year, car_type) values('" + vin + "', '" + manufacturer + "', '" + model_no + "', '" + year + "', '" + type + "')";
+                    logger.trace("Executing query "+ query_5);
                     connection.query(query_5, function (err, results) {
                         if (err) {
                             logger.error("Error fetching data " + err);
@@ -200,7 +207,7 @@ exports.setTransactionSell = function (req, res) {
                         }
                         else {
                             var query_2 = "insert into sells(sells_ssn, sells_vin) values('" + ssn + "', '" + vin + "');";
-
+                            logger.trace("Executing query "+ query_2);
                             connection.query(query_2, function (err, results) {
                                 if (err) {
                                     logger.error("Error fetching data " + err);
@@ -211,7 +218,7 @@ exports.setTransactionSell = function (req, res) {
                             });
                             var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
                                 "values('" + vin + "', " + list_price + "," + final_price + ",'" + old_license + "', '" + new_license + "'," + true + ");";
-
+                            logger.trace("Executing query "+ query_3);
                             connection.query(query_3, function (err, results) {
                                 if (err) {
                                     logger.error("Error fetching data " + err);
@@ -222,7 +229,7 @@ exports.setTransactionSell = function (req, res) {
                             });
 
                             var query_4 = "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('" + vin + "', " + final_price + ", '" + branch_id + "');";
-
+                            logger.trace("Executing query "+ query_4);
                             connection.query(query_4, function (err, results) {
                                 if (err) {
                                     logger.error("Error fetching data " + err);
@@ -269,7 +276,7 @@ exports.setTransactionBuy = function (req, res) {
 
     var in_stock_check_query = "select * from in_stock_car where in_stock_vin = '" + vin + "'";
     logger.trace("Adding transaction buy");
-
+    logger.trace("Executing query "+ in_stock_check_query);
     var connection = mysql.getConnection();
     connection.beginTransaction(function (err) {
         logger.trace("DB transaction started");
@@ -287,6 +294,7 @@ exports.setTransactionBuy = function (req, res) {
                         "profile": results_205
                     });
                 } else {
+                    logger.trace("Executing query "+ query_1);
                     var query_1 = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('" + ssn + "', '" + branch_id + "');";
 
                     connection.query(query_1, function (err, results) {
@@ -299,7 +307,7 @@ exports.setTransactionBuy = function (req, res) {
                     });
 
                     var query_2 = "insert into buys (buys_ssn, buys_vin) values('" + ssn + "', '" + vin + "');";
-
+                    logger.trace("Executing query "+ query_2);
                     connection.query(query_2, function (err, results) {
                         if (err) {
                             logger.error("Error fetching data " + err);
@@ -311,7 +319,7 @@ exports.setTransactionBuy = function (req, res) {
 
                     var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
                         "values('" + vin + "', " + list_price + "," + final_price + ",'" + old_license + "', '" + new_license + "'," + false + ");";
-
+                    logger.trace("Executing query "+ query_3);
                     connection.query(query_3, function (err, results) {
                         if (err) {
                             logger.error("Error fetching data " + err);
@@ -322,7 +330,7 @@ exports.setTransactionBuy = function (req, res) {
                     });
 
                     var query_4 = "delete from in_stock_car where in_stock_vin='" + vin + "';";
-
+                    logger.trace("Executing query "+ query_4);
                     connection.query(query_4, function (err, results) {
                         if (err) {
                             logger.error("Error fetching data " + err);

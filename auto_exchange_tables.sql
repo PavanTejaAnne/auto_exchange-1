@@ -107,16 +107,27 @@ CREATE TABLE cus_email(
 
 SET foreign_key_checks = 1;
 
+INSERT INTO company_branch (phone_number, address, email, location) VALUES ('6982388234', 'Fourth street, San Fernando, Sacramento', 'sacramento@autoexchange.com', 'Sacramento');
+INSERT INTO company_branch (phone_number, address, email, location) VALUES ('4434232342', 'Third street San Jose', 'sanjose@autoexchange.com', 'San Jose');
+INSERT INTO company_branch (phone_number, address, email, location) VALUES ('6037323234', 'Third street Santa Clara', 'santaclara@autoexchange.com', 'Santa Clara');
+INSERT INTO company_branch (phone_number, address, email, location) VALUES ('6003323234', 'Jackson St', 'cupertino@autoexchange.com', 'Cupertino');
 
-INSERT INTO company_branch (phone_number, address, email, location) VALUES ('9999999991', 'Alum Rock', 'branch1@gmail.com', 'San Jose');
-INSERT INTO company_branch (phone_number, address, email, location) VALUES ('9999999992', 'El Camino', 'branch2@gmail.com', 'Santa Clara');
-INSERT INTO company_branch (phone_number, address, email, location) VALUES ('9999999993', 'James St', 'branch3@gmail.com', 'San Francisco');
-INSERT INTO company_branch (phone_number, address, email, location) VALUES ('9999999994', 'Jackson St', 'branch4@gmail.com', 'Cupertino');
-INSERT INTO customer  VALUES ('123456781', 'John', 'Doe', '23', 'M', 'Y1123981', 'San Jose');
-INSERT INTO customer  VALUES ('123456782', 'Ron', 'Cheg', '23', 'M', 'Y1123982', 'Santa Clara');
-INSERT INTO customer  VALUES ('123456783', 'James', 'Yo', '23', 'M', 'Y1123983', 'San Francisco');
-INSERT INTO customer  VALUES ('123456784', 'Phill', 'Mark', '23', 'M', 'Y1123984', 'Cupertino');
-INSERT INTO car VALUES ('1', 'BENTLEY', 'BENTLEY ARNAGE', 1998, 'Hatchback');
-INSERT INTO car VALUES ('2', 'AUDI', 'DB9 COUPE', 1999, 'Sedan');
-INSERT INTO car VALUES ('3', 'BMW', 'M3', 2000, 'Hatchback');
-INSERT INTO car VALUES ('4', 'FORD', 'GT 2WD', 2001, 'Sedan');
+INSERT INTO customer VALUES ('774623423', 'John', 'Doe', '32', 'M', 'A1234567','33 South Third Street Apt 105');
+INSERT INTO customer VALUES ('847347232', 'Mary', 'Jane', '28', 'F', 'A34212345','23 Baker street, WA');
+INSERT INTO customer VALUES ('123456784', 'Phill', 'Mark', '23', 'M', 'Y1123984', 'Cupertino');
+INSERT INTO customer VALUES ('603456783', 'James', 'Yo', '23', 'M', 'C1123983', 'San Francisco');
+INSERT INTO customer VALUES ('123456782', 'Ron', 'Cheg', '23', 'M', 'B1123982', 'Santa Clara');
+
+INSERT INTO cus_email VALUES ('774623423', 'johndoe@gmail.com');
+INSERT INTO cus_mobile VALUES ('774623423', '6654334322');
+INSERT INTO cus_email VALUES ('847347232', 'maryjane@gmail.com');
+INSERT INTO cus_mobile VALUES ('847347232', '6702390012');
+INSERT INTO cus_email VALUES ('123456784', 'phill@gmail.com');
+INSERT INTO cus_mobile VALUES ('123456784', '6798390012');
+INSERT INTO cus_email VALUES ('603456783', 'james@gmail.com');
+INSERT INTO cus_mobile VALUES ('603456783', '6700390012');
+INSERT INTO cus_email VALUES ('123456782', 'ron@gmail.com');
+INSERT INTO cus_mobile VALUES ('123456782', '6654004322');
+
+INSERT INTO car(vin, manufacturer, model_no, manufactured_year, car_type) VALUES ('1HJCM82633A674352', 'HONDA', 'ACCORD', '2010', 'Sedan');
+INSERT INTO car(vin, manufacturer, model_no, manufactured_year, car_type) VALUES ('2JCCO82633A600350', 'HONDA', 'ACCORD', '2010', 'Wagon');
