@@ -25,13 +25,16 @@
                             <div class="col-lg-2">
                                 <button class="btn btn-primary" ng-click="searchCar()">Search</button>
                             </div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary" ng-click="getAllInStockCars()">Get All Cars</button>
+                            </div>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-3">
-                               <h4>Enter Vehicle ID :</h4>
+                                <h4>Enter Vehicle ID :</h4>
                             </div>
                             <div class="col-lg-3">
                                 <input type="text" name="search" placeholder="Search..." class="form-control"
@@ -59,11 +62,19 @@
                             <tr class="table-heading">
                                 <td>VIN</td>
                                 <td>Price</td>
+                                <td>Manufacturer</td>
+                                <td>Model Number</td>
+                                <td>Manufacturing Year</td>
+                                <td>Car Type</td>
                                 <td>Branch ID</td>
                             </tr>
                             <tr class="clickable-row" ng-repeat="car in cars">
                                 <td>{{ car.in_stock_vin }}</td>
                                 <td>{{ car.in_stock_price }}</td>
+                                <td>{{ car.manufacturer }}</td>
+                                <td>{{ car.model_no }}</td>
+                                <td>{{ car.manufactured_year }}</td>
+                                <td>{{ car.car_type }}</td>
                                 <td>{{ car.in_stock_branch_id }}</td>
                             </tr>
                         </table>
@@ -76,7 +87,26 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">Transaction History for VIN : {{carHistory[0].transaction_vin}}</div>
                 <div class="panel-body">
+                    <h4>Car Details</h4>
+                    <div class="table-responsive" style="margin-top: 15px">
 
+                        <table class="table">
+                            <tr class="table-heading">
+                                <td>Manufacturer</td>
+                                <td>Model Number</td>
+                                <td>Manufacturing Year</td>
+                                <td>Car Type</td>
+                            </tr>
+                            <tr class="clickable-row">
+                                <td>{{ carDetails[0].manufacturer }}</td>
+                                <td>{{ carDetails[0].model_no }}</td>
+                                <td>{{ carDetails[0].manufactured_year }}</td>
+                                <td>{{ carDetails[0].car_type }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <h4>Car Transaction History</h4>
                     <div class="table-responsive" style="margin-top: 15px">
                         <table class="table table-bordered">
                             <tr class="table-heading">
@@ -87,17 +117,20 @@
                                 <td>New License Plate Number</td>
                                 <td>Action</td>
                             </tr>
+
                             <tr class="clickable-row" ng-repeat="car in carHistory">
                                 <td>{{ car.date }}</td>
                                 <td>{{ car.list_price }}</td>
                                 <td>{{ car.final_price }}</td>
                                 <td>{{ car.old_license_plate }}</td>
                                 <td>{{ car.new_license_plate }}</td>
+
                                 <td>
-                                    <span ng-if ="car.is_sale">Bought from customer </span>
-                                    <span ng-if ="!car.is_sale">Sold to customer </span>
+                                    <span ng-if="car.is_sale">Bought from customer </span>
+                                    <span ng-if="!car.is_sale">Sold to customer </span>
                                 </td>
                             </tr>
+
                         </table>
                     </div>
                 </div>

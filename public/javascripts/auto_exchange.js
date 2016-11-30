@@ -870,7 +870,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
 /** Customers Functions  ends: Ishan **/
 
 auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
-    //console.log("cars controler");
 
     $scope.showAllCars = false;
 
@@ -886,10 +885,8 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
         $scope.searchText = '';
     };
 
-    $http.post('api/getAllIn_Stock_Cars').then(function (result) {
-        //  console.log(JSON.stringify(result.data.profile));
+    $http.post('api/getIn_Stock_CarsbyBranchId').then(function (result) {
         $scope.showAllCars = true;
-      //  $scope.showOtherSearches = true;
         $scope.cars = result.data.profile;
 
     });
@@ -904,8 +901,32 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
         }).success(function(data) {
             if (data.status == 200 && data.profile.length != 0) {
                 console.log(JSON.stringify(data.profile));
+                console.log(JSON.stringify(data.profile_car_details));
                 $scope.carHistory = data.profile;
+                $scope.carDetails = data.profile_car_details;
             }else {
+                $scope.error_msg = data.result;
+                $scope.error = true;
+            }
+        }).error(function(error) {
+            console.log("Error "+ error);
+            $scope.error_msg = error;
+            $scope.error = true;
+        });
+    };
+
+
+    $scope.getAllInStockCars =function () {
+        $scope.showAllCars = true;
+        $http({
+            method : "POST",
+            url : '/api/getAllIn_Stock_Cars',
+            headers : {'Content-Type': 'application/json'}
+        }).success(function(data) {
+            if (data.status == 200 && data.profile.length != 0) {
+                console.log(JSON.stringify(data.profile));
+                $scope.cars = data.profile;
+             }else {
                 $scope.error_msg = data.result;
                 $scope.error = true;
             }
@@ -934,7 +955,7 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.cars = data.profile;
 
                     } else {
-                        $scope.error_msg = "Car with VIN " +$scope.searchText+" not found";
+                        $scope.error_msg = "Car with VIN " +$scope.searchText+" not found in stock";
                         $scope.error = true;
                     }
                 }).error(function (error) {
@@ -959,7 +980,7 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.cars = data.profile;
 
                     } else {
-                        $scope.error_msg = "Car with Manufacturer not found";
+                        $scope.error_msg = "Car with Manufacturer not in stock";
                         $scope.error = true;
                     }
                 }).error(function (error) {
@@ -984,7 +1005,7 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.cars = data.profile;
 
                     } else {
-                        $scope.error_msg = "Car with manufactured year not found";
+                        $scope.error_msg = "Car with manufactured year not in stock";
                         $scope.error = true;
                     }
                 }).error(function (error) {
@@ -1009,7 +1030,7 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.cars = data.profile;
 
                     } else {
-                        $scope.error_msg = "Car with model number not found";
+                        $scope.error_msg = "Car with model number not in stock";
                         $scope.error = true;
                     }
                 }).error(function (error) {
@@ -1034,7 +1055,7 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.cars = data.profile;
 
                     } else {
-                        $scope.error_msg = "Car with type not found";
+                        $scope.error_msg = "Car with type not in stock";
                         $scope.error = true;
                     }
                 }).error(function (error) {
@@ -1044,7 +1065,7 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                 });
             }else {
                 $scope.error = true;
-                $scope.error_msg = "Type cannot be blank";
+                $scope.error_msg = "Car type cannot be blank";
             }
         } else if($scope.searchBy == 'price_start'){
             if($scope.searchText != ''){
@@ -1059,7 +1080,7 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.cars = data.profile;
 
                     } else {
-                        $scope.error_msg = "Car with price start not found";
+                        $scope.error_msg = "Car with price start not in stock";
                         $scope.error = true;
                     }
                 }).error(function (error) {
@@ -1084,7 +1105,7 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.cars = data.profile;
 
                     } else {
-                        $scope.error_msg = "Car with price end not found";
+                        $scope.error_msg = "Car with price-end not in stock";
                         $scope.error = true;
                     }
                 }).error(function (error) {

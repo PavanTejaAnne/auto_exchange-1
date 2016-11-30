@@ -35,8 +35,7 @@ exports.getAllIn_Stock_Cars = function(req, res){
 };
 
 exports.getIn_Stock_CarsbyBranchId = function(req, res){
-    var branch_id = req.query.In_Stock_branch_id;
-    //var license = req.query.license;
+    var branch_id = req.session.branch_id;
     var customer = "select * from in_stock_car, car where in_stock_vin = vin and in_stock_branch_id = '"+ branch_id +"'";
     logger.trace("Fetching all in_stock_cars");
     mysql.fetchData(customer, function(err, results) {
@@ -137,7 +136,7 @@ exports.getInStockCar = function(req, res){
     }
 
 
-    console.log("bc :"+sql_query);
+   // console.log("bc :"+sql_query);
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
             throw err;

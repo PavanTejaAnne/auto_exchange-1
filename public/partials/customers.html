@@ -80,6 +80,7 @@
                                 <td>Age</td>
                                 <td>Gender</td>
                                 <td>Address</td>
+                                <td>Edit Details</td>
                             </tr>
                             <tr class="clickable-row" ng-repeat="customer in customers">
                                 <td>{{ customer.ssn }}</td>
@@ -89,6 +90,10 @@
                                 <td>{{ customer.age }}</td>
                                 <td>{{ customer.gender }}</td>
                                 <td>{{ customer.address }}</td>
+                                <td> <div class="col-lg-2 ">
+                                    <button class="btn btn-primary" ng-click="editCustomer(customer.ssn)">Edit</button>
+                                </div>
+                                </td>
                             </tr>
                         </table>
                     </div>
