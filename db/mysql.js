@@ -37,3 +37,4 @@ function fetchData(sqlQuery, callback){
 }
 
 exports.fetchData=fetchData;
+exports.getConnection = getConnection;

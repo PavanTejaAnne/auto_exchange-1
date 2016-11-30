@@ -106,103 +106,152 @@ exports.setTransactionSell = function (req, res) {
     var type = req.query.car_type;
     var branch_id = req.session.branch_id;
 
-    var query = "select * from sells_to where sells_to_ssn = '" + ssn + "' and sells_to_branch_id = '" + branch_id + "'";
-    logger.trace("Adding transaction for sale");
-    mysql.fetchData(query, function (err, results) {
-        if (err) {
+
+    var connection = mysql.getConnection();
+    connection.beginTransaction(function (err) {
+        logger.trace("DB transaction committed started");
+        if(err){
             logger.error("Error fetching data " + err);
-        } else {
-            if (results.length > 0) {
-                logger.trace("Transaction sale unsuccessful");
+            return connection.rollback(function() {
+                throw err;
+            });
+        }
+
+        var query = "select * from sells_to where sells_to_ssn = '" + ssn + "' and sells_to_branch_id = '" + branch_id + "'";
+        logger.trace("Adding transaction for sale");
+        connection.query(query, function (err, results) {
+            if (err) {
+                logger.error("Error fetching data " + err);
+                return connection.rollback(function() {
+                    throw err;
+                });
             } else {
-                var query_1 = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('" + ssn + "', '" + branch_id + "');";
-                mysql.fetchData(query_1, function (err, results) {
-                    if (err) {
-                        logger.error("Error fetching data " + err);
-                    } else {
-                        logger.trace("Transaction sale successful");
-                    }
-                });
+                if (results.length > 0) {
+                    logger.trace("Transaction sale unsuccessful");
+                } else {
+                    var query_1 = "insert into sells_to(sells_to_ssn, sells_to_branch_id) values('" + ssn + "', '" + branch_id + "');";
+                    connection.query(query_1, function (err, results) {
+                        if (err) {
+                            logger.error("Error fetching data " + err);
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        } else {
+                            logger.trace("Transaction sale successful");
+                        }
+                    });
+                }
             }
-        }
+        });
+
+        var query_check = "select * from car where vin = '" + vin + "'";
+        connection.query(query_check, function (err, results) {
+            if (err) {
+                logger.error("Error fetching data " + err);
+                return connection.rollback(function() {
+                    throw err;
+                });
+            } else {
+                if (results.length > 0) {
+                    var query_2 = "insert into sells(sells_ssn, sells_vin) values('" + ssn + "', '" + vin + "');";
+                    connection.query(query_2, function (err, results) {
+                        if (err) {
+                            logger.error("Error fetching data " + err);
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        }
+                    });
+                    var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
+                        "values('" + vin + "', " + list_price + "," + final_price + ",'" + old_license + "', '" + new_license + "'," + true + ");";
+                    connection.query(query_3, function (err, results) {
+                        if (err) {
+                            logger.error("Error fetching data " + err);
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        }
+                    });
+
+                    var query_4 = "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('" + vin + "', " + final_price + ", '" + branch_id + "');";
+                    connection.query(query_4, function (err, results) {
+                        if (err) {
+                            logger.error("Error fetching data " + err);
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        } else {
+                            res.send({
+                                "status": 200,
+                                "message:": "transaction inserted successfully",
+                                "profile": results
+                            });
+                        }
+                    });
+                }
+                else {
+                    var query_5 = "insert into car(vin, manufacturer, model_no, manufactured_year, car_type) values('" + vin + "', '" + manufacturer + "', '" + model_no + "', '" + year + "', '" + type + "')";
+                    connection.query(query_5, function (err, results) {
+                        if (err) {
+                            logger.error("Error fetching data " + err);
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        }
+                        else {
+                            var query_2 = "insert into sells(sells_ssn, sells_vin) values('" + ssn + "', '" + vin + "');";
+
+                            connection.query(query_2, function (err, results) {
+                                if (err) {
+                                    logger.error("Error fetching data " + err);
+                                    return connection.rollback(function() {
+                                        throw err;
+                                    });
+                                }
+                            });
+                            var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
+                                "values('" + vin + "', " + list_price + "," + final_price + ",'" + old_license + "', '" + new_license + "'," + true + ");";
+
+                            connection.query(query_3, function (err, results) {
+                                if (err) {
+                                    logger.error("Error fetching data " + err);
+                                    return connection.rollback(function() {
+                                        throw err;
+                                    });
+                                }
+                            });
+
+                            var query_4 = "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('" + vin + "', " + final_price + ", '" + branch_id + "');";
+
+                            connection.query(query_4, function (err, results) {
+                                if (err) {
+                                    logger.error("Error fetching data " + err);
+                                    return connection.rollback(function() {
+                                        throw err;
+                                    });
+                                } else {
+                                    connection.commit(function(err) {
+                                        if (err) {
+                                            logger.error("Error fetching data " + err);
+                                            return connection.rollback(function() {
+                                                throw err;
+                                            });
+                                        }
+                                        logger.trace("DB transaction committed successfully");
+                                        res.send({
+                                            "status": 200,
+                                            "message:": "Sell transaction inserted successfully",
+                                            "profile": results
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
     });
-
-
-    var query_check = "select * from car where vin = '" + vin + "'";
-    mysql.fetchData(query_check, function (err, results) {
-        if (err) {
-            logger.error("Error fetching data " + err);
-        } else {
-            if (results.length > 0) {
-                var query_2 = "insert into sells(sells_ssn, sells_vin) values('" + ssn + "', '" + vin + "');";
-                mysql.fetchData(query_2, function (err, results) {
-                    if (err) {
-                        logger.error("Error fetching data " + err);
-                    }
-                });
-                var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
-                    "values('" + vin + "', " + list_price + "," + final_price + ",'" + old_license + "', '" + new_license + "'," + true + ");";
-                mysql.fetchData(query_3, function (err, results) {
-                    if (err) {
-                        logger.error("Error fetching data " + err);
-                    }
-                });
-
-                var query_4 = "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('" + vin + "', " + final_price + ", '" + branch_id + "');";
-                mysql.fetchData(query_4, function (err, results) {
-                    if (err) {
-                        logger.error("Error fetching data " + err);
-                    } else {
-                        res.send({
-                            "status": 200,
-                            "message:": "transaction inserted successfully",
-                            "profile": results
-                        });
-                    }
-                });
-            }
-            else {
-                var query_5 = "insert into car(vin, manufacturer, model_no, manufactured_year, car_type) values('" + vin + "', '" + manufacturer + "', '" + model_no + "', '" + year + "', '" + type + "')";
-                mysql.fetchData(query_5, function (err, results) {
-                    if (err) {
-                        logger.error("Error fetching data " + err);
-                    }
-                    else {
-                        var query_2 = "insert into sells(sells_ssn, sells_vin) values('" + ssn + "', '" + vin + "');";
-
-                        mysql.fetchData(query_2, function (err, results) {
-                            if (err) {
-                                logger.error("Error fetching data " + err);
-                            }
-                        });
-                        var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
-                            "values('" + vin + "', " + list_price + "," + final_price + ",'" + old_license + "', '" + new_license + "'," + true + ");";
-
-                        mysql.fetchData(query_3, function (err, results) {
-                            if (err) {
-                                logger.error("Error fetching data " + err);
-                            }
-                        });
-
-                        var query_4 = "insert into in_stock_car(in_stock_vin, in_stock_price, in_stock_branch_id) values('" + vin + "', " + final_price + ", '" + branch_id + "');";
-
-                        mysql.fetchData(query_4, function (err, results) {
-                            if (err) {
-                                logger.error("Error fetching data " + err);
-                            } else {
-                                res.send({
-                                    "status": 200,
-                                    "message:": "Sell transaction inserted successfully",
-                                    "profile": results
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        }
-    });
-
 };
 
 exports.setTransactionBuy = function (req, res) {
@@ -220,60 +269,85 @@ exports.setTransactionBuy = function (req, res) {
 
     var in_stock_check_query = "select * from in_stock_car where in_stock_vin = '" + vin + "'";
     logger.trace("Adding transaction buy");
-    mysql.fetchData(in_stock_check_query, function (err, results_205) {
-        if (err) {
-            logger.error("Error fetching data " + err);
-        } else {
-            if (results_205.length == 0) {
-                res.send({
-                    "status": 10,
-                    "message:": "Vehicle id incorrect!",
-                    "profile": results_205
+
+    var connection = mysql.getConnection();
+    connection.beginTransaction(function (err) {
+        logger.trace("DB transaction started");
+        connection.query(in_stock_check_query, function (err, results_205) {
+            if (err) {
+                logger.error("Error fetching data " + err);
+                return connection.rollback(function() {
+                    throw err;
                 });
             } else {
+                if (results_205.length == 0) {
+                    res.send({
+                        "status": 10,
+                        "message:": "Vehicle id incorrect!",
+                        "profile": results_205
+                    });
+                } else {
+                    var query_1 = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('" + ssn + "', '" + branch_id + "');";
 
+                    connection.query(query_1, function (err, results) {
+                        if (err) {
+                            logger.error("Error fetching data " + err);
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        }
+                    });
 
-                var query_1 = "insert into buys_from(buys_from_ssn, buys_from_branch_id) values('" + ssn + "', '" + branch_id + "');";
+                    var query_2 = "insert into buys (buys_ssn, buys_vin) values('" + ssn + "', '" + vin + "');";
 
-                mysql.fetchData(query_1, function (err, results) {
-                    if (err) {
-                        logger.error("Error fetching data " + err);
-                    }
-                });
+                    connection.query(query_2, function (err, results) {
+                        if (err) {
+                            logger.error("Error fetching data " + err);
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        }
+                    });
 
-                var query_2 = "insert into buys (buys_ssn, buys_vin) values('" + ssn + "', '" + vin + "');";
+                    var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
+                        "values('" + vin + "', " + list_price + "," + final_price + ",'" + old_license + "', '" + new_license + "'," + false + ");";
 
-                mysql.fetchData(query_2, function (err, results) {
-                    if (err) {
-                        logger.error("Error fetching data " + err);
-                    }
-                });
+                    connection.query(query_3, function (err, results) {
+                        if (err) {
+                            logger.error("Error fetching data " + err);
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        }
+                    });
 
-                var query_3 = "insert into transaction(transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) " +
-                    "values('" + vin + "', " + list_price + "," + final_price + ",'" + old_license + "', '" + new_license + "'," + false + ");";
+                    var query_4 = "delete from in_stock_car where in_stock_vin='" + vin + "';";
 
-                mysql.fetchData(query_3, function (err, results) {
-                    if (err) {
-                        logger.error("Error fetching data " + err);
-                    }
-                });
-
-                var query_4 = "delete from in_stock_car where in_stock_vin='" + vin + "';";
-
-                mysql.fetchData(query_4, function (err, results) {
-                    if (err) {
-                        logger.error("Error fetching data " + err);
-                    } else {
-                        res.send({
-                            "status": 200,
-                            "message:": "Buy transaction Inserted successfully!",
-                            "profile": results
-                        });
-                    }
-                });
-
+                    connection.query(query_4, function (err, results) {
+                        if (err) {
+                            logger.error("Error fetching data " + err);
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        } else {
+                            connection.commit(function (err) {
+                                if(err){
+                                    logger.error("Error fetching data " + err);
+                                    return connection.rollback(function() {
+                                        throw err;
+                                    });
+                                }
+                                logger.trace("DB transaction committed successfully");
+                                res.send({
+                                    "status": 200,
+                                    "message:": "Buy transaction Inserted successfully!",
+                                    "profile": results
+                                });
+                            });
+                        }
+                    });
+                }
             }
-        }
-
+        });
     });
 };

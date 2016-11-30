@@ -392,7 +392,13 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
         $scope.location = location;
     };
 
-    $scope.branchInfo = function () {
+    $scope.addBranch = function () {
+        $rootScope.new_branch = true;
+        $window.location.href = "#/branch-info";
+    };
+
+    $scope.updateBranch = function () {
+        $rootScope.new_branch = false;
         $window.location.href = "#/branch-info";
     };
 
@@ -443,13 +449,11 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
     var branch_id = $rootScope.branch_id;
     $scope.branch = {};
     $scope.message = "Add new branch information";
-    $scope.buttonText = "Add";
     $rootScope.branch_update = false;
     $rootScope.branch_add = false;
 
-    if(branch_id) {
+    if(branch_id && !$rootScope.new_branch) {
         $scope.message = "Update branch information for branch number "+ branch_id;
-        $scope.buttonText = "Update";
         $http({
             method: "POST",
             url: '/api/getBranchById',
@@ -469,7 +473,7 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
     }
 
     $scope.branchInfo = function () {
-        if($scope.buttonText == 'Add'){
+        if($rootScope.new_branch){
             $http({
                 method: "POST",
                 url: '/api/addNewBranch',
