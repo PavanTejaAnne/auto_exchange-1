@@ -9,13 +9,13 @@ var logger = require('../helper/logger').getLogger();
 exports.getAllIn_Stock_Cars = function(req, res){
     //var license = req.query.license;
     var customer = "select * from in_stock_car, car where in_stock_vin = vin";
-    logger.trace("Fetching all in_stock_cars");
+    logger.trace("Fetching all in stock cars");
     mysql.fetchData(customer, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
             if (results.length > 0) {
-                console.log(results);
+                logger.trace("In stock car search successful");
                 res.send({
                     "status": 200,
                     "message:": "in_stock_cars search successful!",
@@ -24,6 +24,7 @@ exports.getAllIn_Stock_Cars = function(req, res){
             }
             // render or error
             else {
+                logger.trace("No in stock cars");
                 res.send({
                     "status": 10,
                     "message:": "search returned with empty records!",
@@ -37,13 +38,13 @@ exports.getAllIn_Stock_Cars = function(req, res){
 exports.getIn_Stock_CarsbyBranchId = function(req, res){
     var branch_id = req.session.branch_id;
     var customer = "select * from in_stock_car, car where in_stock_vin = vin and in_stock_branch_id = '"+ branch_id +"'";
-    logger.trace("Fetching all in_stock_cars");
+    logger.trace("Fetching all in stock cars by branch Id "+ branch_id);
     mysql.fetchData(customer, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
             if (results.length > 0) {
-                console.log(results);
+                logger.trace("In stock car successful");
                 res.send({
                     "status": 200,
                     "message:": "in_stock_cars search successful!",
@@ -52,6 +53,7 @@ exports.getIn_Stock_CarsbyBranchId = function(req, res){
             }
             // render or error
             else {
+                logger.trace("No in stock cars");
                 res.send({
                     "status": 10,
                     "message:": "search returned with empty records!",
@@ -135,22 +137,22 @@ exports.getInStockCar = function(req, res){
         sql_query = sql_query + " and in_stock_price <= '"+In_Stock_price_end+"'";
     }
 
-
+    logger.trace("Search on in stock cars");
    // console.log("bc :"+sql_query);
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
             if (results.length > 0) {
-                console.log(results);
+                logger.trace("In stock car search successful");
                 res.send({
                     "status": 200,
                     "message:": "transaction fetched by Date successfully!",
                     "profile": results
                 });
             }
-            // render or error
             else {
+                logger.trace("No in stock car");
                 res.send({
                     "status": 10,
                     "message:": "transaction fetched by successfully with empty line returned!",

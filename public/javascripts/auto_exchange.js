@@ -425,7 +425,6 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
             headers : {'Content-Type': 'application/json'}
         }).success(function(data) {
             if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
                 $scope.success = true;
                 $scope.success_msg = "Successfully deleted branch";
             }else {
@@ -433,7 +432,6 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
                 $scope.error = true;
             }
         }).error(function(error) {
-            console.log("Error "+ error);
             $scope.error_msg = error;
             $scope.error = true;
         });
@@ -443,7 +441,6 @@ auto_exchange.controller('branch', function ($scope, $http, $window, $rootScope)
 auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootScope) {
 
     var branch_id = $rootScope.branch_id;
-    console.log("Branch id "+ branch_id);
     $scope.branch = {};
     $scope.message = "Add new branch information";
     $scope.buttonText = "Add";
@@ -460,14 +457,12 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
             headers: {'Content-Type': 'application/json'}
         }).success(function (data) {
             if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
                 $scope.branch = data.profile[0];
             } else {
                 $scope.error_msg = data.message;
                 $scope.error = true;
             }
         }).error(function (error) {
-            console.log("Error " + error);
             $scope.error_msg = error;
             $scope.error = true;
         });
@@ -482,7 +477,6 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
                 headers: {'Content-Type': 'application/json'}
             }).success(function (data) {
                 if (data.status == 200 && data.profile.length != 0) {
-                    console.log(JSON.stringify(data.profile));
                     $rootScope.branch_update = false;
                     $window.location.href = "#/branch";
                 } else {
@@ -490,7 +484,6 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
                     $scope.error = true;
                 }
             }).error(function (error) {
-                console.log("Error " + error);
                 $scope.error_msg = error;
                 $scope.error = true;
             });
@@ -502,7 +495,6 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
                 headers: {'Content-Type': 'application/json'}
             }).success(function (data) {
                 if (data.status == 200 && data.profile.length != 0) {
-                    console.log(JSON.stringify(data.profile));
                     $rootScope.branch_add = true;
                     $window.location.href = "#/branch";
                 } else {
@@ -510,7 +502,6 @@ auto_exchange.controller('branch_info', function ($scope, $http, $window, $rootS
                     $scope.error = true;
                 }
             }).error(function (error) {
-                console.log("Error " + error);
                 $scope.error_msg = error;
                 $scope.error = true;
             });
@@ -532,14 +523,12 @@ auto_exchange.controller('transactions', function ($scope, $http, $window, $root
                 headers: {'Content-Type': 'application/json'}
             }).success(function (data) {
                 if (data.status == 200 && data.profile.length != 0) {
-                    console.log(JSON.stringify(data.profile));
                     $scope.transactions = data.profile;
                 } else {
                     $scope.error_msg = "Transaction with SSN not found";
                     $scope.error = true;
                 }
             }).error(function (error) {
-                console.log("Error " + error);
                 $scope.error_msg = error;
                 $scope.error = true;
             });
@@ -560,12 +549,10 @@ auto_exchange.controller('thankyou', function ($scope, $http, $window, $rootScop
 
 /** Customers Functions  starts: Ishan **/
 auto_exchange.controller('customers', function ($scope, $http, $window, $rootScope) {
-    console.log("customer controller");
     $scope.showAllCust = false;
     $scope.showSearchPage = true;
 
     $http.post('api/getAllCustomers').then(function (result) {
-        //  console.log(JSON.stringify(result.data.profile));
         $scope.showAllCust = true;
         $scope.showOtherSearches = true;
         $scope.customers = result.data.profile;
@@ -579,7 +566,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
 
 
     $scope.onOptionChange = function (searchBy) {
-        console.log("Option changed "+ searchBy);
         $scope.searchBy = searchBy;
         $scope.searchText = '';
         if(searchBy == 'name'){
@@ -594,7 +580,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
 
     $scope.searchCustomer = function () {
         $scope.showAllCust = false;
-        console.log("Searchby = "+ $scope.searchBy + "   searchtext "+ $scope.searchText);
         if($scope.searchBy == 'ssn'){
             if($scope.searchText != ''){
                 $http({
@@ -604,7 +589,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.customers = data.profile;
 
                     } else {
@@ -612,7 +596,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -621,9 +604,7 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                 $scope.error_msg = "SSN cannot be blank";
             }
         }else if($scope.searchBy == 'name'){
-            console.log("sdssds");
             var full_name =$scope.searchText.split(" ");
-           // console.log("fn :"+full_name[0]);
             if($scope.searchText != ''){
                 $http({
                     method: "POST",
@@ -632,7 +613,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.customers = data.profile;
 
                     } else {
@@ -640,7 +620,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -657,7 +636,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.customers = data.profile;
 
                     } else {
@@ -665,7 +643,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -682,7 +659,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.customers = data.profile;
 
                     } else {
@@ -690,7 +666,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -707,7 +682,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.customers = data.profile;
 
                     } else {
@@ -715,7 +689,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -726,7 +699,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
         }
     };
     $scope.editCustomer = function (ssn) {
-        console.log("ssn "+ ssn);
         $scope.showSearchPage = false;
     $scope.custSsn = ssn;
         $http({
@@ -736,8 +708,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
             headers: {'Content-Type': 'application/json'}
         }).success(function (data) {
             if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
-                console.log(data.profile_email[0]);
                 $scope.customer = data.profile[0];
                 $scope.primary_mobile = data.profile_mobile[0].mobile_no;
                 $scope.primary_email = data.profile_email[0].email;
@@ -758,7 +728,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                 $scope.error = true;
             }
         }).error(function (error) {
-            console.log("Error " + error);
             $scope.error_msg = error;
             $scope.error = true;
         });
@@ -774,7 +743,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                 headers : {'Content-Type': 'application/json'}
             }).success(function(data) {
                 if (data.status == 200) {
-                    console.log(JSON.stringify(data.profile));
                     $rootScope.current_branch = data.profile;
                     $scope.current_branch = data.profile;
                 }else {
@@ -782,7 +750,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
                     $scope.error = true;
                 }
             }).error(function(error) {
-                console.log("Error "+ error);
                 $scope.error_msg = error;
                 $scope.error = true;
             });
@@ -790,7 +757,6 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
     };
 
     $scope.updateCustomerInfo = function () {
-        console.log("Updating customer" + $scope.customer.ssn);
         $scope.upadateCustomer();
         $scope.updateCustomerEmail();
         $scope.updateCustomerMobile();
@@ -804,22 +770,19 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
             headers: {'Content-Type': 'application/json'}
         }).success(function (data) {
             if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
+
 
             } else {
                 $scope.error_msg = "customer with ssn not found";
                 $scope.error = true;
             }
         }).error(function (error) {
-            console.log("Error " + error);
             $scope.error_msg = error;
             $scope.error = true;
         });
     };
 
     $scope.updateCustomerEmail = function () {
-        console.log('New '+ $scope.primary_email + " old "+ $scope.old_pri_email);
-        console.log('New '+ $scope.secondary_email + " old "+ $scope.old_sec_email);
         $http({
             method: "POST",
             url: '/api/updateCustomerEmail',
@@ -829,22 +792,18 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
             headers: {'Content-Type': 'application/json'}
         }).success(function (data) {
             if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
 
             } else {
                 $scope.error_msg = "customer with ssn not found";
                 $scope.error = true;
             }
         }).error(function (error) {
-            console.log("Error " + error);
             $scope.error_msg = error;
             $scope.error = true;
         });
     };
 
     $scope.updateCustomerMobile = function () {
-        console.log('New '+ $scope.primary_mobile + " old "+ $scope.old_pri_mobile);
-        console.log('New '+ $scope.secondary_mobile + " old "+ $scope.old_sec_mobile);
         $http({
             method: "POST",
             url: '/api/updateCustomerPhoneNo',
@@ -854,14 +813,12 @@ auto_exchange.controller('customers', function ($scope, $http, $window, $rootSco
             headers: {'Content-Type': 'application/json'}
         }).success(function (data) {
             if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
 
             } else {
                 $scope.error_msg = "customer with ssn not found";
                 $scope.error = true;
             }
         }).error(function (error) {
-            console.log("Error " + error);
             $scope.error_msg = error;
             $scope.error = true;
         });
@@ -880,7 +837,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
         {value: 'price_end', name: 'Search by ending price'}];
 
     $scope.onOptionChange = function (searchBy) {
-        console.log("Car Option changed "+ searchBy);
         $scope.searchBy = searchBy;
         $scope.searchText = '';
     };
@@ -900,8 +856,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
             headers : {'Content-Type': 'application/json'}
         }).success(function(data) {
             if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
-                console.log(JSON.stringify(data.profile_car_details));
                 $scope.carHistory = data.profile;
                 $scope.carDetails = data.profile_car_details;
             }else {
@@ -909,7 +863,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                 $scope.error = true;
             }
         }).error(function(error) {
-            console.log("Error "+ error);
             $scope.error_msg = error;
             $scope.error = true;
         });
@@ -924,14 +877,12 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
             headers : {'Content-Type': 'application/json'}
         }).success(function(data) {
             if (data.status == 200 && data.profile.length != 0) {
-                console.log(JSON.stringify(data.profile));
                 $scope.cars = data.profile;
              }else {
                 $scope.error_msg = data.result;
                 $scope.error = true;
             }
         }).error(function(error) {
-            console.log("Error "+ error);
             $scope.error_msg = error;
             $scope.error = true;
         });
@@ -941,7 +892,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
 
     $scope.searchCar = function () {
         $scope.showAllCars = true   ;
-        console.log("Searchby = "+ $scope.searchBy + "   searchtext "+ $scope.searchText);
         if($scope.searchBy == 'vehicleId'){
             if($scope.searchText != ''){
                 $http({
@@ -951,7 +901,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.cars = data.profile;
 
                     } else {
@@ -959,7 +908,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -976,7 +924,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.cars = data.profile;
 
                     } else {
@@ -984,7 +931,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -1001,7 +947,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.cars = data.profile;
 
                     } else {
@@ -1009,7 +954,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -1026,7 +970,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.cars = data.profile;
 
                     } else {
@@ -1034,7 +977,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -1051,7 +993,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.cars = data.profile;
 
                     } else {
@@ -1059,7 +1000,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -1076,7 +1016,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.cars = data.profile;
 
                     } else {
@@ -1084,7 +1023,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });
@@ -1101,7 +1039,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                     headers: {'Content-Type': 'application/json'}
                 }).success(function (data) {
                     if (data.status == 200 && data.profile.length != 0) {
-                        console.log(JSON.stringify(data.profile));
                         $scope.cars = data.profile;
 
                     } else {
@@ -1109,7 +1046,6 @@ auto_exchange.controller('cars', function ($scope, $http, $window, $rootScope) {
                         $scope.error = true;
                     }
                 }).error(function (error) {
-                    console.log("Error " + error);
                     $scope.error_msg = error;
                     $scope.error = true;
                 });

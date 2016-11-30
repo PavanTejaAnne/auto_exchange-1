@@ -8,25 +8,26 @@ var logger = require('../helper/logger').getLogger();
 
 exports.getBranchById = function(req, res){
     var id = req.query.branch_id;
+    logger.trace("Fetching branch for branch ID "+ id);
     var branch = "select * from company_branch where branch_id = '"+id+"'";
-    logger.trace("Fetching branch by Id "+ branch);
     mysql.fetchData(branch, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
             if (results.length > 0) {
-                console.log(results);
+                logger.trace("Branch search successful");
                 res.send({
                     "status": 200,
-                    "message:": "branch search successful!",
+                    "message:": "Branch search successful!",
                     "profile": results
                 });
             }
             // render or error
             else {
+                logger.trace("No branch found");
                 res.send({
                     "status": 10,
-                    "message:": "NO branch found!",
+                    "message:": "No branch found!",
                     "profile": results
                 });
             }
@@ -37,12 +38,12 @@ exports.getBranchById = function(req, res){
 exports.deletebranch = function(req, res){
     var id = req.query.branch_id;
     var sql_query = "delete from company_branch where branch_id = '"+id+"'";
-    logger.trace("Deleting branch by Id "+ sql_query);
+    logger.trace("Deleting branch by Id "+ id);
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
-            console.log(results);
+            logger.trace("Branch deleted successfully");
             res.send({
                 "status": 200,
                 "message:": "Branch deleted successfully",
@@ -57,13 +58,13 @@ exports.deletebranch = function(req, res){
 exports.getBranchByLocation = function(req, res){
     var location = req.query.location;
     var branch = "select * from company_branch where location = '"+location+"'";
-    logger.trace("Fetching branch by Location "+ branch);
+    logger.trace("Fetching branch by Location "+ location);
     mysql.fetchData(branch, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
             if (results.length > 0) {
-                console.log(results);
+                logger.trace("Branch search successful");
                 res.send({
                     "status": 200,
                     "message:": "branch search successful!",
@@ -72,6 +73,7 @@ exports.getBranchByLocation = function(req, res){
             }
             // render or error
             else {
+                logger.trace("Branch search returned empty records");
                 res.send({
                     "status": 10,
                     "message:": "search returned with empty records!",
@@ -84,13 +86,13 @@ exports.getBranchByLocation = function(req, res){
 
 exports.getAllBranches = function(req, res){
     var branch = "select * from company_branch";
-    logger.trace("Fetching all branches "+ branch);
+    logger.trace("Fetching all branches");
     mysql.fetchData(branch, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
             if (results.length > 0) {
-                console.log(results);
+                logger.trace("All branch search successful");
                 res.send({
                     "status": 200,
                     "message:": "branch search successful!",
@@ -99,6 +101,7 @@ exports.getAllBranches = function(req, res){
             }
             // render or error
             else {
+                logger.trace("Search return empty records");
                 res.send({
                     "status": 10,
                     "message:": "search returned with empty records!",
@@ -114,14 +117,14 @@ exports.addNewBranch = function(req, res){
     var branchAddress = req.query.address;
     var branchEmail = req.query.email;
     var branchLocation = req.query.location;
-
+    logger.trace("Adding new branch");
     // location = req.param("location");
     var sql_query = "insert into company_branch(phone_number, address, email, location) values ('"+branchMobileNumber+"', '"+branchAddress+"', '"+ branchEmail +"', '"+ branchLocation +"')";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
-               console.log(results);
+               logger.trace("New branch added successfully");
                 res.send({
                     "status": 200,
                     "message:": "new branch added!",
@@ -196,17 +199,18 @@ exports.updateBranchInfo = function(req, res){
     }
     sql_query = sql_query + " where branch_id = '"+ branch_id +"'";
 
+    logger.trace("Updating branch info");
     // location = req.param("location");
     //var sql_query = "insert into Customer values ('"+SSN+"', '"+Fname+"', '"+ Lname +"', '"+ age +"', '"+ gender +"', '"+ driving_license_number +"','"+ address +"')";
     if(number != "" || address != "" || email != "" || location != "" ) {
         mysql.fetchData(sql_query, function (err, results) {
             if (err) {
-                throw err;
+                logger.error("Error fetching data "+ err);
             } else {
-                console.log(results);
+                logger.trace("Branch update successful");
                 res.send({
                     "status": 200,
-                    "message:": "new branch added!",
+                    "message:": "Update branch successful!",
                     "profile": results
                 });
                 // render or error
@@ -217,6 +221,7 @@ exports.updateBranchInfo = function(req, res){
 };
 
 exports.updateSession = function (req, res) {
+    logger.trace("Updating session with branch Id ");
     req.session.branch_id = req.query.branch_id;
     req.session.location = req.query.location;
     res.send({status: 200, message: "Updated", profile:{}});

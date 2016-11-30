@@ -3,6 +3,8 @@
  */
 var ejs= require('ejs');
 var mysql = require('mysql');
+var logger = require('../helper/logger').getLogger();
+
 var pool = null;
 function getConnection(){
     var connection = mysql.createConnection({
@@ -13,22 +15,12 @@ function getConnection(){
         port : 3306
     });
 
-/*
-     var connection = mysql.createConnection({
-         host : 'localhost',
-         user : 'root',
-         password : 'password',
-         database : 'auto_exchange',
-         port : 3306
-     });*/
     return connection;
 }
 
 
 function fetchData(sqlQuery, callback){
-
-    console.log("\nSQL Query::"+sqlQuery);
-
+    logger.trace("Executing query "+ sqlQuery);
     var connection=getConnection();
 
     connection.query(sqlQuery, function(err, rows, fields) {
@@ -37,11 +29,10 @@ function fetchData(sqlQuery, callback){
         }
         else
         {	// return err or result
-            console.log("DB Results:"+rows);
+            console.log("Query result "+ JSON.stringify(rows));
             callback(err, rows);
         }
     });
-    console.log("\nConnection closed..");
     connection.end();
 }
 

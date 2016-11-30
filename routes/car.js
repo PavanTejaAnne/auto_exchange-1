@@ -94,24 +94,25 @@ exports.getCar = function(req, res){
 
   //  sql_query = sql_query + ";";
 
-    console.log(sql_query);
+    logger.trace("Searching car");
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
             if (results.length > 0) {
-                console.log(results);
+                logger.trace("Car found");
                 res.send({
                     "status": 200,
-                    "message:": "transaction fetched by Date successfully!",
+                    "message:": "Car search successful",
                     "profile": results
                 });
             }
             // render or error
             else {
+                logger.trace("No car found");
                 res.send({
                     "status": 10,
-                    "message:": "transaction fetched by successfully with empty line returned!",
+                    "message:": "Car not found",
                     "profile": results
                 });
             }
@@ -121,18 +122,18 @@ exports.getCar = function(req, res){
 
 exports.getVehicleIdByBranch = function(req, res){
     var Branch_ID = req.query.Branch_ID;
+    logger.trace("Fetching car by branch Id "+ Branch_ID);
     var sql_query = "select * from sells, sells_to where sells_to_ssn = sells_ssn and sells_to_branch_id = '"+Branch_ID+"'";
     mysql.fetchData(sql_query, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
-                console.log(results);
                 var sql_query_1 = "select * from sells, sells_to where sells_to_ssn = sells_ssn and sells_to_branch_id = '"+Branch_ID+"'";
                 mysql.fetchData(sql_query_1, function(err, results_1) {
                     if (err) {
-                        throw err;
+                        logger.error("Error fetching data "+ err);
                     } else {
-                            console.log(results_1);
+                        logger.trace("Car search successful");
                         res.send({
                             "status": 200,
                             "message:": "transaction_vehicle_id fetched by transaction successfully!",
@@ -141,10 +142,6 @@ exports.getVehicleIdByBranch = function(req, res){
                         });
                     }
                 });
-
-
-            // render or error
-
         }
     });
 };
@@ -152,13 +149,13 @@ exports.getVehicleIdByBranch = function(req, res){
 exports.getCarById = function(req, res){
     var vin = req.query.vin;
     var car = "select * from car where vin = '"+vin+"'";
-    logger.trace("Fetching car by Id "+ car);
+    logger.trace("Fetching car by vehicle identification number "+ vin);
     mysql.fetchData(car, function(err, results) {
         if (err) {
-            throw err;
+            logger.error("Error fetching data "+ err);
         } else {
             if (results.length > 0) {
-                console.log(results);
+                logger.trace("Car search successful");
                 res.send({
                     "status": 200,
                     "message:": "car search successful!",
@@ -167,6 +164,7 @@ exports.getCarById = function(req, res){
             }
             // render or error
             else {
+                logger.trace("Car search empty");
                 res.send({
                     "status": 10,
                     "message:": "search returned with empty records!",
