@@ -107,17 +107,20 @@ CREATE TABLE cus_email(
 
 SET foreign_key_checks = 1;
 
+-- Adds company branch;
 INSERT INTO company_branch (phone_number, address, email, location) VALUES ('6982388234', 'Fourth street, San Fernando, Sacramento', 'sacramento@autoexchange.com', 'Sacramento');
 INSERT INTO company_branch (phone_number, address, email, location) VALUES ('4434232342', 'Third street San Jose', 'sanjose@autoexchange.com', 'San Jose');
 INSERT INTO company_branch (phone_number, address, email, location) VALUES ('6037323234', 'Third street Santa Clara', 'santaclara@autoexchange.com', 'Santa Clara');
 INSERT INTO company_branch (phone_number, address, email, location) VALUES ('6003323234', 'Jackson St', 'cupertino@autoexchange.com', 'Cupertino');
 
+-- Inserts customers
 INSERT INTO customer VALUES ('774623423', 'John', 'Doe', '32', 'M', 'A1234567','33 South Third Street Apt 105');
 INSERT INTO customer VALUES ('847347232', 'Mary', 'Jane', '28', 'F', 'A34212345','23 Baker street, WA');
 INSERT INTO customer VALUES ('123456784', 'Phill', 'Mark', '23', 'M', 'Y1123984', 'Cupertino');
 INSERT INTO customer VALUES ('603456783', 'James', 'Yo', '23', 'M', 'C1123983', 'San Francisco');
 INSERT INTO customer VALUES ('123456782', 'Ron', 'Cheg', '23', 'M', 'B1123982', 'Santa Clara');
 
+-- Primary emails and mobile numbers for customers
 INSERT INTO cus_email VALUES ('774623423', 'johndoe@gmail.com');
 INSERT INTO cus_mobile VALUES ('774623423', '6654334322');
 INSERT INTO cus_email VALUES ('847347232', 'maryjane@gmail.com');
@@ -129,5 +132,29 @@ INSERT INTO cus_mobile VALUES ('603456783', '6700390012');
 INSERT INTO cus_email VALUES ('123456782', 'ron@gmail.com');
 INSERT INTO cus_mobile VALUES ('123456782', '6654004322');
 
+-- Just adds to car table, no in stock car
 INSERT INTO car(vin, manufacturer, model_no, manufactured_year, car_type) VALUES ('1HJCM82633A674352', 'HONDA', 'ACCORD', '2010', 'Sedan');
 INSERT INTO car(vin, manufacturer, model_no, manufactured_year, car_type) VALUES ('2JCCO82633A600350', 'HONDA', 'ACCORD', '2010', 'Wagon');
+
+
+-- Add transaction Sale, this adds the car to in_stock_car table
+SET autocommit=0;
+
+START TRANSACTION;
+INSERT INTO sells_to(sells_to_ssn, sells_to_branch_id) VALUES ('847347232', 2);
+INSERT INTO car (vin, manufacturer, model_no, manufactured_year, car_type) VALUES ('3UVDM82633A004352', 'FORD', 'MILAN', '2007', 'Sedan');
+INSERT INTO sells (sells_ssn, sells_vin) VALUES ('847347232', '3UVDM82633A004352');
+INSERT INTO transaction (transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) VALUES ('3UVDM82633A004352', 18000,1780,'3RBC234', '5TCC234',true);
+INSERT INTO in_stock_car (in_stock_vin, in_stock_price, in_stock_branch_id) VALUES('3UVDM82633A004352', 1780, 2);
+COMMIT;
+
+-- NOTE: Please run below queries after some time, in short the datetime should be different for sale and buy
+-- Add transaction Buy, this deletes the car from in_stock_car table
+START TRANSACTION;
+INSERT INTO buys_from (buys_from_ssn, buys_from_branch_id) values ('847347232', 2);
+INSERT INTO buys (buys_ssn, buys_vin) VALUES ('847347232', '3UVDM82633A004352');
+INSERT INTO transaction (transaction_vin, list_price, final_price, old_license_plate, new_license_plate, is_sale) values ('3UVDM82633A004352', 14800,15900,'2YBC234', '3ABC234',false);
+DELETE FROM in_stock_car WHERE in_stock_vin='3UVDM82633A004352';
+COMMIT;
+
+SET autocommit=1;

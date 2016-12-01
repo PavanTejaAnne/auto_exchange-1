@@ -549,7 +549,7 @@ auto_exchange.controller('thankyou', function ($scope, $http, $window, $rootScop
     $scope.makeAnother = function () {
         $rootScope.new_customer = true;
         $rootScope.customer = {};
-        $window.location.href = "#/add";
+        $window.location.href = "#/check-cust";
     };
 });
 
