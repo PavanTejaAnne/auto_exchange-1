@@ -8,9 +8,9 @@ var logger = require('../helper/logger').getLogger();
 var pool = null;
 function getConnection(){
     var connection = mysql.createConnection({
-        host : 'ec2-54-149-150-222.us-west-2.compute.amazonaws.com',
-        user : 'cmpe_user',
-        password : 'cmpe_user',
+        host : 'localhost',
+        user : '',
+        password : '',
         database : 'auto_exchange',
         port : 3306
     });
