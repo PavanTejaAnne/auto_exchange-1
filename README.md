@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/PavanTejaAnne/auto_exchange-1.png?label=ready&title=Ready)](https://waffle.io/PavanTejaAnne/auto_exchange-1)
 # auto_exchange
 **CMPE180-38 Group Project**
 A portal for the company, which will be used for buying and selling of Used Car(s) through its branches.
